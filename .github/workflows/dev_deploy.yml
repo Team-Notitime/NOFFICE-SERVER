@@ -43,7 +43,7 @@ jobs:
       - name: Generate deploy package for AWS Elastic Beanstalk
         run: |
           mkdir -p deploy
-          cp build/libs/*.jar deploy/noffice-application.jar
+          cp build/libs/*.jar deploy/application.jar
           cp Procfile deploy/Procfile
           cp -r .ebextensions-dev deploy/.ebextensions
           cp -r .platform deploy/.platform
