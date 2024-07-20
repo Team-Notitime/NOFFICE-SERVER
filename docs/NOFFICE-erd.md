@@ -9,59 +9,17 @@ erDiagram
         bigint id PK
         varchar name
         varchar alias
-        AuthProvider auth_provider
-        varchar profile_image_url
+        varchar profile_image
     }
 
     ORGANIZATION {
         bigint id PK
         varchar name
-        timestamp end_date
-        varchar profile_image_url
+        timestamp end_at
+        varchar profile_image
     }
-
-    MEMBER ||--|{ ORGANIZATION_MEMBER : belongs
-    ORGANIZATION ||--|{ ORGANIZATION_MEMBER : belongs
-    ORGANIZATION_MEMBER {
-        bigint id PK
-        bigint organization_id FK
-        bigint member_id FK
-        OragnizationRole role
-    }
-
-    MEMBER ||--o{ FCM_NOTIFICATION_TOKEN : has
-    FCM_NOTIFICATION_TOKEN {
-        bigint id PK
-        bigint member_id FK
-        varchar device_id
-        varchar fcm_token
-    }
-
-    MEMBER ||--|{ AUTH : authenticate
-    AUTH {
-        varchar id PK
-        bigint member_id FK
-        varchar refresh_token
-        AuthProvider auth_provider
-    }
-
-    MEMBER ||--o{ READ_STATUS : checks
-    READ_STATUS {
-        bigint id PK
-        bigint announce_id FK
-        bigint member_id FK
-    }
-
-    ORGANIZATION ||--o| PROMOTION : "uses"
-    PROMOTION {
-        bigint id PK
-        varchar code
-        varchar promotion_image_url
-        boolean used
-    }
-
-    ORGANIZATION ||--|{ ORGANIZATION_CATEGORY : has
-    CATEGORY ||--|{ ORGANIZATION_CATEGORY : categorized
+    ORGANIZATION ||--|{ ORGANIZATION_CATEGORY: has
+    CATEGORY ||--|{ ORGANIZATION_CATEGORY: categorized
     ORGANIZATION_CATEGORY {
         bigint id PK
         bigint organization_id FK
@@ -73,23 +31,65 @@ erDiagram
         varchar name
     }
 
-    ORGANIZATION ||--o{ ANNOUNCE : "has"
-    ANNOUNCE {
+    MEMBER ||--|{ ORGANIZATION_MEMBER: belongs
+    ORGANIZATION ||--|{ ORGANIZATION_MEMBER: belongs
+    ORGANIZATION_MEMBER {
+        bigint id PK
+        bigint organization_id FK
+        bigint member_id FK
+        OragnizationRole role
+    }
+
+    FCM_NOTIFICATION_TOKEN }o--|| MEMBER: "has"
+    FCM_NOTIFICATION_TOKEN {
+        bigint id PK
+        bigint member_id FK
+        varchar device_id
+        varchar fcm_token
+    }
+
+    MEMBER ||--|| REFRESH_TOKEN: authenticate
+    REFRESH_TOKEN {
+        varchar id PK
+        bigint member_id FK
+        varchar refresh_token
+        SocialAuthProvider auth_provider
+        timestamp expired_date_time
+    }
+
+    MEMBER ||--o{ MEMBER_READ_STATUS: checks
+    MEMBER_READ_STATUS {
+        bigint id PK
+        bigint announce_id FK
+        bigint member_id FK
+        boolean checked
+    }
+
+    ORGANIZATION ||--o| PROMOTION: "uses"
+    PROMOTION {
+        bigint id PK
+        varchar code
+        varchar promotion_image_url
+        boolean used
+    }
+
+    ORGANIZATION ||--o{ ANNOUNCEMENT: "has"
+    ANNOUNCEMENT {
         bigint id PK
         bigint creator_id FK
         bigint organization_id FK
         varchar title
         text content
-        varchar cover_image_url
+        varchar cover_image
         varchar place_link_title
         varchar place_link_url
-        timestamp opening_time
-        timestamp closing_time
-        timestamp notification_time
+        timestamp start_at
+        timestamp end_at
+        timestamp notice_at
     }
 
-    MEMBER ||--o{ TASK_STATUS : records
-    TASKS ||--o{ TASK_STATUS : updates
+    MEMBER ||--o{ TASK_STATUS: records
+    TASK ||--o{ TASK_STATUS: updates
     TASK_STATUS {
         bigint id PK
         bigint task_id FK
@@ -97,8 +97,8 @@ erDiagram
         boolean checked
     }
 
-    ANNOUNCE ||--o{ TASKS : has
-    TASKS {
+    ANNOUNCEMENT ||--o{ TASK: has
+    TASK {
         bigint id PK
         bigint announce_id FK
         bigint organization_id FK
