@@ -22,9 +22,13 @@ public class SwaggerConfig {
 
 		productionServer.setUrl("https://api.noffice.store");
 
+		Server testServer = new Server();
+		testServer.setDescription("develop server");
+
+		testServer.setUrl("https://97d4-61-72-170-128.ngrok-free.app");
 		return new OpenAPI()
 				.info(getSwaggerInfo())
-				.servers(List.of(localServer, productionServer));
+				.servers(List.of(localServer, productionServer, testServer));
 	}
 
 	private Info getSwaggerInfo() {
