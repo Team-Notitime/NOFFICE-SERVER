@@ -16,5 +16,11 @@ spring:
 
 springdoc:
   swagger-ui:
+    path: /swagger-ui.html
     tags-sorter: alpha
     operations-sorter: alpha
+
+jwt:
+  secret: harthartharthartharthartharthart
+  access-token-expiration: 300000
+  refresh-token-expiration: 86400000
