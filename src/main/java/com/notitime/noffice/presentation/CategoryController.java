@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "카테고리", description = "조직 내 카테고리 조회 API")
 @RestController
-@RequestMapping("/v1/category")
+@RequestMapping("/api/v1/category")
 @RequiredArgsConstructor
 public class CategoryController {
 
