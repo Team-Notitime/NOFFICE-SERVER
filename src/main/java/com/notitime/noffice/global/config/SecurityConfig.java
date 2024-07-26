@@ -20,11 +20,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-	
+
 	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 	private final JwtValidator jwtValidator;
 	private final JwtProvider jwtProvider;
-	private static final String[] whiteList = {"/api/v1/auth/login", "/api/v1/auth/reissue",
+	private static final String[] whiteList = {"/api/v1/member/login", "/api/v1/member/reissue",
 			"/health", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**", "/webjars/**"};
 
 	@Bean
