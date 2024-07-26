@@ -14,7 +14,18 @@ public enum BusinessErrorCode implements ErrorCode {
 	INVALID_APPLE_IDENTITY_TOKEN(HttpStatus.UNAUTHORIZED, "NOF-401", "유효하지 않은 아이덴티티 토큰입니다."),
 	UNSUPPORTED_ALGORITHM(HttpStatus.BAD_REQUEST, "NOF-400", "키 생성에 사용된 알고리즘을 지원하지 않습니다: "),
 	INVALID_KEY_SPEC(HttpStatus.BAD_REQUEST, "NOF-400", "공개 키 생성에 잘못된 키 사양이 제공되었습니다."),
-	UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "NOF-401", "인증되지 않은 사용자입니다.");
+
+	// 401 Unauthorized
+	UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "NOF-401", "리소스 접근 권한이 없습니다."),
+	INVALID_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "NOF-401", "유효하지 않은 액세스 토큰입니다."),
+	INVALID_ACCESS_TOKEN_VALUE(HttpStatus.UNAUTHORIZED, "NOF-401", "액세스 토큰의 값이 일치하지 않습니다."),
+	EXPIRED_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "NOF-401", "액세스 토큰이 만료되었습니다."),
+	INVALID_REFRESH_TOKEN_VALUE(HttpStatus.UNAUTHORIZED, "NOF-401", "리프레시 토큰의 값이 일치하지 않습니다."),
+	EXPIRED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "NOF-401", "리프레시 토큰이 만료되었습니다."),
+	MISMATCH_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "NOF-401", "리프레시 토큰이 일치하지 않습니다."),
+	EXPIRED_IDENTITY_TOKEN(HttpStatus.UNAUTHORIZED, "NOF-401", "아이덴티티 토큰이 만료되었습니다."),
+	INVALID_IDENTITY_TOKEN_VALUE(HttpStatus.UNAUTHORIZED, "NOF-401", "애플 아이덴티티 토큰의 값이 일치하지 않습니다."),
+	MISSING_BEARER_PREFIX(HttpStatus.UNAUTHORIZED, "NOF-401", "Bearer가 누락되었습니다.");
 
 
 	private final HttpStatus httpStatus;
