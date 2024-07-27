@@ -1,6 +1,9 @@
 package com.notitime.noffice.domain;
 
+import com.notitime.noffice.domain.member.model.Member;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,9 +30,9 @@ public class RefreshToken {
 	@JoinColumn(name = "member_id")
 	private Member member;
 
+	@Enumerated(EnumType.STRING)
 	SocialAuthProvider provider;
-
-	// TODO : UUID로 변경
+	
 	private String refreshToken;
 
 	private LocalDateTime expiredDateTime;

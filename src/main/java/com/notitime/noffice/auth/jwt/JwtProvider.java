@@ -10,9 +10,9 @@ public class JwtProvider {
 
 	private final JwtGenerator jwtGenerator;
 
-	public Token issueTokens(Long userId, String role) {
-		return Token.of(jwtGenerator.generateToken(userId, role, true),
-				jwtGenerator.generateToken(userId, role, false));
+	public Token issueTokens(Long memberId) {
+		return Token.of(jwtGenerator.generateToken(memberId, true),
+				jwtGenerator.generateToken(memberId, false));
 	}
 
 	public Long getSubject(String token) {

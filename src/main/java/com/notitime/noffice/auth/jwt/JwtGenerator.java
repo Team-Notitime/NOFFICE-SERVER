@@ -25,14 +25,11 @@ public class JwtGenerator {
 
 	public static final String USER_ROLE_CLAIM_NAME = "role";
 
-	public String generateToken(Long userId, String role, boolean isAccessToken) {
+	public String generateToken(Long memberId, boolean isAccessToken) {
 		final Date now = generateNowDate();
 		final Date expiration = generateExpirationDate(isAccessToken, now);
 
-		Claims claims = Jwts.claims().setSubject(String.valueOf(userId));
-		if (isAccessToken) {
-			claims.put(USER_ROLE_CLAIM_NAME, role);
-		}
+		Claims claims = Jwts.claims().setSubject(String.valueOf(memberId));
 
 		return Jwts.builder()
 				.setHeaderParam(Header.TYPE, Header.JWT_TYPE)
