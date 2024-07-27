@@ -14,6 +14,7 @@ public enum BusinessErrorCode implements ErrorCode {
 	INVALID_APPLE_IDENTITY_TOKEN(HttpStatus.UNAUTHORIZED, "NOF-401", "유효하지 않은 아이덴티티 토큰입니다."),
 	UNSUPPORTED_ALGORITHM(HttpStatus.BAD_REQUEST, "NOF-400", "키 생성에 사용된 알고리즘을 지원하지 않습니다: "),
 	INVALID_KEY_SPEC(HttpStatus.BAD_REQUEST, "NOF-400", "공개 키 생성에 잘못된 키 사양이 제공되었습니다."),
+	APPLE_FEIGN_CONNECT_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "NOF-500", "Feign 연결 중 오류가 발생했습니다."),
 
 	// 401 Unauthorized
 	UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "NOF-401", "리소스 접근 권한이 없습니다."),
