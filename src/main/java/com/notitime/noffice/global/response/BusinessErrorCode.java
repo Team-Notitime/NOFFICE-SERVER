@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum BusinessErrorCode implements ErrorCode {
 
+	// 400 Bad Request
 	BAD_REQUEST(HttpStatus.BAD_REQUEST, "NOF-400", "잘못된 요청입니다."),
 	FAILED_TO_LOAD_PRIVATE_KEY(HttpStatus.BAD_REQUEST, "NOF-400", "개인 키를 로드하는 데 실패했습니다."),
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "NOF-500", "서버 내부 오류가 발생했습니다."),
@@ -27,9 +28,15 @@ public enum BusinessErrorCode implements ErrorCode {
 	MISMATCH_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "NOF-401", "리프레시 토큰이 일치하지 않습니다."),
 	EXPIRED_IDENTITY_TOKEN(HttpStatus.UNAUTHORIZED, "NOF-401", "아이덴티티 토큰이 만료되었습니다."),
 	INVALID_IDENTITY_TOKEN_VALUE(HttpStatus.UNAUTHORIZED, "NOF-401", "애플 아이덴티티 토큰의 값이 일치하지 않습니다."),
-	MISSING_BEARER_PREFIX(HttpStatus.UNAUTHORIZED, "NOF-401", "Bearer가 누락되었습니다.");
+	MISSING_BEARER_PREFIX(HttpStatus.UNAUTHORIZED, "NOF-401", "Bearer가 누락되었습니다."),
 
+	// 403 Forbidden
+	FORBIDDEN(HttpStatus.FORBIDDEN, "NOF-403", "리소스에 대한 접근 권한이 없습니다."),
 
+	// 404 Not Found
+	NOT_FOUND(HttpStatus.NOT_FOUND, "NOF-404", "리소스를 찾을 수 없습니다."),
+	STORE_FILE_SIZE_EXCEEDED(HttpStatus.NOT_FOUND, "NOF-404", "업로드 가능한 파일 크기를 초과했습니다.");
+	
 	private final HttpStatus httpStatus;
 	private final String code;
 	private final String message;
