@@ -19,9 +19,7 @@ springdoc:
     path: /swagger-ui.html
     tags-sorter: alpha
     operations-sorter: alpha
-${client:
-  apple-auth:
-    url}:
+
 jwt:
   secret: harthartharthartharthartharthart
   access-token-expiration: 300000
