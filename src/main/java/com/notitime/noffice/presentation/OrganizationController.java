@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "조직", description = "조직 가입, 정보 조회 API")
 @RestController
-@RequestMapping("/v1/organization")
+@RequestMapping("/api/v1/organization")
 @RequiredArgsConstructor
 public class OrganizationController {
 

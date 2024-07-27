@@ -10,6 +10,8 @@ erDiagram
         varchar name
         varchar alias
         varchar profile_image
+        varchar email
+        varchar serial_id
     }
 
     ORGANIZATION {

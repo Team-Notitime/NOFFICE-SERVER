@@ -7,20 +7,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @JsonPropertyOrder({"timestamp", "httpStatus", "code", "message", "data"})
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(access = AccessLevel.PRIVATE)
 public class NofficeResponse<T> {
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd HH:mm:ss", timezone = "Asia/Seoul")
 	@JsonProperty("timestamp")
-	private LocalDateTime timestamp = LocalDateTime.now();
-
+	private final LocalDateTime timestamp = LocalDateTime.now();
 	private final int httpStatus;
 
 	private final String code;

@@ -16,5 +16,26 @@ spring:
 
 springdoc:
   swagger-ui:
+    path: /swagger-ui.html
     tags-sorter: alpha
     operations-sorter: alpha
+
+jwt:
+  secret: harthartharthartharthartharthart
+  access-token-expiration: 300000
+  refresh-token-expiration: 86400000
+
+client:
+  apple-auth:
+    url: https://appleid.apple.com/auth
+
+oauth:
+  google:
+    client-id: harthartharthartharthartharthart
+  apple:
+    grant-type: authorization_code
+    client-id: ${APPLE_CLIENT_ID}
+    key-id: ${APPLE_KEY_ID}
+    team-id: ${APPLE_TEAM_ID}
+    audience: https://appleid.apple.com
+    private-key: ${APPLE_PRIVATE_KEY}
