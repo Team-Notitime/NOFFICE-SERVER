@@ -1,6 +1,6 @@
 package com.notitime.noffice.response;
 
-import com.notitime.noffice.domain.Member;
+import com.notitime.noffice.domain.member.model.Member;
 
 public record MemberResponse(Long id, String name, String alias, String profileImage,
                              OrganizationResponses organizations) {
