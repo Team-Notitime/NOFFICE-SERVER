@@ -15,8 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class AppleClientSecretGenerator {
-
-	private static final String AUDIENCE = "https://appleid.apple.com";
+	
 	private final ApplePrivateKeyGenerator applePrivateKeyGenerator;
 
 	@Value("${oauth.apple.key-id}")
@@ -25,6 +24,8 @@ public class AppleClientSecretGenerator {
 	private String teamId;
 	@Value("${oauth.apple.client-id}")
 	private String clientId;
+	@Value("${oauth.apple.audience}")
+	private String audience;
 
 	public String generateClientSecret() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
 		Date expirationDate = Date.from(LocalDateTime.now().plusDays(5)
@@ -35,7 +36,7 @@ public class AppleClientSecretGenerator {
 				.setIssuer(teamId)
 				.setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(expirationDate)
-				.setAudience(AUDIENCE)
+				.setAudience(audience)
 				.setSubject(clientId)
 				.signWith(applePrivateKeyGenerator.getPrivateKey(), SignatureAlgorithm.ES256)
 				.compact();
