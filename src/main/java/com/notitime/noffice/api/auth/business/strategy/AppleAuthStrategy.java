@@ -32,8 +32,8 @@ public class AppleAuthStrategy implements SocialAuthStrategy {
 	private String grantType;
 
 	@Override
-	public boolean support(String provider) {
-		return SocialAuthProvider.APPLE.toString().equals(provider);
+	public boolean support(SocialAuthProvider provider) {
+		return provider.equals(SocialAuthProvider.APPLE);
 	}
 
 	@Override
