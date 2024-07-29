@@ -42,9 +42,13 @@ jobs:
           echo "Secrets : ${{secrets.APPLE_TEAM_ID}}"
           echo "Secrets : ${{secrets.APPLE_PRIVATE_KEY}}"
 
-
       - name: Build with Gradle Wrapper
         run: ./gradlew build
+        env:
+          APPLE_CLIENT_ID: ${{secrets.APPLE_CLIENT_ID}}
+          APPLE_KEY_ID: ${{secrets.APPLE_KEY_ID}}
+          APPLE_TEAM_ID: ${{secrets.APPLE_TEAM_ID}}
+          APPLE_PRIVATE_KEY: ${{secrets.APPLE_PRIVATE_KEY}}
 
       - name: Get current time
         uses: 1466587594/get-current-time@v2
