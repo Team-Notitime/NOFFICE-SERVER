@@ -6,12 +6,16 @@ import com.notitime.noffice.auth.filter.JwtAuthenticationFilter;
 import com.notitime.noffice.auth.jwt.JwtProvider;
 import com.notitime.noffice.auth.jwt.JwtValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -25,7 +29,7 @@ public class SecurityConfig {
 	private final JwtValidator jwtValidator;
 	private final JwtProvider jwtProvider;
 	private static final String[] whiteList = {"/api/v1/member/login", "/api/v1/member/reissue",
-			"/health", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**", "/webjars/**"};
+			"/health", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**", "/webjars/**", "/h2-console/**"};
 
 	@Bean
 	@Order(2)
@@ -58,6 +62,16 @@ public class SecurityConfig {
 						authorizationManagerRequestMatcherRegistry
 								.requestMatchers(whiteList)
 								.permitAll())
+				.headers(headersConfigurer ->
+						headersConfigurer
+								.frameOptions(FrameOptionsConfig::sameOrigin))
 				.build();
+	}
+
+	@Bean
+	@ConditionalOnProperty(name = "spring.h2.console.enabled", havingValue = "true")
+	public WebSecurityCustomizer configureH2ConsoleEnable() {
+		return web -> web.ignoring()
+				.requestMatchers(PathRequest.toH2Console());
 	}
 }
