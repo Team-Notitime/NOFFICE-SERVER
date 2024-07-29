@@ -30,6 +30,19 @@ jobs:
         run: chmod +x ./gradlew
         shell: bash
 
+      - name: Access to Secrets
+        env:
+          APPLE_CLIENT_ID: ${{secrets.APPLE_CLIENT_ID}}
+          APPLE_KEY_ID: ${{secrets.APPLE_KEY_ID}}
+          APPLE_TEAM_ID: ${{secrets.APPLE_TEAM_ID}}
+          APPLE_PRIVATE_KEY: ${{secrets.APPLE_PRIVATE_KEY}}
+        run: |
+          echo "Secrets : ${{secrets.APPLE_CLIENT_ID}}"
+          echo "Secrets : ${{secrets.APPLE_KEY_ID}}"
+          echo "Secrets : ${{secrets.APPLE_TEAM_ID}}"
+          echo "Secrets : ${{secrets.APPLE_PRIVATE_KEY}}"
+
+
       - name: Build with Gradle Wrapper
         run: ./gradlew build
 
