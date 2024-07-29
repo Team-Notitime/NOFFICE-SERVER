@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class AppleOAuthProvider {
 
-	private final AppleFeignClient appleFeignClient;
 	private final AppleIdentityTokenParser appleIdentityTokenParser;
 	private final ApplePublicKeyGenerator applePublicKeyGenerator;
 

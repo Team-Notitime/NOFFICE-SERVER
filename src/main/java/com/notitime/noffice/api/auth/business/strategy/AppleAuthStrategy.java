@@ -44,7 +44,7 @@ public class AppleAuthStrategy implements SocialAuthStrategy {
 				clientSecret,
 				grantType);
 		AuthorizedMemberInfo memberResponse = appleOAuthProvider.getAppleUserInfo(appleTokenResponse.idToken(),
-				request.provider().name());
+				request.provider().name(), applePublicKeys);
 		Member member = memberRepository.findBySerialId(memberResponse.serialId())
 				.orElseGet(() -> Member.createAuthorizedMember(
 						memberResponse.serialId(),
