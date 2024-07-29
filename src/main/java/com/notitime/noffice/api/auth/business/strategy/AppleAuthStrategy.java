@@ -5,7 +5,10 @@ import com.notitime.noffice.domain.SocialAuthProvider;
 import com.notitime.noffice.domain.member.model.Member;
 import com.notitime.noffice.domain.member.persistence.MemberRepository;
 import com.notitime.noffice.external.openfeign.apple.AppleFeignClient;
+import com.notitime.noffice.external.openfeign.apple.AppleIdentityTokenParser;
 import com.notitime.noffice.external.openfeign.apple.AppleOAuthProvider;
+import com.notitime.noffice.external.openfeign.apple.ApplePublicKeyGenerator;
+import com.notitime.noffice.external.openfeign.apple.dto.ApplePublicKeys;
 import com.notitime.noffice.external.openfeign.apple.dto.AppleTokenResponse;
 import com.notitime.noffice.external.openfeign.dto.AuthorizedMemberInfo;
 import com.notitime.noffice.request.SocialAuthRequest;
@@ -13,16 +16,18 @@ import com.notitime.noffice.response.SocialAuthResponse;
 import com.notitime.noffice.response.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class AppleAuthStrategy implements SocialAuthStrategy {
 
 	private final AppleFeignClient appleFeignClient;
 	private final AppleOAuthProvider appleOAuthProvider;
-	private final MemberRepository memberRepository;
 	private final JwtProvider jwtProvider;
+	private final AppleIdentityTokenParser appleIdentityTokenParser;
+	private final ApplePublicKeyGenerator applePublicKeyGenerator;
+	private final MemberRepository memberRepository;
 
 	@Value("${oauth.apple.client-id}")
 	private String clientId;
@@ -32,8 +37,8 @@ public class AppleAuthStrategy implements SocialAuthStrategy {
 	private String grantType;
 
 	@Override
-	public boolean support(String provider) {
-		return SocialAuthProvider.APPLE.toString().equals(provider);
+	public boolean support(SocialAuthProvider provider) {
+		return provider.equals(SocialAuthProvider.APPLE);
 	}
 
 	@Override
@@ -43,8 +48,9 @@ public class AppleAuthStrategy implements SocialAuthStrategy {
 				clientId,
 				clientSecret,
 				grantType);
+		ApplePublicKeys applePublicKeys = appleFeignClient.getApplePublicKey();
 		AuthorizedMemberInfo memberResponse = appleOAuthProvider.getAppleUserInfo(appleTokenResponse.idToken(),
-				request.provider().name());
+				request.provider().name(), applePublicKeys);
 		Member member = memberRepository.findBySerialId(memberResponse.serialId())
 				.orElseGet(() -> Member.createAuthorizedMember(
 						memberResponse.serialId(),

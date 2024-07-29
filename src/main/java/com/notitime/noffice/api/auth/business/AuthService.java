@@ -26,7 +26,6 @@ public class AuthService {
 	private final MemberRepository memberRepository;
 	private final RefreshTokenRepository refreshTokenRepository;
 
-
 	public SocialAuthResponse login(final SocialAuthRequest request) {
 		if (socialAuthContext.support(request.provider())) {
 			return socialAuthContext.doLogin(request);

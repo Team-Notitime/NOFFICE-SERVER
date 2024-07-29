@@ -25,7 +25,7 @@ public class SocialAuthContext {
 
 	public boolean support(SocialAuthProvider provider) {
 		for (SocialAuthStrategy strategy : socialAuthStrategies) {
-			if (strategy.support(provider.toString())) {
+			if (strategy.support(provider)) {
 				return true;
 			}
 		}
@@ -34,7 +34,7 @@ public class SocialAuthContext {
 
 	public SocialAuthResponse doLogin(final SocialAuthRequest request) {
 		for (SocialAuthStrategy strategy : socialAuthStrategies) {
-			if (strategy.support(request.provider().toString())) {
+			if (strategy.support(request.provider())) {
 				return strategy.login(request);
 			}
 		}

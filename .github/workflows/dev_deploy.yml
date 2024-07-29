@@ -13,6 +13,12 @@ jobs:
     permissions:
       contents: read
 
+    env:
+      APPLE_CLIENT_ID: ${{secrets.APPLE_CLIENT_ID}}
+      APPLE_KEY_ID: ${{secrets.APPLE_KEY_ID}}
+      APPLE_TEAM_ID: ${{secrets.APPLE_TEAM_ID}}
+      APPLE_PRIVATE_KEY: ${{secrets.APPLE_PRIVATE_KEY}}
+
     steps:
       - name: checkout to develop branch
         uses: actions/checkout@v4
@@ -29,6 +35,13 @@ jobs:
       - name: Grant privilege to Enable Gradle Wrapper Execution
         run: chmod +x ./gradlew
         shell: bash
+
+      - name: Access to Github Secrets
+        run: |
+          echo "Secrets : ${{secrets.APPLE_CLIENT_ID}}"
+          echo "Secrets : ${{secrets.APPLE_KEY_ID}}"
+          echo "Secrets : ${{secrets.APPLE_TEAM_ID}}"
+          echo "Secrets : ${{secrets.APPLE_PRIVATE_KEY}}"
 
       - name: Build with Gradle Wrapper
         run: ./gradlew build

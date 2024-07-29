@@ -1,6 +1,7 @@
 package com.notitime.noffice.external.openfeign.apple;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.notitime.noffice.global.exception.UnauthorizedException;
 import com.notitime.noffice.global.response.BusinessErrorCode;
@@ -23,7 +24,7 @@ public class AppleIdentityTokenParser {
 		try {
 			String encodedHeader = identityToken.split("\\.")[0];
 			String decodedHeader = new String(Base64.getUrlDecoder().decode(encodedHeader));
-			return OBJECT_MAPPER.readValue(decodedHeader, Map.class);
+			return OBJECT_MAPPER.readValue(decodedHeader, new TypeReference<Map<String, String>>() {});
 		} catch (JsonProcessingException | ArrayIndexOutOfBoundsException e) {
 			throw new UnauthorizedException(BusinessErrorCode.INVALID_APPLE_IDENTITY_TOKEN);
 		}
