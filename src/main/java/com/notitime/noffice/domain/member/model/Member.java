@@ -35,10 +35,10 @@ public class Member extends BaseTimeEntity {
 
 	@Column(nullable = false)
 	private String alias;
-
-	@Column(nullable = false)
+	
 	private String serialId;
 
+	@Column(columnDefinition = "TEXT")
 	private String profileImage;
 
 	private String email;
