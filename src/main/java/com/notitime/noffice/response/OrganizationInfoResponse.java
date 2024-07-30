@@ -1,6 +1,6 @@
 package com.notitime.noffice.response;
 
-import com.notitime.noffice.domain.Organization;
+import com.notitime.noffice.domain.organization.model.Organization;
 import java.time.LocalDateTime;
 
 public record OrganizationInfoResponse(Long id, String name, LocalDateTime endAt, String profileImage) {

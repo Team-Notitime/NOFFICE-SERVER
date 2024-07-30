@@ -1,5 +1,6 @@
 package com.notitime.noffice.api.member.business;
 
+import com.notitime.noffice.api.organization.business.OrganizationService;
 import com.notitime.noffice.domain.member.model.Member;
 import com.notitime.noffice.domain.member.persistence.MemberRepository;
 import com.notitime.noffice.global.exception.NotFoundException;
@@ -14,7 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 public class MemberService {
+
 	private final MemberRepository memberRepository;
+	private final OrganizationService organizationService;
+
 
 	public MemberResponse getMember(Long memberId) {
 		Member member = memberRepository.findById(memberId)
@@ -23,6 +27,6 @@ public class MemberService {
 	}
 
 	public OrganizationResponses getJoinedOrganizations(Long memberId) {
-		return null;
+		return organizationService.getOrganizationsByMemberId(memberId);
 	}
 }

@@ -1,5 +1,6 @@
-package com.notitime.noffice.domain;
+package com.notitime.noffice.domain.organization.model;
 
+import com.notitime.noffice.domain.BaseTimeEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
