@@ -62,6 +62,17 @@ public class SecurityConfig {
 						authorizationManagerRequestMatcherRegistry
 								.requestMatchers(whiteList)
 								.permitAll())
+				.headers(headersConfigurer ->
+						headersConfigurer
+								.frameOptions(FrameOptionsConfig::sameOrigin))
+				.csrf(AbstractHttpConfigurer::disable)
 				.build();
+	}
+
+	@Bean
+	@ConditionalOnProperty(name = "spring.h2.console.enabled", havingValue = "true")
+	public WebSecurityCustomizer configureH2ConsoleEnable() {
+		return web -> web.ignoring()
+				.requestMatchers(PathRequest.toH2Console());
 	}
 }
