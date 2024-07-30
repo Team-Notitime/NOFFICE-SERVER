@@ -1,8 +1,8 @@
 package com.notitime.noffice.domain.member.model;
 
 import com.notitime.noffice.domain.BaseTimeEntity;
-import com.notitime.noffice.domain.OrganizationMember;
 import com.notitime.noffice.domain.SocialAuthProvider;
+import com.notitime.noffice.domain.organization.model.OrganizationMember;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

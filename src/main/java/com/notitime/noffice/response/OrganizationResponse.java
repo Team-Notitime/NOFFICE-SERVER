@@ -1,6 +1,6 @@
 package com.notitime.noffice.response;
 
-import com.notitime.noffice.domain.Organization;
+import com.notitime.noffice.domain.organization.model.Organization;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record OrganizationResponse(

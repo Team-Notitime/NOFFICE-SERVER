@@ -28,7 +28,8 @@ public class SecurityConfig {
 	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 	private final JwtValidator jwtValidator;
 	private final JwtProvider jwtProvider;
-	private static final String[] whiteList = {"/api/v1/member/login", "/api/v1/member/reissue",
+  
+	private static final String[] whiteList = {"/api/v1/**",
 			"/health", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**", "/webjars/**", "/h2-console/**"};
 
 	@Bean
@@ -65,6 +66,7 @@ public class SecurityConfig {
 				.headers(headersConfigurer ->
 						headersConfigurer
 								.frameOptions(FrameOptionsConfig::sameOrigin))
+				.csrf(AbstractHttpConfigurer::disable)
 				.build();
 	}
 

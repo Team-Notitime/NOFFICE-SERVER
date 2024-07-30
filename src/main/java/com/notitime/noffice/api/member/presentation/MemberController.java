@@ -1,6 +1,7 @@
 package com.notitime.noffice.api.member.presentation;
 
 import com.notitime.noffice.api.auth.business.AuthService;
+import com.notitime.noffice.api.member.business.MemberService;
 import com.notitime.noffice.global.response.BusinessSuccessCode;
 import com.notitime.noffice.global.response.NofficeResponse;
 import com.notitime.noffice.request.SocialAuthRequest;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
 	private final AuthService authService;
+	private final MemberService memberService;
 
 	@Operation(summary = "회원 로그인", description = "인증 헤더에 토큰을, 본문에 소셜 로그인 정보를 넣어 노피스 서버 로그인을 시도합니다.")
 	@PostMapping("/login")
@@ -43,12 +45,13 @@ public class MemberController {
 	@Operation(summary = "단일 회원 정보 조회")
 	@GetMapping("/{memberId}")
 	public NofficeResponse<MemberResponse> getMember(@PathVariable final Long memberId) {
-		return NofficeResponse.success(BusinessSuccessCode.GET_MEMBER_SUCCESS);
+		return NofficeResponse.success(BusinessSuccessCode.GET_MEMBER_SUCCESS, memberService.getMember(memberId));
 	}
 
 	@Operation(summary = "멤버가 가입한 조직 목록 조회")
 	@GetMapping("/{memberId}/organizations")
 	public NofficeResponse<OrganizationResponses> getJoinedOrganizations(@PathVariable final Long memberId) {
-		return NofficeResponse.success(BusinessSuccessCode.GET_JOINED_ORGANIZATIONS_SUCCESS);
+		return NofficeResponse.success(BusinessSuccessCode.GET_JOINED_ORGANIZATIONS_SUCCESS,
+				memberService.getJoinedOrganizations(memberId));
 	}
 }
