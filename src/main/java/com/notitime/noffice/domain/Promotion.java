@@ -18,7 +18,5 @@ public class Promotion {
 
 	private String code;
 
-	private String promotionImage;
-
 	private Boolean isUsed;
 }
