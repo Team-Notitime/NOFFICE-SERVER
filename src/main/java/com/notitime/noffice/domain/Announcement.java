@@ -2,6 +2,7 @@ package com.notitime.noffice.domain;
 
 import com.notitime.noffice.domain.member.model.Member;
 import com.notitime.noffice.domain.organization.model.Organization;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -22,13 +23,16 @@ public class Announcement extends BaseTimeEntity {
 
 	private String title;
 
+	@Column(columnDefinition = "TEXT")
 	private String content;
 
-	private String coverImage;
+	@Column(columnDefinition = "TEXT")
+	private String profileImageUrl;
 
-	private String place_link_title;
+	private String placeLinkName;
 
-	private String place_link_url;
+	@Column(columnDefinition = "TEXT")
+	private String placeLinkUrl;
 
 	private LocalDateTime startAt;
 
