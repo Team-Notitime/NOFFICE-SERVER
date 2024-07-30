@@ -2,7 +2,7 @@
 
 ```mermaid
 ---
-title : NOFFICE-ERD (ver 1.0.0)
+title : NOFFICE-ERD (ver 1.0.1)
 ---
 erDiagram
     MEMBER {
@@ -68,13 +68,6 @@ erDiagram
         timestamp expired_date_time
     }
 
-%%    MEMBER ||--o{ MEMBER_READ_STATUS: checks
-%%    MEMBER_READ_STATUS {
-%%        bigint id PK
-%%        bigint announce_id FK
-%%        bigint member_id FK
-%%        boolean checked
-%%    }
     ORGANIZATION ||--o{ ANNOUNCEMENT: "has"
     ANNOUNCEMENT {
         bigint id PK
@@ -103,7 +96,7 @@ erDiagram
         bigint announce_id FK
         varchar content
     }
-    
+
     MEMBER ||--o{ TASK_STATUS: records
     TASK ||--o{ TASK_STATUS: updates
     TASK_STATUS {
