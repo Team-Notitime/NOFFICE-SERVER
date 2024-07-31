@@ -35,6 +35,8 @@ jwt:
 client:
   apple-auth:
     url: https://appleid.apple.com/auth
+  google-auth:
+    url: https://accounts.google.com/o/oauth2/v2/auth
 
 oauth:
   google:
