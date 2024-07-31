@@ -1,6 +1,7 @@
 package com.notitime.noffice.global.advice;
 
 import com.notitime.noffice.global.exception.AuthAppleFeignException;
+import com.notitime.noffice.global.exception.AuthGoogleFeignException;
 import com.notitime.noffice.global.exception.BadRequestException;
 import com.notitime.noffice.global.exception.NotFoundException;
 import com.notitime.noffice.global.response.BusinessErrorCode;
@@ -29,7 +30,14 @@ public class NofficeExceptionHandler {
 				e.getMessage());
 		return NofficeResponse.fail(e.getErrorCode());
 	}
-	
+
+	@ExceptionHandler(AuthGoogleFeignException.class)
+	public NofficeResponse<Void> handleAuthGoogleFeignException(AuthAppleFeignException e) {
+		log.error("handleAuthGoogleFeignException() in NofficeExceptionHandler throw AuthGoogleFeignException : {}",
+				e.getMessage());
+		return NofficeResponse.fail(e.getErrorCode());
+	}
+
 	@ExceptionHandler(NotFoundException.class)
 	public NofficeResponse<Void> handleEntityNotFoundException(NotFoundException e) {
 		log.error("handleEntityNotFoundException() in GlobalExceptionHandler throw EntityNotFoundException : {}",

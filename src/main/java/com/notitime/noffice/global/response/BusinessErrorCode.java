@@ -15,7 +15,8 @@ public enum BusinessErrorCode implements ErrorCode {
 	INVALID_APPLE_IDENTITY_TOKEN(HttpStatus.UNAUTHORIZED, "NOF-401", "유효하지 않은 아이덴티티 토큰입니다."),
 	UNSUPPORTED_ALGORITHM(HttpStatus.BAD_REQUEST, "NOF-400", "키 생성에 사용된 알고리즘을 지원하지 않습니다: "),
 	INVALID_KEY_SPEC(HttpStatus.BAD_REQUEST, "NOF-400", "공개 키 생성에 잘못된 키 사양이 제공되었습니다."),
-	APPLE_FEIGN_CONNECT_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "NOF-500", "Feign 연결 중 오류가 발생했습니다."),
+	APPLE_FEIGN_CONNECT_ERROR(HttpStatus.BAD_REQUEST, "NOF-4011", "Apple auth Feign 연결 중 오류가 발생했습니다."),
+	GOOGLE_FEIGN_CONNECT_ERROR(HttpStatus.BAD_REQUEST, "NOF-4012", "Google auth Feign 연결 중 오류가 발생했습니다."),
 	NOT_SUPPORTED_LOGIN_PLATFORM(HttpStatus.BAD_REQUEST, "NOF-400", "지원되지 않는 로그인 플랫폼입니다."),
 
 	// 401 Unauthorized
@@ -36,7 +37,7 @@ public enum BusinessErrorCode implements ErrorCode {
 	// 404 Not Found
 	NOT_FOUND(HttpStatus.NOT_FOUND, "NOF-404", "리소스를 찾을 수 없습니다."),
 	STORE_FILE_SIZE_EXCEEDED(HttpStatus.NOT_FOUND, "NOF-404", "업로드 가능한 파일 크기를 초과했습니다.");
-	
+
 	private final HttpStatus httpStatus;
 	private final String code;
 	private final String message;
