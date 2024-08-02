@@ -15,20 +15,23 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+	private final DomainAccessProperties domainAccessProperties;
 	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 	private final JwtValidator jwtValidator;
 	private final JwtProvider jwtProvider;
-  
+
 	private static final String[] whiteList = {"/api/v1/**",
 			"/health", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**", "/webjars/**", "/h2-console/**"};
 
@@ -47,26 +50,12 @@ public class SecurityConfig {
 								.authenticationEntryPoint(jwtAuthenticationEntryPoint))
 				.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
 						authorizationManagerRequestMatcherRegistry
-								.anyRequest()
-								.authenticated())
+								.requestMatchers(whiteList).permitAll()
+								.anyRequest().authenticated())
 				.addFilterBefore(new JwtAuthenticationFilter(jwtValidator, jwtProvider),
 						UsernamePasswordAuthenticationFilter.class)
 				.addFilterBefore(new ExceptionHandlerFilter(), JwtAuthenticationFilter.class)
-				.build();
-	}
-
-	@Bean
-	@Order(1)
-	public SecurityFilterChain whiteListFilterChain(HttpSecurity http) throws Exception {
-		return http
-				.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
-						authorizationManagerRequestMatcherRegistry
-								.requestMatchers(whiteList)
-								.permitAll())
-				.headers(headersConfigurer ->
-						headersConfigurer
-								.frameOptions(FrameOptionsConfig::sameOrigin))
-				.csrf(AbstractHttpConfigurer::disable)
+				.cors(corsConfigurer -> corsConfigurer.configurationSource(corsConfigurationSource()))
 				.build();
 	}
 
@@ -75,5 +64,26 @@ public class SecurityConfig {
 	public WebSecurityCustomizer configureH2ConsoleEnable() {
 		return web -> web.ignoring()
 				.requestMatchers(PathRequest.toH2Console());
+	}
+
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowCredentials(true);
+		configuration.addAllowedOrigin("http://localhost:8080");
+		configuration.addAllowedOrigin("http://localhost:5173");
+		configuration.addAllowedOrigin("http://www.googleapis.com");
+		configuration.addAllowedOrigin("https://www.googleapis.com");
+		configuration.addAllowedOrigin("https://oauth2.googleapis.com");
+		configuration.addAllowedOrigin("https://appleid.apple.com");
+		configuration.addAllowedOrigin(domainAccessProperties.getOriginServerDomain());
+		configuration.addAllowedOrigin(domainAccessProperties.getCertifiedServerDomain());
+		configuration.addAllowedHeader("*");
+		configuration.addAllowedMethod("*");
+		configuration.addExposedHeader("Authorization");
+		
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
 	}
 }

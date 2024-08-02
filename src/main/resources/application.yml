@@ -35,6 +35,11 @@ jwt:
   access-token-expiration: 300000
   refresh-token-expiration: 86400000
 
+server:
+  domain:
+    origin: ${SERVER_DOMAIN_ORIGIN}
+    certified: ${SERVER_DOMAIN_CERTIFIED}
+
 client:
   apple-auth:
     url: https://appleid.apple.com/auth
