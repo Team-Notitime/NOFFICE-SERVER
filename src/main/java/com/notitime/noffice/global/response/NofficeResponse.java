@@ -17,7 +17,7 @@ public class NofficeResponse<T> {
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd HH:mm:ss", timezone = "Asia/Seoul")
 	@JsonProperty("timestamp")
-	private final LocalDateTime timestamp = LocalDateTime.now();
+	private final String timestamp = LocalDateTime.now().toString();
 	private final int httpStatus;
 
 	private final String code;
