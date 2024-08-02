@@ -55,7 +55,7 @@ erDiagram
         bigint id PK
         bigint announcement_id FK
         bigint member_id FK
-        boolean read
+        boolean is_read
         timestamp read_at
     }
 
