@@ -22,6 +22,8 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Announcement extends BaseTimeEntity {
 
+	public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
 	@Id
 	private Long id;
 
