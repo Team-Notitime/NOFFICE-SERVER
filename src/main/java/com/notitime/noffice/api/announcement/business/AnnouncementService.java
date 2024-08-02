@@ -5,6 +5,7 @@ import com.notitime.noffice.domain.Announcement;
 import com.notitime.noffice.global.exception.NotFoundException;
 import com.notitime.noffice.global.response.BusinessErrorCode;
 import com.notitime.noffice.request.AnnouncementCreateRequest;
+import com.notitime.noffice.request.AnnouncementUpdateRequest;
 import com.notitime.noffice.response.AnnouncementResponse;
 import com.notitime.noffice.response.AnnouncementResponses;
 import java.time.LocalDateTime;
@@ -41,5 +42,16 @@ public class AnnouncementService {
 				request.placeLinkName(),
 				request.placeLinkUrl(),
 				LocalDateTime.parse(request.endAt(), Announcement.DATE_TIME_FORMATTER)));
+	}
+
+	public AnnouncementResponse updateAnnouncement(final Long announcementId,
+	                                               final AnnouncementUpdateRequest announcementCreateRequest) {
+		Announcement existAnnouncement = announcementRepository.findById(announcementId).orElseThrow(
+				() -> new NotFoundException(BusinessErrorCode.NOT_FOUND_ANNOUNCEMENT));
+		return AnnouncementResponse.of(announcementRepository.save(existAnnouncement));
+	}
+
+	public void deleteAnnouncement(final Long announcementId) {
+		announcementRepository.deleteById(announcementId);
 	}
 }
