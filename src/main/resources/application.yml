@@ -35,10 +35,16 @@ jwt:
 client:
   apple-auth:
     url: https://appleid.apple.com/auth
+  google-auth:
+    url: https://oauth2.googleapis.com
 
 oauth:
   google:
-    client-id: harthartharthartharthartharthart
+    client-id: ${GOOGLE_CLIENT_ID}
+    client-secret: ${GOOGLE_CLIENT_SECRET}
+    grant-type: authorization_code
+    redirect-uri: ${GOOGLE_REDIRECT_URI}
+
   apple:
     grant-type: authorization_code
     client-id: ${APPLE_CLIENT_ID}

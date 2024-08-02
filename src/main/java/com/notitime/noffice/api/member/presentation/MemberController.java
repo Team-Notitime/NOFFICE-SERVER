@@ -29,10 +29,9 @@ public class MemberController {
 	private final AuthService authService;
 	private final MemberService memberService;
 
-	@Operation(summary = "회원 로그인", description = "인증 헤더에 토큰을, 본문에 소셜 로그인 정보를 넣어 노피스 서버 로그인을 시도합니다.")
+	@Operation(summary = "회원 로그인", description = "본문에 소셜 공급자명과 인가코드를 넣어 노피스 서버 로그인을 시도합니다.")
 	@PostMapping("/login")
-	public NofficeResponse<SocialAuthResponse> login(@RequestHeader("Authorization") final String authorization,
-	                                                 @RequestBody final SocialAuthRequest socialLoginRequest) {
+	public NofficeResponse<SocialAuthResponse> login(@RequestBody final SocialAuthRequest socialLoginRequest) {
 		return NofficeResponse.success(BusinessSuccessCode.POST_LOGIN_SUCCESS, authService.login(socialLoginRequest));
 	}
 
