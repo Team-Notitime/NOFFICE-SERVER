@@ -4,8 +4,10 @@ import com.notitime.noffice.api.announcement.persistence.AnnouncementRepository;
 import com.notitime.noffice.domain.Announcement;
 import com.notitime.noffice.global.exception.NotFoundException;
 import com.notitime.noffice.global.response.BusinessErrorCode;
+import com.notitime.noffice.request.AnnouncementCreateRequest;
 import com.notitime.noffice.response.AnnouncementResponse;
 import com.notitime.noffice.response.AnnouncementResponses;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,5 +30,16 @@ public class AnnouncementService {
 	public AnnouncementResponses getAnnouncements() {
 		List<Announcement> announcements = announcementRepository.findAll();
 		return AnnouncementResponses.of(announcements.stream().map(AnnouncementResponse::of).toList());
+	}
+
+	public AnnouncementResponse createAnnouncement(final AnnouncementCreateRequest request) {
+		return AnnouncementResponse.of(Announcement.createAnnouncement(
+				request.title(),
+				request.content(),
+				request.profileImageUrl(),
+				request.isFaceToFace(),
+				request.placeLinkName(),
+				request.placeLinkUrl(),
+				LocalDateTime.parse(request.endAt(), Announcement.DATE_TIME_FORMATTER)));
 	}
 }
