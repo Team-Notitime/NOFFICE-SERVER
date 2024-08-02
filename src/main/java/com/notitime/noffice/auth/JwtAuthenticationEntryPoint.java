@@ -24,14 +24,10 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 	}
 
 	private void handleException(HttpServletResponse response) throws IOException {
-		setResponse(response, HttpStatus.UNAUTHORIZED, BusinessErrorCode.UNAUTHORIZED);
-	}
-
-	private void setResponse(HttpServletResponse response, HttpStatus httpStatus, BusinessErrorCode errorCode)
-			throws IOException {
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		response.setCharacterEncoding("utf-8");
-		response.setStatus(httpStatus.value());
-		response.getWriter().write(objectMapper.writeValueAsString(NofficeResponse.fail(errorCode)));
+		response.setStatus(HttpStatus.UNAUTHORIZED.value());
+		response.getWriter()
+				.write(objectMapper.writeValueAsString(NofficeResponse.fail(BusinessErrorCode.UNAUTHORIZED)));
 	}
 }
