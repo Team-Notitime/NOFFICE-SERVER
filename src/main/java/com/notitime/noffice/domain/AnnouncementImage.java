@@ -13,7 +13,6 @@ public class AnnouncementImage {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String imageUrl;
-	private String imageType;
 	@ManyToOne
 	@JoinColumn(name = "announcement_id")
 	private Announcement announcement;
