@@ -31,29 +31,26 @@ public class SecurityConfig {
 	private final JwtValidator jwtValidator;
 	private final JwtProvider jwtProvider;
 
-	private static final String[] whiteList = {"/api/v1/**",
-			"/health", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**", "/webjars/**", "/h2-console/**"};
-
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		return http
 				.csrf(AbstractHttpConfigurer::disable)
 				.formLogin(AbstractHttpConfigurer::disable)
 				.httpBasic(AbstractHttpConfigurer::disable)
+				.cors(corsConfigurer -> corsConfigurer.configurationSource(corsConfigurationSource()))
 				.sessionManagement(sessionManagementConfigurer ->
 						sessionManagementConfigurer
 								.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
+						authorizationManagerRequestMatcherRegistry.requestMatchers(
+										SecurityWhiteListPaths.SECURITY_WHITE_LIST).permitAll()
+								.anyRequest().authenticated())
 				.exceptionHandling(exceptionHandlingConfigurer ->
 						exceptionHandlingConfigurer
 								.authenticationEntryPoint(jwtAuthenticationEntryPoint))
-				.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
-						authorizationManagerRequestMatcherRegistry
-								.requestMatchers(whiteList).permitAll()
-								.anyRequest().authenticated())
 				.addFilterBefore(new JwtAuthenticationFilter(jwtValidator, jwtProvider),
 						UsernamePasswordAuthenticationFilter.class)
 				.addFilterBefore(new ExceptionHandlerFilter(), JwtAuthenticationFilter.class)
-				.cors(corsConfigurer -> corsConfigurer.configurationSource(corsConfigurationSource()))
 				.build();
 	}
 

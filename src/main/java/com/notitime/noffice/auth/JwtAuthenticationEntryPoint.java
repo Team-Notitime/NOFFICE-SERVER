@@ -1,6 +1,7 @@
 package com.notitime.noffice.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.notitime.noffice.global.config.SecurityWhiteListPaths;
 import com.notitime.noffice.global.response.BusinessErrorCode;
 import com.notitime.noffice.global.response.NofficeResponse;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,10 +18,11 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
-	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 	                     AuthenticationException authException) throws IOException {
-		handleException(response);
+		if (!SecurityWhiteListPaths.isWhitelisted(request)) {
+			handleException(response);
+		}
 	}
 
 	private void handleException(HttpServletResponse response) throws IOException {
