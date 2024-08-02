@@ -1,5 +1,6 @@
 package com.notitime.noffice.global.config;
 
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
@@ -29,4 +30,9 @@ public class SecurityWhiteListPaths {
 			"/webjars/**",
 			"/h2-console/**"
 	};
+
+	public static boolean isWhitelisted(HttpServletRequest request) {
+		String path = request.getRequestURI();
+		return FILTER_WHITE_LIST.stream().anyMatch(pattern -> pathMatcher.match(pattern, path));
+	}
 }
