@@ -5,6 +5,7 @@ import static com.notitime.noffice.auth.UserAuthentication.createUserAuthenticat
 import com.notitime.noffice.auth.UserAuthentication;
 import com.notitime.noffice.auth.jwt.JwtProvider;
 import com.notitime.noffice.auth.jwt.JwtValidator;
+import com.notitime.noffice.global.config.SecurityWhiteListPaths;
 import com.notitime.noffice.global.exception.UnauthorizedException;
 import com.notitime.noffice.global.response.BusinessErrorCode;
 import jakarta.servlet.FilterChain;
@@ -17,6 +18,8 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.PathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -26,10 +29,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	public static final String BEARER = "Bearer ";
 	private final JwtValidator jwtValidator;
 	private final JwtProvider jwtProvider;
+	private final PathMatcher pathMatcher = new AntPathMatcher();
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
+		if (SecurityWhiteListPaths.isWhitelisted(request)) {
+			filterChain.doFilter(request, response);
+			return;
+		}
 		final String accessToken = getAccessToken(request);
 		jwtValidator.validateAccessToken(accessToken);
 		doAuthentication(request, jwtProvider.getSubject(accessToken));
