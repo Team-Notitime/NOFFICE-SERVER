@@ -2,13 +2,17 @@ package com.notitime.noffice.domain;
 
 import com.notitime.noffice.domain.member.model.Member;
 import com.notitime.noffice.domain.organization.model.Organization;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,16 +33,21 @@ public class Announcement extends BaseTimeEntity {
 	@Column(columnDefinition = "TEXT")
 	private String profileImageUrl;
 
+	@Column(nullable = false)
+	private boolean isFaceToFace;
+
 	private String placeLinkName;
 
 	@Column(columnDefinition = "TEXT")
 	private String placeLinkUrl;
 
-	private LocalDateTime startAt;
-
 	private LocalDateTime endAt;
 
-	private LocalDateTime noticeAt;
+	@OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Task> tasks = new ArrayList<>();
+
+	@OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Notification> notifications = new ArrayList<>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "creator_id")
