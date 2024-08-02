@@ -18,6 +18,10 @@ jobs:
       APPLE_KEY_ID: ${{secrets.APPLE_KEY_ID}}
       APPLE_TEAM_ID: ${{secrets.APPLE_TEAM_ID}}
       APPLE_PRIVATE_KEY: ${{secrets.APPLE_PRIVATE_KEY}}
+      GOOGLE_CLIENT_ID: ${{secrets.GOOGLE_CLIENT_ID}}
+      GOOGLE_CLIENT_SECRET: ${{secrets.GOOGLE_CLIENT_SECRET}}
+      GOOGLE_REDIRECT_URI: ${{secrets.GOOGLE_REDIRECT_URI}}
+
 
     steps:
       - name: checkout to develop branch
@@ -42,6 +46,9 @@ jobs:
           echo "Secrets : ${{secrets.APPLE_KEY_ID}}"
           echo "Secrets : ${{secrets.APPLE_TEAM_ID}}"
           echo "Secrets : ${{secrets.APPLE_PRIVATE_KEY}}"
+          echo "Secrets : ${{secrets.GOOGLE_CLIENT_ID}}"
+          echo "Secrets : ${{secrets.GOOGLE_CLIENT_SECRET}}"
+          echo "Secrets : ${{secrets.GOOGLE_REDIRECT_URI}}"
 
       - name: Build with Gradle Wrapper
         run: ./gradlew build
