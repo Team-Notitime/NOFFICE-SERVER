@@ -1,6 +1,7 @@
 package com.notitime.noffice.domain.organization.model;
 
 import com.notitime.noffice.domain.BaseTimeEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -22,5 +23,6 @@ public class Organization extends BaseTimeEntity {
 
 	private LocalDateTime endAt;
 
+	@Column(columnDefinition = "TEXT")
 	private String profileImage;
 }
