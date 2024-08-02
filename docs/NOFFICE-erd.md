@@ -7,6 +7,7 @@
 title : NOFFICE-ERD (ver 1.0.2)
 ---
 erDiagram
+    MEMBER ||--o{ TASK_STATUS: records
     MEMBER ||--|{ ORGANIZATION_MEMBER: belongs
     MEMBER {
         bigint id PK
@@ -18,6 +19,7 @@ erDiagram
         SocialAuthProvider social_auth_provider
     }
 
+    ORGANIZATION ||--|{ ORGANIZATION_CATEGORY: has
     ORGANIZATION ||--|{ ORGANIZATION_MEMBER: belongs
     ORGANIZATION ||--o{ ANNOUNCEMENT: "has"
     ORGANIZATION {
@@ -39,7 +41,6 @@ erDiagram
         timestamp end_at
     }
 
-    MEMBER ||--o{ TASK_STATUS: records
     TASK ||--o{ TASK_STATUS: updates
     TASK_STATUS {
         bigint id PK
@@ -80,7 +81,7 @@ erDiagram
         bigint member_id FK
         OragnizationRole role
     }
-    ORGANIZATION ||--|{ ORGANIZATION_CATEGORY: has
+
     ORGANIZATION_CATEGORY {
         bigint id PK
         bigint organization_id FK
