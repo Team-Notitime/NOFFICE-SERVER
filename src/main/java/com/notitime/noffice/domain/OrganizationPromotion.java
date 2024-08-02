@@ -27,6 +27,5 @@ public class OrganizationPromotion {
 	@JoinColumn(name = "promotion_id", nullable = false)
 	private Promotion promotion;
 
-	private LocalDateTime startDate;
-	private LocalDateTime endDate;
+	private LocalDateTime endAt;
 }

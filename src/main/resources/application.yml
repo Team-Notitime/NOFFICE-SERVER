@@ -21,6 +21,9 @@ spring:
         ddl-auto: create
         format_sql: true
 
+  jackson:
+    property-naming-strategy: LOWER_CAMEL_CASE
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
