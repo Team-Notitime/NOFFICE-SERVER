@@ -1,6 +1,6 @@
-package com.notitime.noffice.api.announcement.persistence;
+package com.notitime.noffice.domain.announcement.persistence;
 
-import com.notitime.noffice.domain.Announcement;
+import com.notitime.noffice.domain.announcement.model.Announcement;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AnnouncementRepository extends JpaRepository<Announcement, Long> {

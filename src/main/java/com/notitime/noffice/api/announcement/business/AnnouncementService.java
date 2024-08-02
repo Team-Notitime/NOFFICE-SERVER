@@ -1,7 +1,7 @@
 package com.notitime.noffice.api.announcement.business;
 
-import com.notitime.noffice.api.announcement.persistence.AnnouncementRepository;
-import com.notitime.noffice.domain.Announcement;
+import com.notitime.noffice.domain.announcement.model.Announcement;
+import com.notitime.noffice.domain.announcement.persistence.AnnouncementRepository;
 import com.notitime.noffice.global.exception.NotFoundException;
 import com.notitime.noffice.global.response.BusinessErrorCode;
 import com.notitime.noffice.request.AnnouncementCreateRequest;

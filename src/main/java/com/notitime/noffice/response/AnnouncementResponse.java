@@ -1,7 +1,7 @@
 package com.notitime.noffice.response;
 
-import com.notitime.noffice.domain.Announcement;
 import com.notitime.noffice.domain.Notification;
+import com.notitime.noffice.domain.announcement.model.Announcement;
 import java.time.LocalDateTime;
 import java.util.List;
 

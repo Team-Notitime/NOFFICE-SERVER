@@ -1,5 +1,6 @@
 package com.notitime.noffice.domain;
 
+import com.notitime.noffice.domain.announcement.model.Announcement;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -23,7 +24,7 @@ public class Task {
 
 	@Column(nullable = false)
 	private String content;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "announcement_id", nullable = false)
 	private Announcement announcement;
