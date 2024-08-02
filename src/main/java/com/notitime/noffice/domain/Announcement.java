@@ -15,11 +15,15 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder(access = AccessLevel.PRIVATE)
 @Getter
 public class Announcement extends BaseTimeEntity {
 
@@ -46,9 +50,11 @@ public class Announcement extends BaseTimeEntity {
 
 	private LocalDateTime endAt;
 
+	@Builder.Default
 	@OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Task> tasks = new ArrayList<>();
 
+	@Builder.Default
 	@OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Notification> notifications = new ArrayList<>();
 
@@ -59,4 +65,18 @@ public class Announcement extends BaseTimeEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "organization_id")
 	private Organization organization;
+
+	public static Announcement createAnnouncement(String title, String content, String profileImageUrl,
+	                                              boolean isFaceToFace,
+	                                              String placeLinkName, String placeLinkUrl, LocalDateTime endAt) {
+		return Announcement.builder()
+				.title(title)
+				.content(content)
+				.profileImageUrl(profileImageUrl)
+				.isFaceToFace(isFaceToFace)
+				.placeLinkName(placeLinkName)
+				.placeLinkUrl(placeLinkUrl)
+				.endAt(endAt)
+				.build();
+	}
 }

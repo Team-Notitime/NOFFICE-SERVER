@@ -36,6 +36,7 @@ public enum BusinessErrorCode implements ErrorCode {
 
 	// 404 Not Found
 	NOT_FOUND(HttpStatus.NOT_FOUND, "NOF-404", "리소스를 찾을 수 없습니다."),
+	NOT_FOUND_ANNOUNCEMENT(HttpStatus.NOT_FOUND, "NOF-4450", "공지사항을 찾을 수 없습니다."),
 	STORE_FILE_SIZE_EXCEEDED(HttpStatus.NOT_FOUND, "NOF-404", "업로드 가능한 파일 크기를 초과했습니다.");
 
 	private final HttpStatus httpStatus;
