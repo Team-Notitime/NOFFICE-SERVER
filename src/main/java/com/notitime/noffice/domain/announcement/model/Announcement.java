@@ -1,9 +1,9 @@
 package com.notitime.noffice.domain.announcement.model;
 
 import com.notitime.noffice.domain.BaseTimeEntity;
-import com.notitime.noffice.domain.Notification;
 import com.notitime.noffice.domain.Task;
 import com.notitime.noffice.domain.member.model.Member;
+import com.notitime.noffice.domain.notification.model.Notification;
 import com.notitime.noffice.domain.organization.model.Organization;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
