@@ -1,6 +1,7 @@
-package com.notitime.noffice.domain;
+package com.notitime.noffice.domain.notification.model;
 
 import com.notitime.noffice.domain.announcement.model.Announcement;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -22,6 +23,12 @@ public class Notification {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(nullable = false)
+	private String title;
+
+	@Column(nullable = false)
+	private String content;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "announcement_id", nullable = false)
 	private Announcement announcement;
