@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Tag(name = "알림", description = "노티 알림 발송 관련 API")
+@RequestMapping("/api/v1/notifications")
 interface NotificationApi {
 
 	@Operation(summary = "단일 사용자 알림 대기열 추가", description = "단일 사용자를 특정하여 노티 알림 대기열에 등록합니다.", responses = {
