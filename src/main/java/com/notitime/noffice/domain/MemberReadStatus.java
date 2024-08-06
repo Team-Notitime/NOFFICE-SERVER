@@ -1,5 +1,6 @@
 package com.notitime.noffice.domain;
 
+import com.notitime.noffice.domain.announcement.model.Announcement;
 import com.notitime.noffice.domain.member.model.Member;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

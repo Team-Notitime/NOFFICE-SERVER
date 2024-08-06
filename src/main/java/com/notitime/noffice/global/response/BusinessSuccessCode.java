@@ -19,10 +19,13 @@ public enum BusinessSuccessCode implements SuccessCode {
 	GET_ANNOUNCEMENT_SUCCESS(HttpStatus.OK, "NOF-2050", "노티 단일 조회에 성공하였습니다."),
 	GET_ANNOUNCEMENTS_SUCCESS(HttpStatus.OK, "NOF-2051", "노티 목록 조회에 성공하였습니다."),
 	PUT_ANNOUNCEMENT_SUCCESS(HttpStatus.OK, "NOF-2052", "노티 수정에 성공하였습니다."),
-
+	CHANGE_SEND_TIME_SUCCESS(HttpStatus.OK, "NOF-2072", "알림 발송 시간 변경 성공"),
 
 	// CREATED (2100 ~ 2199)
 	CREATED(HttpStatus.CREATED, "NOF-210", "리소스가 생성되었습니다. - 201"),
+	CREATED_NOTIFICATION_SUCCESS(HttpStatus.CREATED, "NOF-20710", "알림 대기열 등록 성공"),
+	CREATED_BULK_NOTIFICATION_SUCCESS(HttpStatus.CREATED, "NOF-20711", "조직 전체 알림 대량 등록 성공"),
+
 	POST_ORGANIZATION_SUCCESS(HttpStatus.CREATED, "NOF-2100", "조직 생성에 성공하였습니다."),
 	POST_JOIN_ORGANIZATION_SUCCESS(HttpStatus.CREATED, "NOF-2101", "조직 가입에 성공하였습니다."),
 	POST_ANNOUNCEMENT_SUCCESS(HttpStatus.CREATED, "NOF-2150", "노티 생성에 성공하였습니다."),
@@ -30,6 +33,7 @@ public enum BusinessSuccessCode implements SuccessCode {
 	// NO CONTENT (2400 ~ 2499)
 	NO_CONTENT(HttpStatus.NO_CONTENT, "NOF-2400", "요청이 성공했습니다. - 204"),
 	DELETE_ANNOUNCEMENT_SUCCESS(HttpStatus.NO_CONTENT, "NOF-2053", "노티 삭제에 성공하였습니다."),
+	DELETE_NOTIFICATION_SUCCESS(HttpStatus.CREATED, "NOF-2073", "알림 삭제 성공"),
 
 	// RESET CONTENT (2500 ~ 2599)
 	RESET_CONTENT(HttpStatus.RESET_CONTENT, "NOF-205", "리소스가 갱신되었습니다. - 205");

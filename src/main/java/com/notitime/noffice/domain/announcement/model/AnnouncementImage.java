@@ -1,4 +1,4 @@
-package com.notitime.noffice.domain;
+package com.notitime.noffice.domain.announcement.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

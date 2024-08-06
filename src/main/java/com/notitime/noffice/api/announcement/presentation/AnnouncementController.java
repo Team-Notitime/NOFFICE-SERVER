@@ -78,4 +78,12 @@ public class AnnouncementController {
 		announcementService.deleteAnnouncement(announcementId);
 		return NofficeResponse.success(BusinessSuccessCode.DELETE_ANNOUNCEMENT_SUCCESS);
 	}
+
+	@Operation(summary = "노티에 발행된 알림 개수 조회", description = "노티에 발행된 알림 개수를 조회합니다.", responses = {
+			@ApiResponse(responseCode = "NOF-2072", description = "알림 개수 조회 성공"),
+			@ApiResponse(responseCode = "NOF-404", description = "노티에 발행된 알림이 없습니다.")})
+	@GetMapping("/{announcementId}/count")
+	public NofficeResponse<Integer> getNotificationCount(@PathVariable final Long announcementId) {
+		return NofficeResponse.success(BusinessSuccessCode.OK);
+	}
 }
