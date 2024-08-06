@@ -1,4 +1,4 @@
-package com.notitime.noffice.domain;
+package com.notitime.noffice.domain.task.model;
 
 import com.notitime.noffice.domain.announcement.model.Announcement;
 import jakarta.persistence.Column;

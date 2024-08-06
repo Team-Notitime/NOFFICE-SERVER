@@ -1,5 +1,6 @@
-package com.notitime.noffice.domain;
+package com.notitime.noffice.domain.task.model;
 
+import com.notitime.noffice.domain.BaseTimeEntity;
 import com.notitime.noffice.domain.member.model.Member;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
