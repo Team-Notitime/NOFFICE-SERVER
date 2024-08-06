@@ -1,5 +1,6 @@
 package com.notitime.noffice.api.announcement.business;
 
+import com.notitime.noffice.api.notification.business.NotificationService;
 import com.notitime.noffice.domain.announcement.model.Announcement;
 import com.notitime.noffice.domain.announcement.persistence.AnnouncementRepository;
 import com.notitime.noffice.global.exception.NotFoundException;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AnnouncementService {
 
 	private final AnnouncementRepository announcementRepository;
+	private final NotificationService notificationService;
 
 	@Transactional(readOnly = true)
 	public AnnouncementResponse getAnnouncement(final Long announcementId) {
@@ -34,14 +36,10 @@ public class AnnouncementService {
 	}
 
 	public AnnouncementResponse createAnnouncement(final AnnouncementCreateRequest request) {
-		return AnnouncementResponse.of(Announcement.createAnnouncement(
-				request.title(),
-				request.content(),
-				request.profileImageUrl(),
-				request.isFaceToFace(),
-				request.placeLinkName(),
-				request.placeLinkUrl(),
-				LocalDateTime.parse(request.endAt(), Announcement.DATE_TIME_FORMATTER)));
+		Announcement announcement = buildAnnouncementFromRequest(request);
+		saveAnnouncement(announcement);
+		createNotificationForAnnouncement(request, announcement);
+		return buildResponseFromAnnouncement(announcement);
 	}
 
 	public AnnouncementResponse updateAnnouncement(final Long announcementId,
@@ -53,5 +51,28 @@ public class AnnouncementService {
 
 	public void deleteAnnouncement(final Long announcementId) {
 		announcementRepository.deleteById(announcementId);
+	}
+
+	private Announcement buildAnnouncementFromRequest(AnnouncementCreateRequest request) {
+		return Announcement.createAnnouncement(
+				request.title(),
+				request.content(),
+				request.profileImageUrl(),
+				request.isFaceToFace(),
+				request.placeLinkName(),
+				request.placeLinkUrl(),
+				LocalDateTime.parse(request.endAt(), Announcement.DATE_TIME_FORMATTER));
+	}
+
+	private void saveAnnouncement(Announcement announcement) {
+		announcementRepository.save(announcement);
+	}
+
+	private void createNotificationForAnnouncement(AnnouncementCreateRequest request, Announcement announcement) {
+		notificationService.createNotification(request, announcement);
+	}
+
+	private AnnouncementResponse buildResponseFromAnnouncement(Announcement announcement) {
+		return AnnouncementResponse.of(announcement);
 	}
 }
