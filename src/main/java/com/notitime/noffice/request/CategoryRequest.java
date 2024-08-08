@@ -4,6 +4,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
 public record CategoryRequest(
-		@Schema(description = "카테고리 아이디 리스트", example = "1,3,5")
+		@Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "[1, 2]", description = "카테고리 ID 목록")
 		List<Long> categoryIds) {
 }
