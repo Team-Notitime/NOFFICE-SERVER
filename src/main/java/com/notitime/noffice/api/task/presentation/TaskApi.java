@@ -2,7 +2,7 @@ package com.notitime.noffice.api.task.presentation;
 
 import com.notitime.noffice.global.response.NofficeResponse;
 import com.notitime.noffice.request.TaskBulkCreateRequest;
-import com.notitime.noffice.response.TaskCreateRequest;
+import com.notitime.noffice.request.TaskCreateRequest;
 import com.notitime.noffice.response.TaskCreateResponse;
 import com.notitime.noffice.response.TaskCreateResponses;
 import com.notitime.noffice.response.TaskResponses;
