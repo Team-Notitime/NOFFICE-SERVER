@@ -9,6 +9,8 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -19,20 +21,19 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder(access = AccessLevel.PRIVATE)
 @Getter
 public class Announcement extends BaseTimeEntity {
 
 	public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private String title;
@@ -53,11 +54,9 @@ public class Announcement extends BaseTimeEntity {
 
 	private LocalDateTime endAt;
 
-	@Builder.Default
 	@OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Task> tasks = new ArrayList<>();
 
-	@Builder.Default
 	@OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Notification> notifications = new ArrayList<>();
 
@@ -68,18 +67,26 @@ public class Announcement extends BaseTimeEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "organization_id")
 	private Organization organization;
+	
+	public static Announcement createAnnouncement(String title, String content, LocalDateTime endAt, Member member,
+	                                              Organization organizaion) {
+		return new Announcement(null, title, content, null, false, null, null, endAt,
+				new ArrayList<>(), new ArrayList<>(), member, organizaion);
+	}
 
-	public static Announcement createAnnouncement(String title, String content, String profileImageUrl,
-	                                              boolean isFaceToFace,
-	                                              String placeLinkName, String placeLinkUrl, LocalDateTime endAt) {
-		return Announcement.builder()
-				.title(title)
-				.content(content)
-				.profileImageUrl(profileImageUrl)
-				.isFaceToFace(isFaceToFace)
-				.placeLinkName(placeLinkName)
-				.placeLinkUrl(placeLinkUrl)
-				.endAt(endAt)
-				.build();
+	public void withProfileImageUrl(String profileImageUrl) {
+		this.profileImageUrl = profileImageUrl;
+	}
+
+	public void withIsFaceToFace(Boolean isFaceToFace) {
+		this.isFaceToFace = isFaceToFace != null ? isFaceToFace : this.isFaceToFace;
+	}
+
+	public void withPlaceLinkName(String placeLinkName) {
+		this.placeLinkName = placeLinkName;
+	}
+
+	public void withPlaceLinkUrl(String placeLinkUrl) {
+		this.placeLinkUrl = placeLinkUrl;
 	}
 }

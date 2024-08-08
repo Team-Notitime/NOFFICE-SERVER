@@ -19,14 +19,16 @@ public class MemberService {
 	private final MemberRepository memberRepository;
 	private final OrganizationService organizationService;
 
-
 	public MemberResponse getMember(Long memberId) {
-		Member member = memberRepository.findById(memberId)
-				.orElseThrow(() -> new NotFoundException(BusinessErrorCode.NOT_FOUND));
-		return MemberResponse.of(member);
+		return MemberResponse.of(getMemberEntity(memberId));
 	}
 
 	public OrganizationResponses getJoinedOrganizations(Long memberId) {
 		return organizationService.getOrganizationsByMemberId(memberId);
+	}
+
+	public Member getMemberEntity(Long memberId) {
+		return memberRepository.findById(memberId)
+				.orElseThrow(() -> new NotFoundException(BusinessErrorCode.NOT_FOUND));
 	}
 }
