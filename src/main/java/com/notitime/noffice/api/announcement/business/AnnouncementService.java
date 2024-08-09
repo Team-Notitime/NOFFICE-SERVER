@@ -11,12 +11,15 @@ import com.notitime.noffice.global.exception.NotFoundException;
 import com.notitime.noffice.global.response.BusinessErrorCode;
 import com.notitime.noffice.request.AnnouncementCreateRequest;
 import com.notitime.noffice.request.AnnouncementUpdateRequest;
+import com.notitime.noffice.response.AnnouncementCoverResponse;
 import com.notitime.noffice.response.AnnouncementResponse;
 import com.notitime.noffice.response.AnnouncementResponses;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,6 +61,11 @@ public class AnnouncementService {
 
 	public void deleteAnnouncement(final Long announcementId) {
 		announcementRepository.deleteById(announcementId);
+	}
+
+	public Slice<AnnouncementCoverResponse> getPublishedAnnouncements(Long organizationId, Pageable pageable) {
+		return announcementRepository.findByOrganizationId(organizationId, pageable)
+				.map(AnnouncementCoverResponse::of);
 	}
 
 	private Announcement buildAnnouncementFromRequest(AnnouncementCreateRequest request) {
