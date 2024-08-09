@@ -1,5 +1,6 @@
 package com.notitime.noffice.domain.task.model;
 
+import com.notitime.noffice.domain.BaseTimeEntity;
 import com.notitime.noffice.domain.announcement.model.Announcement;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Task {
+public class Task extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
