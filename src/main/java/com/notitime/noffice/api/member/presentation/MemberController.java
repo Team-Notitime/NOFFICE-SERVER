@@ -2,6 +2,7 @@ package com.notitime.noffice.api.member.presentation;
 
 import com.notitime.noffice.api.auth.business.AuthService;
 import com.notitime.noffice.api.member.business.MemberService;
+import com.notitime.noffice.api.organization.business.OrganizationService;
 import com.notitime.noffice.global.response.BusinessSuccessCode;
 import com.notitime.noffice.global.response.NofficeResponse;
 import com.notitime.noffice.request.SocialAuthRequest;
@@ -28,6 +29,7 @@ public class MemberController {
 
 	private final AuthService authService;
 	private final MemberService memberService;
+	private final OrganizationService organizationService;
 
 	@Operation(summary = "회원 로그인", description = "본문에 소셜 공급자명과 인가코드를 넣어 노피스 서버 로그인을 시도합니다.")
 	@PostMapping("/login")
@@ -51,6 +53,6 @@ public class MemberController {
 	@GetMapping("/{memberId}/organizations")
 	public NofficeResponse<OrganizationResponses> getJoinedOrganizations(@PathVariable final Long memberId) {
 		return NofficeResponse.success(BusinessSuccessCode.GET_JOINED_ORGANIZATIONS_SUCCESS,
-				memberService.getJoinedOrganizations(memberId));
+				organizationService.getOrganizationsByMemberId(memberId));
 	}
 }
