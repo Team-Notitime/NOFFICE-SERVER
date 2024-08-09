@@ -21,6 +21,7 @@ public enum BusinessSuccessCode implements SuccessCode {
 	PUT_ANNOUNCEMENT_SUCCESS(HttpStatus.OK, "NOF-2052", "노티 수정에 성공하였습니다."),
 	CHANGE_SEND_TIME_SUCCESS(HttpStatus.OK, "NOF-2072", "알림 발송 시간 변경 성공"),
 	GET_ASSIGNED_TASKS_SUCCESS(HttpStatus.OK, "NOF-2061", "사용자별 투두 목록 조회 성공"),
+	GET_PUBLISHED_ANNOUNCEMENTS_SUCCESS(HttpStatus.OK, "NOF-2073", "조직별 노티 페이징 조회 성공"),
 
 	// CREATED (2100 ~ 2199)
 	CREATED(HttpStatus.CREATED, "NOF-210", "리소스가 생성되었습니다. - 201"),
