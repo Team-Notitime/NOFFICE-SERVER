@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Tag(name = "조직", description = "조직 관련 API")
 public interface OrganizationApi {
 
-	@Operation(summary = "멤버가 가입한 조직 목록 조회", description = "멤버가 가입한 조직 목록을 조회합니다.", responses = {
+	@Operation(summary = "사용자의 가입된 조직 페이징 조회", description = "멤버가 가입한 조직 목록을 조회합니다.", responses = {
 			@ApiResponse(responseCode = "NOF-2002", description = "회원의 가입된 조직 조회에 성공하였습니다."),
 			@ApiResponse(responseCode = "NOF-404", description = "가입된 조직이 없습니다.")})
 	NofficeResponse<Slice<OrganizationResponse>> getJoinedOrganizations(@LoginUser Long memberId,
