@@ -30,6 +30,9 @@ springdoc:
     path: /swagger-ui.html
     tags-sorter: alpha
     operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  paths-to-match: /api/**
 
 jwt:
   secret: harthartharthartharthartharthart
