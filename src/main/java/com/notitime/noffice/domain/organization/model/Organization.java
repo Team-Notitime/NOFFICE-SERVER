@@ -6,6 +6,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
@@ -21,7 +22,7 @@ import lombok.NoArgsConstructor;
 public class Organization extends BaseTimeEntity {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private String name;
@@ -36,4 +37,7 @@ public class Organization extends BaseTimeEntity {
 
 	@OneToMany(mappedBy = "organization")
 	private List<OrganizationCategory> categories = new ArrayList<>();
+
+	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<OrganizationMember> members = new ArrayList<>();
 }
