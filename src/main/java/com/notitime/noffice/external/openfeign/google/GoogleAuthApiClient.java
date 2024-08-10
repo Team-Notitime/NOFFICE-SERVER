@@ -5,7 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "GoogleAuthApiClient", url = "${client.google-auth.url}", configuration = GoogleFeignClientConfiguration.class)
+@FeignClient(name = "GoogleAuthApiClient", url = "${client.google-auth.url}")
 public interface GoogleAuthApiClient {
 
 	@PostMapping("/token")
