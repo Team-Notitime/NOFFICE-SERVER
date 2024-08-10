@@ -1,11 +1,17 @@
 package com.notitime.noffice.domain.organization.model;
 
 import com.notitime.noffice.domain.BaseTimeEntity;
+import com.notitime.noffice.domain.announcement.model.Announcement;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +22,7 @@ import lombok.NoArgsConstructor;
 public class Organization extends BaseTimeEntity {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private String name;
@@ -25,4 +31,13 @@ public class Organization extends BaseTimeEntity {
 
 	@Column(columnDefinition = "TEXT")
 	private String profileImage;
+
+	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Announcement> announcements = new ArrayList<>();
+
+	@OneToMany(mappedBy = "organization")
+	private List<OrganizationCategory> categories = new ArrayList<>();
+
+	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<OrganizationMember> members = new ArrayList<>();
 }

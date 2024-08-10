@@ -6,8 +6,11 @@ import com.notitime.noffice.domain.organization.persistence.OrganizationReposito
 import com.notitime.noffice.global.exception.NotFoundException;
 import com.notitime.noffice.global.response.BusinessErrorCode;
 import com.notitime.noffice.response.OrganizationResponse;
-import com.notitime.noffice.response.OrganizationResponses;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,8 +26,13 @@ public class OrganizationService {
 		return OrganizationResponse.of(getOrganizationEntity(organizationId));
 	}
 
-	public OrganizationResponses getOrganizationsByMemberId(Long memberId) {
-		return OrganizationResponses.from(organizationMemberRepository.findByMemberId(memberId));
+	public Slice<OrganizationResponse> getOrganizationsByMemberId(Long memberId, Pageable pageable) {
+		Slice<Organization> organizations = organizationMemberRepository.findOrganizationsByMemberId(memberId,
+				pageable);
+		List<OrganizationResponse> responses = organizations.stream()
+				.map(OrganizationResponse::of)
+				.toList();
+		return new PageImpl<>(responses, pageable, responses.size());
 	}
 
 	public Organization getOrganizationEntity(Long organizationId) {
