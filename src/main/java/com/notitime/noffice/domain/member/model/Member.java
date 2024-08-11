@@ -33,14 +33,14 @@ public class Member extends BaseTimeEntity {
 	@Column(nullable = false)
 	private String name;
 
-	@Column(nullable = false)
 	private String alias;
-	
+
 	private String serialId;
 
 	@Column(columnDefinition = "TEXT")
 	private String profileImage;
 
+	@Column(nullable = false)
 	private String email;
 
 	@Enumerated(EnumType.STRING)
@@ -49,11 +49,19 @@ public class Member extends BaseTimeEntity {
 	@OneToMany(mappedBy = "member")
 	private final List<OrganizationMember> organizations = new ArrayList<>();
 
-	public static Member createAuthorizedMember(String serialId, final String name, final String email) {
+	public static Member createAuthorizedMember(
+			final String serialId,
+			final String name,
+			final String email,
+			final SocialAuthProvider socialAuthProvider,
+			final String profileImage) {
 		return Member.builder()
 				.serialId(serialId)
 				.name(name)
+				.alias(name)
 				.email(email)
+				.socialAuthProvider(socialAuthProvider)
+				.profileImage(profileImage)
 				.build();
 	}
 }
