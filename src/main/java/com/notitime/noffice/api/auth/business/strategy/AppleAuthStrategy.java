@@ -55,7 +55,10 @@ public class AppleAuthStrategy implements SocialAuthStrategy {
 				.orElseGet(() -> Member.createAuthorizedMember(
 						memberResponse.serialId(),
 						memberResponse.name(),
-						memberResponse.email()));
+						memberResponse.email(),
+						request.provider(),
+						// TODO : 애플 공급자 프로필 사진 제공여부 확인 후 주입
+						""));
 		memberRepository.save(member);
 		TokenResponse tokenResponse = TokenResponse.toResponse(jwtProvider.issueTokens(member.getId()));
 		return SocialAuthResponse.of(member.getId(), member.getName(), request.provider(), tokenResponse);
