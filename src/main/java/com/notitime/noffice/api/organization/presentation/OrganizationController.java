@@ -1,10 +1,12 @@
 package com.notitime.noffice.api.organization.presentation;
 
+import com.notitime.noffice.api.announcement.business.AnnouncementService;
 import com.notitime.noffice.api.organization.business.OrganizationService;
 import com.notitime.noffice.auth.LoginUser;
 import com.notitime.noffice.global.response.BusinessSuccessCode;
 import com.notitime.noffice.global.response.NofficeResponse;
 import com.notitime.noffice.request.OrganizationCreateRequest;
+import com.notitime.noffice.response.AnnouncementCoverResponse;
 import com.notitime.noffice.response.OrganizationJoinResponse;
 import com.notitime.noffice.response.OrganizationResponse;
 import jakarta.validation.Valid;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrganizationController implements OrganizationApi {
 
 	private final OrganizationService organizationService;
+	private final AnnouncementService announcementService;
 
 	@GetMapping
 	public NofficeResponse<Slice<OrganizationResponse>> getJoinedOrganizations(@LoginUser final Long memberId,
@@ -47,5 +50,12 @@ public class OrganizationController implements OrganizationApi {
 	public NofficeResponse<OrganizationJoinResponse> joinOrganization(@LoginUser final Long memberId,
 	                                                                  @PathVariable Long organizationId) {
 		return NofficeResponse.success(BusinessSuccessCode.POST_JOIN_ORGANIZATION_SUCCESS);
+	}
+
+	@GetMapping("/{organizationId}/announcements")
+	public NofficeResponse<Slice<AnnouncementCoverResponse>> getPublishedAnnouncements(
+			@LoginUser final Long memberId, @PathVariable final Long organizationId, Pageable pageable) {
+		return NofficeResponse.success(BusinessSuccessCode.GET_PUBLISHED_ANNOUNCEMENTS_SUCCESS,
+				announcementService.getPublishedAnnouncements(organizationId, pageable));
 	}
 }
