@@ -2,6 +2,7 @@ package com.notitime.noffice.domain.organization.model;
 
 import com.notitime.noffice.domain.BaseTimeEntity;
 import com.notitime.noffice.domain.announcement.model.Announcement;
+import com.notitime.noffice.domain.category.model.Category;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,12 +14,16 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Organization extends BaseTimeEntity {
 
 	@Id
@@ -33,11 +38,16 @@ public class Organization extends BaseTimeEntity {
 	private String profileImage;
 
 	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Announcement> announcements = new ArrayList<>();
-
-	@OneToMany(mappedBy = "organization")
-	private List<OrganizationCategory> categories = new ArrayList<>();
+	private final List<Announcement> announcements = new ArrayList<>();
 
 	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<OrganizationMember> members = new ArrayList<>();
+	private final List<OrganizationCategory> categories = new ArrayList<>();
+
+	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL, orphanRemoval = true)
+	private final List<OrganizationMember> members = new ArrayList<>();
+
+	public Organization addCategories(List<Category> categories) {
+		categories.forEach(category -> this.categories.add(new OrganizationCategory(this, category)));
+		return this;
+	}
 }
