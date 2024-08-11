@@ -1,6 +1,6 @@
 package com.notitime.noffice.response;
 
-import com.notitime.noffice.domain.Category;
+import com.notitime.noffice.domain.category.model.Category;
 import java.util.List;
 
 public record CategoryResponses(List<CategoryResponse> categories) {
