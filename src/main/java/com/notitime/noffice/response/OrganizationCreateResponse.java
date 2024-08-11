@@ -12,9 +12,9 @@ public record OrganizationCreateResponse(
 		Long id,
 		@Schema(requiredMode = REQUIRED, example = "조직 이름", description = "조직 이름")
 		String name,
-		@Schema(requiredMode = REQUIRED, description = "조직 활동 마감일자", example = "2021-07-01")
+		@Schema(requiredMode = NOT_REQUIRED, description = "조직 활동 마감일자", example = "2021-07-01")
 		LocalDateTime endAt,
-		@Schema(requiredMode = REQUIRED, description = "조직 커버 이미지 URL", example = "https://test-image.com/cover_image.jpg")
+		@Schema(requiredMode = NOT_REQUIRED, description = "조직 커버 이미지 URL", example = "https://test-image.com/cover_image.jpg")
 		String profileImage,
 		@Schema(requiredMode = NOT_REQUIRED, description = "프로모션 진행 여부", example = "false")
 		PromotionVerifyResponse promotion

@@ -4,6 +4,7 @@ import com.notitime.noffice.auth.LoginUser;
 import com.notitime.noffice.global.response.NofficeResponse;
 import com.notitime.noffice.request.OrganizationCreateRequest;
 import com.notitime.noffice.response.AnnouncementCoverResponse;
+import com.notitime.noffice.response.OrganizationCreateResponse;
 import com.notitime.noffice.response.OrganizationJoinResponse;
 import com.notitime.noffice.response.OrganizationResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,8 +31,8 @@ public interface OrganizationApi {
 			@ApiResponse(responseCode = "201", description = "조직 생성에 성공하였습니다.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = NofficeResponse.class))),
 			@ApiResponse(responseCode = "400", description = "조직 생성에 실패하였습니다.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = NofficeResponse.class)))
 	})
-	NofficeResponse<OrganizationResponse> createOrganization(@LoginUser Long memberId,
-	                                                         @RequestBody @Valid final OrganizationCreateRequest request);
+	NofficeResponse<OrganizationCreateResponse> createOrganization(@LoginUser Long memberId,
+	                                                               @RequestBody @Valid final OrganizationCreateRequest request);
 
 	@Operation(summary = "조직 가입", description = "조직에 가입합니다.", responses = {
 			@ApiResponse(responseCode = "200", description = "조직 가입에 성공하였습니다.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = NofficeResponse.class)))
