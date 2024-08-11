@@ -1,10 +1,13 @@
 package com.notitime.noffice.external.openfeign.google.dto;
 
 public record GoogleTokenResponse(
-		String accessToken,
-		String refreshToken
+		String access_token,
+
+		String token_type,
+
+		String id_token
 ) {
-	public static GoogleTokenResponse of(String accessToken, String refreshToken) {
-		return new GoogleTokenResponse(accessToken, refreshToken);
+	public static GoogleTokenResponse of(String accessToken, String token_type, String id_token) {
+		return new GoogleTokenResponse(accessToken, token_type, id_token);
 	}
 }

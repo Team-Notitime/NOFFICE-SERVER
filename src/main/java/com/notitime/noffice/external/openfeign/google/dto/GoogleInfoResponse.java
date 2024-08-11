@@ -3,11 +3,11 @@ package com.notitime.noffice.external.openfeign.google.dto;
 public record GoogleInfoResponse(
 		String sub,
 		String name,
-		String givenName,
-		String familyName,
+		String given_name,
+		String family_name,
 		String picture,
 		String email,
-		Boolean emailVerified,
+		Boolean email_verified,
 		String locale
 ) {
 	public static GoogleInfoResponse of(String sub, String name, String givenName, String familyName, String picture,

@@ -24,7 +24,7 @@ public class GoogleAuthStrategy implements SocialAuthStrategy {
 	@Value("${oauth.google.client-secret}")
 	private String googleClientSecret;
 	@Value("${oauth.google.redirect-uri}")
-	private String googleRedirectUrl;
+	private String googleRedirectUri;
 	@Value("${oauth.google.grant-type}")
 	private String googleGrantType;
 
@@ -45,15 +45,18 @@ public class GoogleAuthStrategy implements SocialAuthStrategy {
 				request.code(),
 				googleClientId,
 				googleClientSecret,
-				googleRedirectUrl,
-				googleGrantType
+				googleRedirectUri,
+				googleGrantType,
+				"profile email"
 		);
-		GoogleInfoResponse memberResponse = googleApiClient.googleInfo("Bearer " + googleTokenResponse.accessToken());
+		GoogleInfoResponse memberResponse = googleApiClient.googleInfo("Bearer" + googleTokenResponse.access_token());
 		Member member = memberRepository.findBySerialId(memberResponse.sub())
 				.orElseGet(() -> Member.createAuthorizedMember(
 						memberResponse.sub(),
 						memberResponse.name(),
-						memberResponse.email()));
+						memberResponse.email(),
+						request.provider(),
+						memberResponse.picture()));
 		memberRepository.save(member);
 		TokenResponse tokenResponse = TokenResponse.toResponse(jwtProvider.issueTokens(member.getId()));
 		return SocialAuthResponse.of(member.getId(), member.getName(), request.provider(), tokenResponse);
