@@ -35,7 +35,7 @@ springdoc:
   paths-to-match: /api/**
 
 jwt:
-  secret: harthartharthartharthartharthart
+  secret: harthartharthartharthartharthartharthartharthartharthartharthartharthartharthartharthartharthartharthartharthartharthartharthart
   access-token-expiration: 300000
   refresh-token-expiration: 86400000
 
