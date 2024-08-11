@@ -43,7 +43,7 @@ public class OrganizationController implements OrganizationApi {
 	@PostMapping
 	public NofficeResponse<OrganizationResponse> createOrganization(@LoginUser final Long memberId,
 	                                                                @RequestBody @Valid final OrganizationCreateRequest request) {
-		return NofficeResponse.success(BusinessSuccessCode.POST_ORGANIZATION_SUCCESS);
+		return NofficeResponse.success(BusinessSuccessCode.CREATE_ORGANIZATION_SUCCESS, organizationService.createOrganization(memberId, request);
 	}
 
 	@PostMapping("/{organizationId}/join")

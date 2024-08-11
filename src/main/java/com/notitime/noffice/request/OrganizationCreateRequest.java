@@ -16,9 +16,6 @@ public record OrganizationCreateRequest(
 		@Schema(requiredMode = REQUIRED, description = "조직 활동 마감일자", example = "2021-07-01")
 		LocalDate endAt,
 		@Schema(requiredMode = NOT_REQUIRED, description = "프로모션 코드 문자열", example = "NOFFICE_HART")
-		String promotionCode
+		PromotionVerifyRequest promotionCode
 ) {
-	public OrganizationCreateRequest {
-		promotionCode = (promotionCode != null && promotionCode.isEmpty()) ? null : promotionCode;
-	}
 }

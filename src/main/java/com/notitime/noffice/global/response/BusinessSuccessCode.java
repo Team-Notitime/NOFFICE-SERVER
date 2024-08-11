@@ -28,7 +28,7 @@ public enum BusinessSuccessCode implements SuccessCode {
 	CREATED_NOTIFICATION_SUCCESS(HttpStatus.CREATED, "NOF-20710", "알림 대기열 등록 성공"),
 	CREATED_BULK_NOTIFICATION_SUCCESS(HttpStatus.CREATED, "NOF-20711", "조직 전체 알림 대량 등록 성공"),
 
-	POST_ORGANIZATION_SUCCESS(HttpStatus.CREATED, "NOF-2100", "조직 생성에 성공하였습니다."),
+	CREATE_ORGANIZATION_SUCCESS(HttpStatus.CREATED, "NOF-2100", "조직 생성에 성공하였습니다."),
 	POST_JOIN_ORGANIZATION_SUCCESS(HttpStatus.CREATED, "NOF-2101", "조직 가입에 성공하였습니다."),
 	POST_ANNOUNCEMENT_SUCCESS(HttpStatus.CREATED, "NOF-2150", "노티 생성에 성공하였습니다."),
 
