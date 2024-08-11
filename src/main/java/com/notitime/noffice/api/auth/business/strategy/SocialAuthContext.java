@@ -15,12 +15,14 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class SocialAuthContext {
 
-	private AppleAuthStrategy appleAuthStrategy;
+	private final GoogleAuthStrategy googleAuthStrategy;
+	private final AppleAuthStrategy appleAuthStrategy;
 	private final List<SocialAuthStrategy> socialAuthStrategies = new ArrayList<>();
 
 	@PostConstruct
 	void initSocialLoginContext() {
 		socialAuthStrategies.add(appleAuthStrategy);
+		socialAuthStrategies.add(googleAuthStrategy);
 	}
 
 	public boolean support(SocialAuthProvider provider) {

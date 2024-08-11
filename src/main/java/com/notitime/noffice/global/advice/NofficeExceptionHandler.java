@@ -32,7 +32,7 @@ public class NofficeExceptionHandler {
 	}
 
 	@ExceptionHandler(AuthGoogleFeignException.class)
-	public NofficeResponse<Void> handleAuthGoogleFeignException(AuthAppleFeignException e) {
+	public NofficeResponse<Void> handleAuthGoogleFeignException(AuthGoogleFeignException e) {
 		log.error("handleAuthGoogleFeignException() in NofficeExceptionHandler throw AuthGoogleFeignException : {}",
 				e.getMessage());
 		return NofficeResponse.fail(e.getErrorCode());

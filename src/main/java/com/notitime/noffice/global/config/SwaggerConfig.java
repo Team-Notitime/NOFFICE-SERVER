@@ -1,8 +1,11 @@
 package com.notitime.noffice.global.config;
 
 
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import java.util.List;
 import org.springframework.context.annotation.Bean;
@@ -19,23 +22,29 @@ public class SwaggerConfig {
 
 		Server productionServer = new Server();
 		productionServer.setDescription("develop server");
-
 		productionServer.setUrl("https://api.noffice.store");
 
-		Server testServer = new Server();
-		testServer.setDescription("develop server");
+		SecurityScheme apiKey = new SecurityScheme()
+				.type(SecurityScheme.Type.HTTP)
+				.in(SecurityScheme.In.HEADER)
+				.name("Authorization")
+				.scheme("bearer")
+				.bearerFormat("JWT");
 
-		testServer.setUrl("https://97d4-61-72-170-128.ngrok-free.app");
+		SecurityRequirement securityRequirement = new SecurityRequirement()
+				.addList("Bearer Token");
+
 		return new OpenAPI()
 				.info(getSwaggerInfo())
-				.servers(List.of(localServer, productionServer, testServer));
+				.components(new Components().addSecuritySchemes("Bearer Token", apiKey))
+				.addSecurityItem(securityRequirement)
+				.servers(List.of(localServer, productionServer));
 	}
 
 	private Info getSwaggerInfo() {
 		return new Info()
 				.title("NOFFICE API Docs")
-				.description("테스트 프로덕션용 NOFFICE API 명세서입니다.\n" +
-						"공통된 응답 형식은 Schemas-NofficeResponseString을 참고해주세요.")
+				.description("테스트 프로덕션용 NOFFICE API 명세서입니다.\n")
 				.version("v1.0");
 	}
 }

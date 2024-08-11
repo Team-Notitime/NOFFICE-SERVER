@@ -30,9 +30,12 @@ springdoc:
     path: /swagger-ui.html
     tags-sorter: alpha
     operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  paths-to-match: /api/**
 
 jwt:
-  secret: harthartharthartharthartharthart
+  secret: harthartharthartharthartharthartharthartharthartharthartharthartharthartharthartharthartharthartharthartharthartharthartharthart
   access-token-expiration: 300000
   refresh-token-expiration: 86400000
 

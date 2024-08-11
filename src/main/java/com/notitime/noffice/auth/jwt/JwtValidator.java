@@ -30,7 +30,6 @@ public class JwtValidator {
 
 	public void validateRefreshToken(final String refreshToken) {
 		try {
-			System.out.println("refreshToken" + refreshToken);
 			parseToken(getToken(refreshToken));
 		} catch (ExpiredJwtException e) {
 			throw new UnauthorizedException(BusinessErrorCode.EXPIRED_REFRESH_TOKEN);
