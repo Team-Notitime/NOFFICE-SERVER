@@ -5,6 +5,7 @@ import com.notitime.noffice.global.response.NofficeResponse;
 import com.notitime.noffice.request.OrganizationCreateRequest;
 import com.notitime.noffice.response.AnnouncementCoverResponse;
 import com.notitime.noffice.response.OrganizationCreateResponse;
+import com.notitime.noffice.response.OrganizationInfoResponse;
 import com.notitime.noffice.response.OrganizationJoinResponse;
 import com.notitime.noffice.response.OrganizationResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,7 +24,8 @@ public interface OrganizationApi {
 			@ApiResponse(responseCode = "200", description = "조직 정보 조회에 성공하였습니다."),
 			@ApiResponse(responseCode = "404", description = "조직 정보가 없습니다.")
 	})
-	NofficeResponse<OrganizationResponse> getInformation(@LoginUser Long memberId, @PathVariable Long organizationId);
+	NofficeResponse<OrganizationInfoResponse> getInformation(@LoginUser Long memberId,
+	                                                         @PathVariable Long organizationId);
 
 	@Operation(summary = "조직 생성", description = "조직을 생성합니다.", responses = {
 			@ApiResponse(responseCode = "201", description = "조직 생성에 성공하였습니다."),

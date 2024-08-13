@@ -8,6 +8,7 @@ import com.notitime.noffice.global.response.NofficeResponse;
 import com.notitime.noffice.request.OrganizationCreateRequest;
 import com.notitime.noffice.response.AnnouncementCoverResponse;
 import com.notitime.noffice.response.OrganizationCreateResponse;
+import com.notitime.noffice.response.OrganizationInfoResponse;
 import com.notitime.noffice.response.OrganizationJoinResponse;
 import com.notitime.noffice.response.OrganizationResponse;
 import jakarta.validation.Valid;
@@ -37,8 +38,10 @@ public class OrganizationController implements OrganizationApi {
 	}
 
 	@GetMapping("/{organizationId}")
-	public NofficeResponse<OrganizationResponse> getInformation(@LoginUser final Long memberId, @PathVariable Long organizationId) {
-		return NofficeResponse.success(BusinessSuccessCode.GET_ORGANIZATION_SUCCESS, organizationService.getInformation(memberId, organizationId);
+	public NofficeResponse<OrganizationInfoResponse> getInformation(@LoginUser final Long memberId,
+	                                                                @PathVariable Long organizationId) {
+		return NofficeResponse.success(BusinessSuccessCode.GET_ORGANIZATION_SUCCESS,
+				organizationService.getInformation(memberId, organizationId));
 	}
 
 	@PostMapping
