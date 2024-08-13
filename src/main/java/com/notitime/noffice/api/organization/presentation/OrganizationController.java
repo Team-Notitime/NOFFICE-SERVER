@@ -51,7 +51,8 @@ public class OrganizationController implements OrganizationApi {
 	@PostMapping("/{organizationId}/join")
 	public NofficeResponse<OrganizationJoinResponse> joinOrganization(@LoginUser final Long memberId,
 	                                                                  @PathVariable Long organizationId) {
-		return NofficeResponse.success(BusinessSuccessCode.POST_JOIN_ORGANIZATION_SUCCESS);
+		return NofficeResponse.success(BusinessSuccessCode.POST_JOIN_ORGANIZATION_SUCCESS,
+				organizationService.joinOrganization(memberId, organizationId));
 	}
 
 	@GetMapping("/{organizationId}/announcements")

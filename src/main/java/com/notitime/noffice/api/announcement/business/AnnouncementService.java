@@ -1,12 +1,12 @@
 package com.notitime.noffice.api.announcement.business;
 
-import com.notitime.noffice.api.member.business.MemberService;
 import com.notitime.noffice.api.notification.business.NotificationService;
-import com.notitime.noffice.api.organization.business.OrganizationService;
 import com.notitime.noffice.domain.announcement.model.Announcement;
 import com.notitime.noffice.domain.announcement.persistence.AnnouncementRepository;
 import com.notitime.noffice.domain.member.model.Member;
+import com.notitime.noffice.domain.member.persistence.MemberRepository;
 import com.notitime.noffice.domain.organization.model.Organization;
+import com.notitime.noffice.domain.organization.persistence.OrganizationRepository;
 import com.notitime.noffice.global.exception.NotFoundException;
 import com.notitime.noffice.global.response.BusinessErrorCode;
 import com.notitime.noffice.request.AnnouncementCreateRequest;
@@ -29,8 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class AnnouncementService {
 
 	private final AnnouncementRepository announcementRepository;
-	private final MemberService memberService;
-	private final OrganizationService organizationService;
+	private final MemberRepository memberRepository;
+	private final OrganizationRepository organizationRepository;
 	private final NotificationService notificationService;
 
 	@Transactional(readOnly = true)
@@ -72,12 +72,16 @@ public class AnnouncementService {
 		LocalDateTime endAt = Optional.ofNullable(request.endAt())
 				.map(date -> LocalDateTime.parse(date, Announcement.DATE_TIME_FORMATTER))
 				.orElse(null);
+		Organization organization = organizationRepository.findById(request.organizationId())
+				.orElseThrow(() -> new NotFoundException(BusinessErrorCode.NOT_FOUND_ORGANIZATION));
+		Member member = memberRepository.findById(request.memberId())
+				.orElseThrow(() -> new NotFoundException(BusinessErrorCode.NOT_FOUND_MEMBER));
 		Announcement announcement = Announcement.createAnnouncement(
 				request.title(),
 				request.content(),
 				endAt,
-				getMemberEntity(request.memberId()),
-				getOrganizationEntity(request.organizationId())
+				member,
+				organization
 		);
 		Optional.ofNullable(request.profileImageUrl()).ifPresent(announcement::withProfileImageUrl);
 		Optional.ofNullable(request.isFaceToFace()).ifPresent(announcement::withIsFaceToFace);
@@ -97,13 +101,5 @@ public class AnnouncementService {
 
 	private AnnouncementResponse buildResponseFromAnnouncement(Announcement announcement) {
 		return AnnouncementResponse.of(announcement);
-	}
-
-	private Member getMemberEntity(Long memberId) {
-		return memberService.getMemberEntity(memberId);
-	}
-
-	private Organization getOrganizationEntity(Long organizationId) {
-		return organizationService.getOrganizationEntity(organizationId);
 	}
 }
