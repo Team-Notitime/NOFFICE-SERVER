@@ -37,8 +37,8 @@ public class OrganizationController implements OrganizationApi {
 	}
 
 	@GetMapping("/{organizationId}")
-	public NofficeResponse<OrganizationResponse> getOrganization(@PathVariable Long organizationId) {
-		return NofficeResponse.success(BusinessSuccessCode.GET_ORGANIZATION_SUCCESS);
+	public NofficeResponse<OrganizationResponse> getInformation(@LoginUser final Long memberId, @PathVariable Long organizationId) {
+		return NofficeResponse.success(BusinessSuccessCode.GET_ORGANIZATION_SUCCESS, organizationService.getInformation(memberId, organizationId);
 	}
 
 	@PostMapping
