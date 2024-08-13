@@ -20,7 +20,7 @@ public class MemberService {
 		return MemberResponse.of(getMemberEntity(memberId));
 	}
 
-	public Member getMemberEntity(Long memberId) {
+	private Member getMemberEntity(Long memberId) {
 		return memberRepository.findById(memberId)
 				.orElseThrow(() -> new NotFoundException(BusinessErrorCode.NOT_FOUND));
 	}
