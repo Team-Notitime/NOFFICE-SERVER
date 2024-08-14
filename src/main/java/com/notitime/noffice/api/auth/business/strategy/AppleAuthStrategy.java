@@ -9,7 +9,6 @@ import com.notitime.noffice.external.openfeign.apple.AppleIdentityTokenParser;
 import com.notitime.noffice.external.openfeign.apple.AppleOAuthProvider;
 import com.notitime.noffice.external.openfeign.apple.ApplePublicKeyGenerator;
 import com.notitime.noffice.external.openfeign.apple.dto.ApplePublicKeys;
-import com.notitime.noffice.external.openfeign.apple.dto.AppleTokenResponse;
 import com.notitime.noffice.external.openfeign.dto.AuthorizedMemberInfo;
 import com.notitime.noffice.request.SocialAuthRequest;
 import com.notitime.noffice.response.SocialAuthResponse;
@@ -43,13 +42,8 @@ public class AppleAuthStrategy implements SocialAuthStrategy {
 
 	@Override
 	public SocialAuthResponse login(SocialAuthRequest request) {
-		AppleTokenResponse appleTokenResponse = appleFeignClient.getAppleTokens(
-				request.code(),
-				clientId,
-				clientSecret,
-				grantType);
 		ApplePublicKeys applePublicKeys = appleFeignClient.getApplePublicKey();
-		AuthorizedMemberInfo memberResponse = appleOAuthProvider.getAppleUserInfo(appleTokenResponse.idToken(),
+		AuthorizedMemberInfo memberResponse = appleOAuthProvider.getAppleUserInfo(request.code(),
 				request.provider().name(), applePublicKeys);
 		Member member = memberRepository.findBySerialId(memberResponse.serialId())
 				.orElseGet(() -> Member.createAuthorizedMember(
@@ -58,7 +52,7 @@ public class AppleAuthStrategy implements SocialAuthStrategy {
 						memberResponse.email(),
 						request.provider(),
 						// TODO : 애플 공급자 프로필 사진 제공여부 확인 후 주입
-						""));
+						"https://www.apple.com/ac/structured-data/images/knowledge_graph_logo.png?202106171739"));
 		memberRepository.save(member);
 		TokenResponse tokenResponse = TokenResponse.toResponse(jwtProvider.issueTokens(member.getId()));
 		return SocialAuthResponse.of(member.getId(), member.getName(), request.provider(), tokenResponse);

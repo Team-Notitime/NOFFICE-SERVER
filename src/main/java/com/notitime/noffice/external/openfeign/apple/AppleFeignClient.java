@@ -1,5 +1,6 @@
 package com.notitime.noffice.external.openfeign.apple;
 
+import com.notitime.noffice.external.config.FeignConfig;
 import com.notitime.noffice.external.openfeign.apple.dto.ApplePublicKeys;
 import com.notitime.noffice.external.openfeign.apple.dto.AppleTokenResponse;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -8,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 
-@FeignClient(name = "appleClient", url = "${client.apple-auth.url}", configuration = AppleFeignClientConfiguration.class)
+@FeignClient(name = "appleClient", url = "${client.apple-auth.url}", configuration = FeignConfig.class)
 public interface AppleFeignClient {
 
 	@GetMapping("/keys")
