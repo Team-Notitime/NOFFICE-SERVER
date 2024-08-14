@@ -10,23 +10,25 @@ public class SecurityWhiteListPaths {
 	public static final String[] SECURITY_WHITE_LIST = {
 			"/health",
 			"/error",
+			"/api/v1/member/login",
+			"/h2-console/**",
 			"/swagger-ui/**",
 			"/swagger-resources/**",
-			"/api/v1/member/login",
 			"/api-docs/**",
 			"/v3/api-docs/**",
 			"/webjars/**",
-			"/h2-console/**"
 	};
 
 	public static final List<String> FILTER_WHITE_LIST = List.of(
 			"/api/v1/auth/google/callback",
+			"/api/v1/member/login",
 			"/swagger-ui/**",
 			"/swagger-resources/**",
 			"/api-docs/**",
-			"/api/v1/member/login"
+			"/v3/api-docs/**",
+			"/webjars/**"
 	);
-	
+
 	public static boolean isWhitelisted(HttpServletRequest request) {
 		String path = request.getRequestURI();
 		return FILTER_WHITE_LIST.stream().anyMatch(pattern -> pathMatcher.match(pattern, path));
