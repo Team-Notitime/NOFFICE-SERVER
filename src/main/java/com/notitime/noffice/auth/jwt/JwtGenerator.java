@@ -30,7 +30,9 @@ public class JwtGenerator {
 		final Date expiration = generateExpirationDate(isAccessToken, now);
 
 		Claims claims = Jwts.claims().setSubject(String.valueOf(memberId));
-
+		if (isAccessToken) {
+			claims.put(USER_ROLE_CLAIM_NAME, "ROLE_USER");
+		}
 		return Jwts.builder()
 				.setHeaderParam(Header.TYPE, Header.JWT_TYPE)
 				.setClaims(claims)
