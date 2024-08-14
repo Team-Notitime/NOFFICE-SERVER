@@ -11,7 +11,7 @@ public record OrganizationJoinResponse(
 		@Schema(requiredMode = RequiredMode.NOT_REQUIRED, description = "조직 이름", example = "Noffice")
 		String organizationName,
 		@Schema(requiredMode = RequiredMode.REQUIRED, description = "가입한 사용자 식별자", example = "1")
-		Long userId) {
+		Long memberId) {
 
 	public static OrganizationJoinResponse from(Organization organization, Member member) {
 		return new OrganizationJoinResponse(organization.getId(), organization.getName(), member.getId());

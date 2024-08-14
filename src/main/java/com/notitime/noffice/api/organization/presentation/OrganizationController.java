@@ -2,7 +2,7 @@ package com.notitime.noffice.api.organization.presentation;
 
 import com.notitime.noffice.api.announcement.business.AnnouncementService;
 import com.notitime.noffice.api.organization.business.OrganizationService;
-import com.notitime.noffice.auth.LoginUser;
+import com.notitime.noffice.auth.AuthMember;
 import com.notitime.noffice.global.response.BusinessSuccessCode;
 import com.notitime.noffice.global.response.NofficeResponse;
 import com.notitime.noffice.request.OrganizationCreateRequest;
@@ -31,28 +31,28 @@ public class OrganizationController implements OrganizationApi {
 	private final AnnouncementService announcementService;
 
 	@GetMapping
-	public NofficeResponse<Slice<OrganizationResponse>> getJoinedOrganizations(@LoginUser final Long memberId,
+	public NofficeResponse<Slice<OrganizationResponse>> getJoinedOrganizations(@AuthMember final Long memberId,
 	                                                                           Pageable pageable) {
 		return NofficeResponse.success(BusinessSuccessCode.GET_JOINED_ORGANIZATIONS_SUCCESS,
 				organizationService.getOrganizationsByMemberId(memberId, pageable));
 	}
 
 	@GetMapping("/{organizationId}")
-	public NofficeResponse<OrganizationInfoResponse> getInformation(@LoginUser final Long memberId,
+	public NofficeResponse<OrganizationInfoResponse> getInformation(@AuthMember final Long memberId,
 	                                                                @PathVariable Long organizationId) {
 		return NofficeResponse.success(BusinessSuccessCode.GET_ORGANIZATION_SUCCESS,
 				organizationService.getInformation(memberId, organizationId));
 	}
 
 	@PostMapping
-	public NofficeResponse<OrganizationCreateResponse> createOrganization(@LoginUser final Long memberId,
+	public NofficeResponse<OrganizationCreateResponse> createOrganization(@AuthMember final Long memberId,
 	                                                                      @RequestBody @Valid final OrganizationCreateRequest request) {
 		return NofficeResponse.success(BusinessSuccessCode.CREATE_ORGANIZATION_SUCCESS,
 				organizationService.createOrganization(request));
 	}
 
 	@PostMapping("/{organizationId}/join")
-	public NofficeResponse<OrganizationJoinResponse> joinOrganization(@LoginUser final Long memberId,
+	public NofficeResponse<OrganizationJoinResponse> joinOrganization(@AuthMember final Long memberId,
 	                                                                  @PathVariable Long organizationId) {
 		return NofficeResponse.success(BusinessSuccessCode.POST_JOIN_ORGANIZATION_SUCCESS,
 				organizationService.joinOrganization(memberId, organizationId));
@@ -60,7 +60,7 @@ public class OrganizationController implements OrganizationApi {
 
 	@GetMapping("/{organizationId}/announcements")
 	public NofficeResponse<Slice<AnnouncementCoverResponse>> getPublishedAnnouncements(
-			@LoginUser final Long memberId, @PathVariable final Long organizationId, Pageable pageable) {
+			@AuthMember final Long memberId, @PathVariable final Long organizationId, Pageable pageable) {
 		return NofficeResponse.success(BusinessSuccessCode.GET_PUBLISHED_ANNOUNCEMENTS_SUCCESS,
 				announcementService.getPublishedAnnouncements(organizationId, pageable));
 	}

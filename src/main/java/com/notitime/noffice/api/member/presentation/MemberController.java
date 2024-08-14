@@ -2,7 +2,7 @@ package com.notitime.noffice.api.member.presentation;
 
 import com.notitime.noffice.api.auth.business.AuthService;
 import com.notitime.noffice.api.member.business.MemberService;
-import com.notitime.noffice.auth.LoginUser;
+import com.notitime.noffice.auth.AuthMember;
 import com.notitime.noffice.global.response.BusinessSuccessCode;
 import com.notitime.noffice.global.response.NofficeResponse;
 import com.notitime.noffice.request.SocialAuthRequest;
@@ -38,7 +38,7 @@ public class MemberController implements MemberApi {
 	}
 
 	@GetMapping
-	public NofficeResponse<MemberResponse> getMember(@LoginUser final Long memberId) {
+	public NofficeResponse<MemberResponse> getMember(@AuthMember final Long memberId) {
 		return NofficeResponse.success(BusinessSuccessCode.GET_MEMBER_SUCCESS, memberService.getMember(memberId));
 	}
 }
