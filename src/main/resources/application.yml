@@ -36,8 +36,8 @@ springdoc:
 
 jwt:
   secret: harthartharthartharthartharthartharthartharthartharthartharthartharthartharthartharthartharthartharthartharthartharthartharthart
-  access-token-expiration: 300000
-  refresh-token-expiration: 86400000
+  access-token-expiration: 1209600000
+  refresh-token-expiration: 2419200000
 
 server:
   domain:
