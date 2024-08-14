@@ -5,10 +5,10 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "GoogleAuthApiClient", url = "https://oauth2.googleapis.com/token", configuration = GoogleFeignClientConfiguration.class)
+@FeignClient(name = "GoogleAuthApiClient", url = "${client.google-auth.url}", configuration = GoogleFeignClientConfiguration.class)
 public interface GoogleAuthApiClient {
 
-	@PostMapping
+	@PostMapping("/token")
 	GoogleTokenResponse googleAuth(
 			@RequestParam(name = "code") String code,
 			@RequestParam(name = "clientId") String clientId,
