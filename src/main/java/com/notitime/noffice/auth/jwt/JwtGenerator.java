@@ -23,7 +23,7 @@ public class JwtGenerator {
 	@Value("${jwt.refresh-token-expiration}")
 	private long REFRESH_TOKEN_EXPIRE_TIME;
 
-	public static final String USER_ROLE_CLAIM_NAME = "role";
+	public static final String CLAIM_MEMBER_DEFAULT_ROLE = "role";
 
 	public String generateToken(Long memberId, boolean isAccessToken) {
 		final Date now = generateNowDate();
@@ -31,7 +31,7 @@ public class JwtGenerator {
 
 		Claims claims = Jwts.claims().setSubject(String.valueOf(memberId));
 		if (isAccessToken) {
-			claims.put(USER_ROLE_CLAIM_NAME, "ROLE_USER");
+			claims.put(CLAIM_MEMBER_DEFAULT_ROLE, "ROLE_USER");
 		}
 		return Jwts.builder()
 				.setHeaderParam(Header.TYPE, Header.JWT_TYPE)

@@ -17,7 +17,7 @@ public class JwtValidator {
 
 	public void validateAccessToken(String accessToken) {
 		try {
-			String role = parseToken(accessToken).get(JwtGenerator.USER_ROLE_CLAIM_NAME, String.class);
+			String role = parseToken(accessToken).get(JwtGenerator.CLAIM_MEMBER_DEFAULT_ROLE, String.class);
 			if (role == null) {
 				throw new UnauthorizedException(BusinessErrorCode.INVALID_ACCESS_TOKEN_VALUE);
 			}

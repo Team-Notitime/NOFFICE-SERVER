@@ -1,6 +1,6 @@
 package com.notitime.noffice.api.task.presentation;
 
-import com.notitime.noffice.auth.LoginUser;
+import com.notitime.noffice.auth.AuthMember;
 import com.notitime.noffice.global.response.NofficeResponse;
 import com.notitime.noffice.request.TaskBulkCreateRequest;
 import com.notitime.noffice.request.TaskCreateRequest;
@@ -45,5 +45,5 @@ interface TaskApi {
 			@ApiResponse(responseCode = "200", description = "사용자 할당 투두 조회 성공"),
 			@ApiResponse(responseCode = "404", description = "사용자 할당된 투두가 없습니다.")
 	})
-	NofficeResponse<Slice<AssignedTaskResponse>> getAssignedTasks(@LoginUser Long memberId, Pageable pageable);
+	NofficeResponse<Slice<AssignedTaskResponse>> getAssignedTasks(@AuthMember Long memberId, Pageable pageable);
 }

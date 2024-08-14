@@ -1,8 +1,8 @@
 package com.notitime.noffice.auth.filter;
 
-import static com.notitime.noffice.auth.UserAuthentication.createUserAuthentication;
+import static com.notitime.noffice.auth.MemberAuthentication.createMemberAuthentication;
 
-import com.notitime.noffice.auth.UserAuthentication;
+import com.notitime.noffice.auth.MemberAuthentication;
 import com.notitime.noffice.auth.jwt.JwtProvider;
 import com.notitime.noffice.auth.jwt.JwtValidator;
 import com.notitime.noffice.global.config.SecurityWhiteListPaths;
@@ -55,7 +55,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	private void doAuthentication(
 			HttpServletRequest request,
 			Long memberId) {
-		UserAuthentication authentication = createUserAuthentication(memberId);
+		MemberAuthentication authentication = createMemberAuthentication(memberId);
 		createAndSetWebAuthenticationDetails(request, authentication);
 		SecurityContext securityContext = SecurityContextHolder.getContext();
 		securityContext.setAuthentication(authentication);
@@ -63,7 +63,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	private void createAndSetWebAuthenticationDetails(
 			HttpServletRequest request,
-			UserAuthentication authentication) {
+			MemberAuthentication authentication) {
 		WebAuthenticationDetailsSource webAuthenticationDetailsSource = new WebAuthenticationDetailsSource();
 		WebAuthenticationDetails webAuthenticationDetails = webAuthenticationDetailsSource.buildDetails(request);
 		authentication.setDetails(webAuthenticationDetails);

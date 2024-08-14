@@ -1,7 +1,7 @@
 package com.notitime.noffice.api.task.presentation;
 
 import com.notitime.noffice.api.task.business.TaskService;
-import com.notitime.noffice.auth.LoginUser;
+import com.notitime.noffice.auth.AuthMember;
 import com.notitime.noffice.global.response.BusinessSuccessCode;
 import com.notitime.noffice.global.response.NofficeResponse;
 import com.notitime.noffice.request.TaskBulkCreateRequest;
@@ -50,7 +50,7 @@ public class TaskController implements TaskApi {
 	}
 
 	@GetMapping("/assigned")
-	public NofficeResponse<Slice<AssignedTaskResponse>> getAssignedTasks(@LoginUser Long memberId, Pageable pageable) {
+	public NofficeResponse<Slice<AssignedTaskResponse>> getAssignedTasks(@AuthMember Long memberId, Pageable pageable) {
 		return NofficeResponse.success(BusinessSuccessCode.GET_ASSIGNED_TASKS_SUCCESS,
 				taskService.getAssignedTasks(memberId, pageable));
 	}

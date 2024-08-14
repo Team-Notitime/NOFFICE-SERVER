@@ -9,13 +9,13 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 @Component
-public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver {
+public class AuthMemberArgumentResolver implements HandlerMethodArgumentResolver {
 
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
-		boolean hasUserIdAnnotation = parameter.hasParameterAnnotation(LoginUser.class);
+		boolean hasAuthMemberAnnotation = parameter.hasParameterAnnotation(AuthMember.class);
 		boolean isLongType = parameter.getParameterType().equals(Long.class);
-		return hasUserIdAnnotation && isLongType;
+		return hasAuthMemberAnnotation && isLongType;
 	}
 
 	@Override
