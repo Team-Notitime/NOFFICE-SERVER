@@ -4,4 +4,7 @@ import com.notitime.noffice.domain.announcement.model.AnnouncementReadStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AnnouncementReadStatusRepository extends JpaRepository<AnnouncementReadStatus, Long> {
+	Long countByAnnouncementId(Long announcementId);
+
+	boolean existsByMemberIdAndAnnouncementId(Long memberId, Long announcementId);
 }

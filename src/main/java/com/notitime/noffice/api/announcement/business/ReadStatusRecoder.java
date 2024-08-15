@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 public class ReadStatusRecoder {
-	
+
 	private final AnnouncementReadStatusRepository announcementReadStatusRepository;
 
 	public void record(Member member, Announcement announcement) {
@@ -23,5 +23,13 @@ public class ReadStatusRecoder {
 				.member(member)
 				.announcement(announcement)
 				.build());
+	}
+
+	public Long countReader(Long announcementId) {
+		return announcementReadStatusRepository.countByAnnouncementId(announcementId);
+	}
+
+	public boolean isRead(Long memberId, Long announcementId) {
+		return announcementReadStatusRepository.existsByMemberIdAndAnnouncementId(memberId, announcementId);
 	}
 }
