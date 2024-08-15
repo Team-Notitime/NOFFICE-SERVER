@@ -70,7 +70,11 @@ public class AnnouncementService {
 
 	public Slice<AnnouncementCoverResponse> getPublishedAnnouncements(Long organizationId, Pageable pageable) {
 		return announcementRepository.findByOrganizationId(organizationId, pageable)
-				.map(AnnouncementCoverResponse::of);
+				.map(announcement -> {
+					Long readCount = readStatusRecoder.countReader(announcement.getId());
+					Long totalMemberCount = getTotalMemberCount(organizationId);
+					return AnnouncementCoverResponse.of(announcement, readCount, totalMemberCount);
+				});
 	}
 
 	private Announcement buildAnnouncementFromRequest(AnnouncementCreateRequest request) {
@@ -114,5 +118,11 @@ public class AnnouncementService {
 		Announcement announcement = announcementRepository.findById(announcementId)
 				.orElseThrow(() -> new NotFoundException(BusinessErrorCode.NOT_FOUND_ANNOUNCEMENT));
 		readStatusRecoder.record(member, announcement);
+	}
+
+	private Long getTotalMemberCount(Long organizationId) {
+		return (long) organizationRepository.findById(organizationId)
+				.orElseThrow(() -> new NotFoundException(BusinessErrorCode.NOT_FOUND_ORGANIZATION))
+				.getMembers().size();
 	}
 }

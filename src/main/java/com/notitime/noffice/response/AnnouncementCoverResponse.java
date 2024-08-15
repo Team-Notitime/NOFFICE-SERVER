@@ -10,10 +10,12 @@ public record AnnouncementCoverResponse(
 		String placeLinkName,
 		String placeLinkUrl,
 		LocalDateTime endAt,
+		Long readerCount,
+		Long totalMemberCount,
 		LocalDateTime createdAt,
 		LocalDateTime updatedAt
 ) {
-	public static AnnouncementCoverResponse of(Announcement announcement) {
+	public static AnnouncementCoverResponse of(Announcement announcement, Long readerCount, Long totalMemberCount) {
 		return new AnnouncementCoverResponse(
 				announcement.getId(),
 				announcement.getTitle(),
@@ -21,6 +23,8 @@ public record AnnouncementCoverResponse(
 				announcement.getPlaceLinkName(),
 				announcement.getPlaceLinkUrl(),
 				announcement.getEndAt(),
+				readerCount,
+				totalMemberCount,
 				announcement.getCreatedAt(),
 				announcement.getUpdatedAt());
 	}
