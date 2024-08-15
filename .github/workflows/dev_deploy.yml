@@ -23,6 +23,10 @@ jobs:
       GOOGLE_REDIRECT_URI: ${{secrets.GOOGLE_REDIRECT_URI}}
       SERVER_DOMAIN_ORIGIN: ${{secrets.SERVER_DOMAIN_ORIGIN}}
       SERVER_DOMAIN_CERTIFIED: ${{secrets.SERVER_DOMAIN_CERTIFIED}}
+      AWS_ACCESS_KEY: ${{secrets.AWS_ACCESS_KEY}}
+      AWS_SECRET_KEY: ${{secrets.AWS_SECRET_KEY}}
+      AWS_REGION: ${{secrets.AWS_REGION}}
+      AWS_S3_BUCKET_NAME: ${{secrets.AWS_S3_BUCKET_NAME}}
 
 
     steps:
