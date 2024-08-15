@@ -1,7 +1,7 @@
 package com.notitime.noffice.api.announcement.business;
 
-import com.notitime.noffice.api.OrganizationRoleVerifier;
 import com.notitime.noffice.api.notification.business.NotificationService;
+import com.notitime.noffice.api.organization.business.RoleVerifier;
 import com.notitime.noffice.domain.announcement.model.Announcement;
 import com.notitime.noffice.domain.announcement.persistence.AnnouncementRepository;
 import com.notitime.noffice.domain.member.model.Member;
@@ -33,12 +33,12 @@ public class AnnouncementService {
 	private final MemberRepository memberRepository;
 	private final OrganizationRepository organizationRepository;
 	private final NotificationService notificationService;
-	private final OrganizationRoleVerifier organizationRoleVerifier;
+	private final RoleVerifier roleVerifier;
 	private final ReadStatusRecoder readStatusRecoder;
 
 	@Transactional(readOnly = true)
 	public AnnouncementResponse readAnnouncement(Long memberId, Long announcementId) {
-		organizationRoleVerifier.verifyJoinedMember(memberId, announcementId);
+		roleVerifier.verifyJoinedMember(memberId, announcementId);
 		recordReadStatus(memberId, announcementId);
 		return AnnouncementResponse.of(announcementRepository.findById(announcementId)
 				.orElseThrow(() -> new NotFoundException(BusinessErrorCode.NOT_FOUND_ANNOUNCEMENT)));

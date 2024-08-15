@@ -1,6 +1,6 @@
 package com.notitime.noffice.api.organization.business;
 
-import com.notitime.noffice.api.OrganizationRoleVerifier;
+import com.notitime.noffice.api.organization.presentation.ChangeRoleRequest;
 import com.notitime.noffice.domain.JoinStatus;
 import com.notitime.noffice.domain.OrganizationRole;
 import com.notitime.noffice.domain.category.model.Category;
@@ -40,10 +40,10 @@ public class OrganizationService {
 	private final MemberRepository memberRepository;
 	private final CategoryRepository categoryRepository;
 
-	private final OrganizationRoleVerifier organizationRoleVerifier;
+	private final RoleVerifier roleVerifier;
 
 	public OrganizationInfoResponse getInformation(Long memberId, Long organizationId) {
-		organizationRoleVerifier.verifyJoinedMember(memberId, organizationId);
+		roleVerifier.verifyJoinedMember(memberId, organizationId);
 		Organization organization = getOrganizationEntity(organizationId);
 		return OrganizationInfoResponse.of(
 				organization,
@@ -65,7 +65,7 @@ public class OrganizationService {
 	}
 
 	public OrganizationJoinResponse joinOrganization(Long memberId, Long organizationId) {
-		organizationRoleVerifier.verifyJoinedMember(memberId, organizationId);
+		roleVerifier.verifyJoinedMember(memberId, organizationId);
 		Organization organization = getOrganizationEntity(organizationId);
 		Member member = getMemberEntity(memberId);
 		organizationMemberRepository.save(new OrganizationMember(organization, member));
@@ -79,6 +79,20 @@ public class OrganizationService {
 				.map(OrganizationResponse::of)
 				.toList();
 		return new PageImpl<>(responses, pageable, responses.size());
+	}
+
+	public CategoryModifyResponse modifyCategories(Long memberId, Long organizationId, CategoryModifyRequest request) {
+		roleVerifier.verifyLeader(memberId, organizationId);
+		Organization organization = getOrganizationEntity(organizationId);
+		List<Category> categories = getCategoryList(request.categoryIds());
+		organization.updateCategories(categories);
+		return CategoryModifyResponse.of(organization, CategoryResponses.from(categories));
+	}
+
+	public void changeRoles(Long memberId, Long organizationId, ChangeRoleRequest request) {
+		roleVerifier.verifyLeader(memberId, organizationId);
+		roleVerifier.verifyMultipleMembers(organizationId, request.memberIds());
+		organizationMemberRepository.bulkUpdateRole(organizationId, request.memberIds(), request.role());
 	}
 
 	private Member getMemberEntity(Long memberId) {
@@ -108,13 +122,5 @@ public class OrganizationService {
 
 	private Boolean isAnyMemberPending(Long organizationId) {
 		return organizationMemberRepository.existsByOrganizationIdAndStatus(organizationId, JoinStatus.PENDING);
-	}
-
-	public CategoryModifyResponse modifyCategories(Long memberId, Long organizationId, CategoryModifyRequest request) {
-		organizationRoleVerifier.verifyLeader(memberId, organizationId);
-		Organization organization = getOrganizationEntity(organizationId);
-		List<Category> categories = getCategoryList(request.categoryIds());
-		organization.updateCategories(categories);
-		return CategoryModifyResponse.of(organization, CategoryResponses.from(categories));
 	}
 }

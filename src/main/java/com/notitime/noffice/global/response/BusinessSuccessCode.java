@@ -35,6 +35,7 @@ public enum BusinessSuccessCode implements SuccessCode {
 
 	// NO CONTENT (2400 ~ 2499)
 	NO_CONTENT(HttpStatus.NO_CONTENT, "NOF-2400", "요청이 성공했습니다. - 204"),
+	PATCH_CHANGE_ROLES_SUCCESS(HttpStatus.NO_CONTENT, "NOF-2401", "사용자 권한 변경에 성공하였습니다."),
 	DELETE_ANNOUNCEMENT_SUCCESS(HttpStatus.NO_CONTENT, "NOF-2053", "노티 삭제에 성공하였습니다."),
 	DELETE_NOTIFICATION_SUCCESS(HttpStatus.CREATED, "NOF-2073", "알림 삭제 성공"),
 
