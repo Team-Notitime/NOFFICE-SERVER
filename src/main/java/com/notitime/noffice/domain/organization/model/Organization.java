@@ -51,13 +51,12 @@ public class Organization extends BaseTimeEntity {
 		return this;
 	}
 
-	public Organization updateCategories(List<Category> categories) {
+	public void updateCategories(List<Category> categories) {
 		for (Category category : categories) {
 			if (this.categories.stream().noneMatch(oc -> oc.getCategory().equals(category))) {
 				this.categories.add(new OrganizationCategory(this, category));
 			}
 		}
 		this.categories.removeIf(oc -> categories.stream().noneMatch(category -> oc.getCategory().equals(category)));
-		return this;
 	}
 }
