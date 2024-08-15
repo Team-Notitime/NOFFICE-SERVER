@@ -1,5 +1,6 @@
 package com.notitime.noffice.domain.announcement.model;
 
+import com.notitime.noffice.domain.BaseTimeEntity;
 import com.notitime.noffice.domain.member.model.Member;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,13 +11,17 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 @Getter
-public class AnnounceReadStatus {
+public class AnnouncementReadStatus extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

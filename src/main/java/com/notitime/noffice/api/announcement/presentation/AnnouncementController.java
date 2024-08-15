@@ -1,6 +1,7 @@
 package com.notitime.noffice.api.announcement.presentation;
 
 import com.notitime.noffice.api.announcement.business.AnnouncementService;
+import com.notitime.noffice.auth.AuthMember;
 import com.notitime.noffice.global.response.BusinessSuccessCode;
 import com.notitime.noffice.global.response.NofficeResponse;
 import com.notitime.noffice.request.AnnouncementCreateRequest;
@@ -37,9 +38,10 @@ public class AnnouncementController implements AnnouncementApi {
 	}
 
 	@GetMapping("/{announcementId}")
-	public NofficeResponse<AnnouncementResponse> getAnnouncement(@PathVariable final Long announcementId) {
+	public NofficeResponse<AnnouncementResponse> readAnnouncement(@AuthMember final Long memberId,
+	                                                              @PathVariable final Long announcementId) {
 		return NofficeResponse.success(BusinessSuccessCode.GET_ANNOUNCEMENT_SUCCESS,
-				announcementService.getAnnouncement(announcementId));
+				announcementService.readAnnouncement(memberId, announcementId));
 	}
 
 	@PostMapping("/{announcementId}")

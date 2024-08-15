@@ -1,5 +1,6 @@
 package com.notitime.noffice.api.announcement.business;
 
+import com.notitime.noffice.api.OrganizationRoleVerifier;
 import com.notitime.noffice.api.notification.business.NotificationService;
 import com.notitime.noffice.domain.announcement.model.Announcement;
 import com.notitime.noffice.domain.announcement.persistence.AnnouncementRepository;
@@ -32,9 +33,13 @@ public class AnnouncementService {
 	private final MemberRepository memberRepository;
 	private final OrganizationRepository organizationRepository;
 	private final NotificationService notificationService;
+	private final OrganizationRoleVerifier organizationRoleVerifier;
+	private final ReadStatusRecoder readStatusRecoder;
 
 	@Transactional(readOnly = true)
-	public AnnouncementResponse getAnnouncement(final Long announcementId) {
+	public AnnouncementResponse readAnnouncement(Long memberId, Long announcementId) {
+		organizationRoleVerifier.verifyJoinedMember(memberId, announcementId);
+		recordReadStatus(memberId, announcementId);
 		return AnnouncementResponse.of(announcementRepository.findById(announcementId)
 				.orElseThrow(() -> new NotFoundException(BusinessErrorCode.NOT_FOUND_ANNOUNCEMENT)));
 	}
@@ -65,7 +70,11 @@ public class AnnouncementService {
 
 	public Slice<AnnouncementCoverResponse> getPublishedAnnouncements(Long organizationId, Pageable pageable) {
 		return announcementRepository.findByOrganizationId(organizationId, pageable)
-				.map(AnnouncementCoverResponse::of);
+				.map(announcement -> {
+					Long readCount = readStatusRecoder.countReader(announcement.getId());
+					Long totalMemberCount = getTotalMemberCount(organizationId);
+					return AnnouncementCoverResponse.of(announcement, readCount, totalMemberCount);
+				});
 	}
 
 	private Announcement buildAnnouncementFromRequest(AnnouncementCreateRequest request) {
@@ -101,5 +110,19 @@ public class AnnouncementService {
 
 	private AnnouncementResponse buildResponseFromAnnouncement(Announcement announcement) {
 		return AnnouncementResponse.of(announcement);
+	}
+
+	private void recordReadStatus(Long memberId, Long announcementId) {
+		Member member = memberRepository.findById(memberId)
+				.orElseThrow(() -> new NotFoundException(BusinessErrorCode.NOT_FOUND_MEMBER));
+		Announcement announcement = announcementRepository.findById(announcementId)
+				.orElseThrow(() -> new NotFoundException(BusinessErrorCode.NOT_FOUND_ANNOUNCEMENT));
+		readStatusRecoder.record(member, announcement);
+	}
+
+	private Long getTotalMemberCount(Long organizationId) {
+		return (long) organizationRepository.findById(organizationId)
+				.orElseThrow(() -> new NotFoundException(BusinessErrorCode.NOT_FOUND_ORGANIZATION))
+				.getMembers().size();
 	}
 }
