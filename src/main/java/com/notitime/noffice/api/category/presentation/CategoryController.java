@@ -18,6 +18,6 @@ public class CategoryController implements CategoryApi {
 
 	@GetMapping
 	public NofficeResponse<CategoryResponses> getCategories() {
-		return NofficeResponse.success(BusinessSuccessCode.GET_CATEGORIES_SUCCESS, categoryService.getCategories());
+		return NofficeResponse.success(BusinessSuccessCode.GET_CATEGORY_SUCCESS, categoryService.getCategories());
 	}
 }

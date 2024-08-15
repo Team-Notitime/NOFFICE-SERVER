@@ -5,7 +5,7 @@ import com.notitime.noffice.global.response.NofficeResponse;
 import com.notitime.noffice.request.CategoryModifyRequest;
 import com.notitime.noffice.request.OrganizationCreateRequest;
 import com.notitime.noffice.response.AnnouncementCoverResponse;
-import com.notitime.noffice.response.CategoryResponses;
+import com.notitime.noffice.response.CategoryModifyResponse;
 import com.notitime.noffice.response.OrganizationCreateResponse;
 import com.notitime.noffice.response.OrganizationInfoResponse;
 import com.notitime.noffice.response.OrganizationJoinResponse;
@@ -57,18 +57,11 @@ public interface OrganizationApi {
 	                                                                            @PathVariable final Long organizationId,
 	                                                                            Pageable pageable);
 
-	@Operation(summary = "조직 카테고리 목록 조회", description = "조직에 등록된 카테고리 목록을 조회합니다.", responses = {
-			@ApiResponse(responseCode = "200", description = "조직 카테고리 목록 조회 성공"),
-			@ApiResponse(responseCode = "404", description = "조직에 등록된 카테고리가 없습니다.")
-	})
-	NofficeResponse<CategoryResponses> getCategories(@AuthMember final Long memberId,
-	                                                 @PathVariable final Long organizationId);
-
 	@Operation(summary = "조직 카테고리 수정", description = "조직에 등록된 카테고리를 수정합니다.", responses = {
 			@ApiResponse(responseCode = "200", description = "조직 카테고리 수정 성공"),
 			@ApiResponse(responseCode = "404", description = "조직에 등록된 카테고리가 없습니다.")
 	})
-	NofficeResponse<CategoryResponses> modifyCategories(@AuthMember final Long memberId,
-	                                                    @PathVariable final Long organizationId,
-	                                                    @RequestBody @Valid final CategoryModifyRequest request);
+	NofficeResponse<CategoryModifyResponse> modifyCategories(@AuthMember final Long memberId,
+	                                                         @PathVariable final Long organizationId,
+	                                                         @RequestBody @Valid final CategoryModifyRequest request);
 }

@@ -22,7 +22,6 @@ public enum BusinessSuccessCode implements SuccessCode {
 	CHANGE_SEND_TIME_SUCCESS(HttpStatus.OK, "NOF-2072", "알림 발송 시간 변경 성공"),
 	GET_ASSIGNED_TASKS_SUCCESS(HttpStatus.OK, "NOF-2061", "사용자별 투두 목록 조회 성공"),
 	GET_PUBLISHED_ANNOUNCEMENTS_SUCCESS(HttpStatus.OK, "NOF-2073", "조직별 노티 페이징 조회 성공"),
-	GET_CATEGORIES_SUCCESS(HttpStatus.OK, "NOF-2081", "조직 카테고리 목록 조회 성공"),
 	PUT_CATEGORIES_SUCCESS(HttpStatus.OK, "NOF-2082", "조직 카테고리 수정 성공"),
 
 	// CREATED (2100 ~ 2199)

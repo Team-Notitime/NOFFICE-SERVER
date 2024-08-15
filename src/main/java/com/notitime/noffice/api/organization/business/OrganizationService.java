@@ -14,7 +14,10 @@ import com.notitime.noffice.domain.organization.persistence.OrganizationMemberRe
 import com.notitime.noffice.domain.organization.persistence.OrganizationRepository;
 import com.notitime.noffice.global.exception.NotFoundException;
 import com.notitime.noffice.global.response.BusinessErrorCode;
+import com.notitime.noffice.request.CategoryModifyRequest;
 import com.notitime.noffice.request.OrganizationCreateRequest;
+import com.notitime.noffice.response.CategoryModifyResponse;
+import com.notitime.noffice.response.CategoryResponses;
 import com.notitime.noffice.response.OrganizationCreateResponse;
 import com.notitime.noffice.response.OrganizationInfoResponse;
 import com.notitime.noffice.response.OrganizationJoinResponse;
@@ -105,5 +108,13 @@ public class OrganizationService {
 
 	private Boolean isAnyMemberPending(Long organizationId) {
 		return organizationMemberRepository.existsByOrganizationIdAndStatus(organizationId, JoinStatus.PENDING);
+	}
+
+	public CategoryModifyResponse modifyCategories(Long memberId, Long organizationId, CategoryModifyRequest request) {
+		organizationRoleVerifier.verifyLeader(memberId, organizationId);
+		Organization organization = getOrganizationEntity(organizationId);
+		List<Category> categories = getCategoryList(request.categoryIds());
+		organization.updateCategories(categories);
+		return CategoryModifyResponse.of(organization, CategoryResponses.from(categories));
 	}
 }

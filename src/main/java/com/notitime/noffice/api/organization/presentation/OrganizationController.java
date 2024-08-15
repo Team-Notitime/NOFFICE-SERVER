@@ -8,7 +8,7 @@ import com.notitime.noffice.global.response.NofficeResponse;
 import com.notitime.noffice.request.CategoryModifyRequest;
 import com.notitime.noffice.request.OrganizationCreateRequest;
 import com.notitime.noffice.response.AnnouncementCoverResponse;
-import com.notitime.noffice.response.CategoryResponses;
+import com.notitime.noffice.response.CategoryModifyResponse;
 import com.notitime.noffice.response.OrganizationCreateResponse;
 import com.notitime.noffice.response.OrganizationInfoResponse;
 import com.notitime.noffice.response.OrganizationJoinResponse;
@@ -68,17 +68,10 @@ public class OrganizationController implements OrganizationApi {
 				announcementService.getPublishedAnnouncements(organizationId, pageable));
 	}
 
-	@GetMapping("/{organizationId}/categories")
-	public NofficeResponse<CategoryResponses> getCategories(@AuthMember final Long memberId,
-	                                                        @PathVariable Long organizationId) {
-		return NofficeResponse.success(BusinessSuccessCode.GET_CATEGORIES_SUCCESS,
-				organizationService.getCategories(memberId, organizationId));
-	}
-
 	@PutMapping("/{organizationId}/categories")
-	public NofficeResponse<CategoryResponses> modifyCategories(@AuthMember final Long memberId,
-	                                                           @PathVariable Long organizationId,
-	                                                           @RequestBody @Valid final CategoryModifyRequest request) {
+	public NofficeResponse<CategoryModifyResponse> modifyCategories(@AuthMember final Long memberId,
+	                                                                @PathVariable Long organizationId,
+	                                                                @RequestBody @Valid final CategoryModifyRequest request) {
 		return NofficeResponse.success(BusinessSuccessCode.PUT_CATEGORIES_SUCCESS,
 				organizationService.modifyCategories(memberId, organizationId, request));
 	}
