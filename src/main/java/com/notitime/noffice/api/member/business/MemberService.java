@@ -22,6 +22,6 @@ public class MemberService {
 
 	private Member getMemberEntity(Long memberId) {
 		return memberRepository.findById(memberId)
-				.orElseThrow(() -> new NotFoundException(BusinessErrorCode.NOT_FOUND));
+				.orElseThrow(() -> new NotFoundException(BusinessErrorCode.NOT_FOUND_MEMBER));
 	}
 }
