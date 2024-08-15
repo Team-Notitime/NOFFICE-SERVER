@@ -1,7 +1,7 @@
 package com.notitime.noffice.api.announcement.business;
 
-import com.notitime.noffice.api.OrganizationRoleVerifier;
 import com.notitime.noffice.api.notification.business.NotificationService;
+import com.notitime.noffice.api.organization.business.OrganizationRoleVerifier;
 import com.notitime.noffice.domain.announcement.model.Announcement;
 import com.notitime.noffice.domain.announcement.persistence.AnnouncementRepository;
 import com.notitime.noffice.domain.member.model.Member;

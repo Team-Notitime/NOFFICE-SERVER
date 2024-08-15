@@ -1,4 +1,4 @@
-package com.notitime.noffice.api;
+package com.notitime.noffice.api.organization.business;
 
 import static com.notitime.noffice.domain.OrganizationRole.LEADER;
 

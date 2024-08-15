@@ -1,6 +1,5 @@
 package com.notitime.noffice.api.organization.business;
 
-import com.notitime.noffice.api.OrganizationRoleVerifier;
 import com.notitime.noffice.domain.JoinStatus;
 import com.notitime.noffice.domain.OrganizationRole;
 import com.notitime.noffice.domain.category.model.Category;
