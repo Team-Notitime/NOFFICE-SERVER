@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 public record AnnouncementCoverResponse(
 		Long announcementId,
 		String title,
+		String content,
 		String profileImageUrl,
 		String placeLinkName,
 		String placeLinkUrl,
@@ -19,6 +20,7 @@ public record AnnouncementCoverResponse(
 		return new AnnouncementCoverResponse(
 				announcement.getId(),
 				announcement.getTitle(),
+				announcement.getContent(),
 				announcement.getProfileImageUrl(),
 				announcement.getPlaceLinkName(),
 				announcement.getPlaceLinkUrl(),
