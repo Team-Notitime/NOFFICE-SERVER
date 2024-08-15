@@ -10,6 +10,8 @@ public class SecurityWhiteListPaths {
 	public static final String[] SECURITY_WHITE_LIST = {
 			"/error",
 			"/api/v1/member/login",
+			"/api/v1/image/**",
+			"/image/**",
 			"/h2-console/**",
 			"/swagger-ui/**",
 			"/swagger-resources/**",
@@ -20,7 +22,9 @@ public class SecurityWhiteListPaths {
 
 	public static final List<String> FILTER_WHITE_LIST = List.of(
 			"/health/**",
+			"/image/**",
 			"/api/v1/auth/google/callback",
+			"/api/v1/image/**",
 			"/api/v1/member/login",
 			"/swagger-ui/**",
 			"/swagger-resources/**",
