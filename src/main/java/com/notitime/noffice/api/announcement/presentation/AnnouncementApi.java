@@ -1,5 +1,6 @@
 package com.notitime.noffice.api.announcement.presentation;
 
+import com.notitime.noffice.auth.AuthMember;
 import com.notitime.noffice.global.response.NofficeResponse;
 import com.notitime.noffice.request.AnnouncementCreateRequest;
 import com.notitime.noffice.request.AnnouncementUpdateRequest;
@@ -30,11 +31,12 @@ public interface AnnouncementApi {
 	NofficeResponse<AnnouncementResponse> createAnnouncement(
 			@RequestBody final AnnouncementCreateRequest announcementCreateRequest);
 
-	@Operation(summary = "노티 조회", description = "노티를 조회합니다.", responses = {
+	@Operation(summary = "조직에 발급된 노티 열람", description = "열람하려는 노티를 조회하고, 열람 기록에 추가합니다.", responses = {
 			@ApiResponse(responseCode = "200", description = "노티 단일 조회 성공"),
 			@ApiResponse(responseCode = "404", description = "해당 노티가 없습니다.")
 	})
-	NofficeResponse<AnnouncementResponse> getAnnouncement(@PathVariable final Long announcementId);
+	NofficeResponse<AnnouncementResponse> readAnnouncement(@AuthMember final Long memberId,
+	                                                       @PathVariable final Long announcementId);
 
 	@Operation(summary = "노티 수정", description = "노티를 수정합니다.", responses = {
 			@ApiResponse(responseCode = "200", description = "노티 수정 성공"),
