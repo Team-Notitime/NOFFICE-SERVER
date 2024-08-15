@@ -12,6 +12,7 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -27,6 +28,11 @@ public interface OrganizationMemberRepository extends JpaRepository<Organization
 	@Query("SELECT om.member FROM OrganizationMember om WHERE om.organization.id = :organizationId AND om.role = :role")
 	List<Member> findMembersByOrganizationIdAndRole(@Param("organizationId") Long organizationId,
 	                                                @Param("role") OrganizationRole role);
+
+	@Modifying
+	@Query("UPDATE OrganizationMember om SET om.role = :role WHERE om.organization.id = :organizationId AND om.member.id IN :memberIds")
+	int bulkUpdateRole(@Param("organizationId") Long organizationId, @Param("memberIds") List<Long> memberIds,
+	                   @Param("role") OrganizationRole role);
 
 	default List<Member> findLeadersByOrganizationId(Long organizationId) {
 		return findMembersByOrganizationIdAndRole(organizationId, LEADER);
@@ -47,4 +53,9 @@ public interface OrganizationMemberRepository extends JpaRepository<Organization
 	Long countByOrganizationIdAndRole(Long organizationId, OrganizationRole role);
 
 	boolean existsByOrganizationIdAndStatus(Long organizationId, JoinStatus status);
+
+	@Query("SELECT om.member.id FROM OrganizationMember om WHERE om.organization.id = :organizationId AND om.member.id IN :memberIds AND om.status = 'ACTIVE'")
+	List<Long> findActiveMemberIdsByOrganizationId(@Param("organizationId") Long organizationId,
+	                                               @Param("memberIds") List<Long> memberIds);
+
 }

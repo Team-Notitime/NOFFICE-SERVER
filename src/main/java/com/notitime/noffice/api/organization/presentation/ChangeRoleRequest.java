@@ -7,11 +7,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
 public record ChangeRoleRequest(
-		@Schema(description = "변경할 조직 ID", requiredMode = REQUIRED, example = "1")
-		Long organizationId,
 		@Schema(description = "변경 적용할 권한", requiredMode = REQUIRED, example = "LEADER, PARTICIPANT")
 		OrganizationRole role,
 		@Schema(description = "변경할 대상 멤버 ID 리스트", requiredMode = REQUIRED, example = "[1, 2, 3]")
-		List<Long> targetMemberIds
+		List<Long> memberIds
 ) {
 }
