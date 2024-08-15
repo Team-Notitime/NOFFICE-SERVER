@@ -16,7 +16,6 @@ public record OrganizationInfoResponse(
 		String profileImage,
 		@Schema(requiredMode = REQUIRED, description = "카테고리 리스트", example = "['컴퓨터공학', '전자공학']")
 		List<String> categories,
-
 		@Schema(requiredMode = NOT_REQUIRED, description = "관리자 사용자 수")
 		Long leaderCount,
 		@Schema(requiredMode = NOT_REQUIRED, description = "일반 사용자 수")
