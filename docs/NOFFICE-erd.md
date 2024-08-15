@@ -120,6 +120,13 @@ erDiagram
         bigint announcement_id FK
         timestamp send_at
     }
+    
+    CONTENT_IMAGE {
+        bigint id PK
+        varchar title
+        ImagePurpose imagePurpose
+        text image_url
+    }
 
     BASETIMEENTITY {
         timestamp created_at
