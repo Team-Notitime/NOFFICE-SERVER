@@ -2,8 +2,10 @@ package com.notitime.noffice.api.organization.presentation;
 
 import com.notitime.noffice.auth.AuthMember;
 import com.notitime.noffice.global.response.NofficeResponse;
+import com.notitime.noffice.request.CategoryModifyRequest;
 import com.notitime.noffice.request.OrganizationCreateRequest;
 import com.notitime.noffice.response.AnnouncementCoverResponse;
+import com.notitime.noffice.response.CategoryModifyResponse;
 import com.notitime.noffice.response.OrganizationCreateResponse;
 import com.notitime.noffice.response.OrganizationInfoResponse;
 import com.notitime.noffice.response.OrganizationJoinResponse;
@@ -54,4 +56,12 @@ public interface OrganizationApi {
 	NofficeResponse<Slice<AnnouncementCoverResponse>> getPublishedAnnouncements(@AuthMember final Long memberId,
 	                                                                            @PathVariable final Long organizationId,
 	                                                                            Pageable pageable);
+
+	@Operation(summary = "조직 카테고리 수정", description = "조직에 등록된 카테고리를 수정합니다.", responses = {
+			@ApiResponse(responseCode = "200", description = "조직 카테고리 수정 성공"),
+			@ApiResponse(responseCode = "404", description = "조직에 등록된 카테고리가 없습니다.")
+	})
+	NofficeResponse<CategoryModifyResponse> modifyCategories(@AuthMember final Long memberId,
+	                                                         @PathVariable final Long organizationId,
+	                                                         @RequestBody @Valid final CategoryModifyRequest request);
 }
