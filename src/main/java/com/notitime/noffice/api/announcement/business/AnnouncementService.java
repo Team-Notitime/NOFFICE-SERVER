@@ -9,6 +9,7 @@ import com.notitime.noffice.domain.member.model.Member;
 import com.notitime.noffice.domain.member.persistence.MemberRepository;
 import com.notitime.noffice.domain.organization.model.Organization;
 import com.notitime.noffice.domain.organization.persistence.OrganizationRepository;
+import com.notitime.noffice.domain.task.model.Task;
 import com.notitime.noffice.global.exception.NotFoundException;
 import com.notitime.noffice.global.response.BusinessErrorCode;
 import com.notitime.noffice.request.AnnouncementCreateRequest;
@@ -106,6 +107,11 @@ public class AnnouncementService {
 				member,
 				organization
 		);
+		if (request.tasks() != null) {
+			List<Task> tasks = request.tasks().stream()
+					.map(task -> Task.create(task.content(), announcement)).toList();
+			announcement.withTasks(tasks);
+		}
 		Optional.ofNullable(request.profileImageUrl()).ifPresent(announcement::withProfileImageUrl);
 		Optional.ofNullable(request.isFaceToFace()).ifPresent(announcement::withIsFaceToFace);
 		Optional.ofNullable(request.placeLinkName()).ifPresent(announcement::withPlaceLinkName);

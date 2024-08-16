@@ -1,26 +1,24 @@
 package com.notitime.noffice.request;
 
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIRED;
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import java.util.List;
 
-@JsonInclude(NON_NULL)
 public record AnnouncementCreateRequest(
-		@Schema(requiredMode = RequiredMode.REQUIRED, example = "조직 ID") Long organizationId,
-		@Schema(requiredMode = RequiredMode.REQUIRED, example = "1") Long memberId,
-		@Schema(requiredMode = RequiredMode.REQUIRED, example = "공지 제목") String title,
-		@Schema(requiredMode = RequiredMode.REQUIRED, example = "공지 내용") String content,
-		@Schema(requiredMode = RequiredMode.NOT_REQUIRED, example = "프로필 이미지 URL") String profileImageUrl,
-		@Schema(requiredMode = RequiredMode.NOT_REQUIRED, example = "장소 링크 이름") String placeLinkName,
-		@Schema(requiredMode = RequiredMode.NOT_REQUIRED, example = "장소 링크 URL") String placeLinkUrl,
-		@Schema(requiredMode = RequiredMode.NOT_REQUIRED, example = "true") Boolean isFaceToFace,
-		@Schema(requiredMode = RequiredMode.NOT_REQUIRED) List<TaskCreateRequest> tasks,
-		@Schema(requiredMode = RequiredMode.REQUIRED, example = "2021-07-01T 00:00:00") String endAt,
-		@Schema(requiredMode = RequiredMode.REQUIRED, example = "[2021-07-01T00:00:00, 2021-07-02T00:00:00]") List<String> noticeBefore,
-		@Schema(requiredMode = RequiredMode.REQUIRED) List<String> noticeDate) {
+		@Schema(description = "조직 ID", requiredMode = REQUIRED, example = "1") Long organizationId,
+		@Schema(description = "공지 발행자 ID", requiredMode = REQUIRED, example = "1") Long memberId,
+		@Schema(description = "공지 제목", requiredMode = REQUIRED, example = "공지 제목") String title,
+		@Schema(description = "공지 내용", requiredMode = REQUIRED, example = "공지 내용") String content,
+		@Schema(description = "프로필 이미지 URL", requiredMode = NOT_REQUIRED) String profileImageUrl,
+		@Schema(description = "장소 링크 이름", requiredMode = NOT_REQUIRED) String placeLinkName,
+		@Schema(description = "장소 링크 URL", requiredMode = NOT_REQUIRED) String placeLinkUrl,
+		@Schema(description = "장소 대면/비대면 여부", requiredMode = NOT_REQUIRED, example = "true") Boolean isFaceToFace,
+		@Schema(description = "투두 목록", requiredMode = NOT_REQUIRED) List<TaskCreateRequest> tasks,
+		@Schema(description = "활동 진행 만료일", requiredMode = REQUIRED, example = "2021-07-01T 00:00:00") String endAt,
+		@Schema(description = "리마인드 알림 시간(초 단위)", requiredMode = REQUIRED, example = "[2021-07-01T00:00:00, 2021-07-02T00:00:00]") List<String> noticeBefore,
+		@Schema(description = "리마인드 알림 기준시간", requiredMode = REQUIRED, example = "[2021-07-01T00:00:00, 2021-07-02T00:00:00]") List<String> noticeDate) {
 	public AnnouncementCreateRequest {
 		profileImageUrl = (profileImageUrl != null && profileImageUrl.isEmpty()) ? null : profileImageUrl;
 		placeLinkName = (placeLinkName != null && placeLinkName.isEmpty()) ? null : placeLinkName;

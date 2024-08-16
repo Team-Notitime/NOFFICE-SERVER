@@ -29,4 +29,13 @@ public class Task extends BaseTimeEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "announcement_id", nullable = false)
 	private Announcement announcement;
+
+	private Task(String content, Announcement announcement) {
+		this.content = content;
+		this.announcement = announcement;
+	}
+
+	public static Task create(String content, Announcement announcement) {
+		return new Task(content, announcement);
+	}
 }
