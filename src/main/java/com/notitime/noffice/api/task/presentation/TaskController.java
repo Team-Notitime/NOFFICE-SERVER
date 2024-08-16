@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,7 +23,7 @@ public class TaskController implements TaskApi {
 
 	private final TaskService taskService;
 
-	@PostMapping
+	@PatchMapping
 	public NofficeResponse<TaskModifyResponse> modify(TaskModifyRequest taskModifyRequest) {
 		return NofficeResponse.success(BusinessSuccessCode.OK, taskService.modify(taskModifyRequest));
 	}
