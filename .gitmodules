@@ -1,0 +1,4 @@
+[submodule "NOFFICE-server-privates"]
+	path = NOFFICE-server-privates
+	url = git@github.com:Team-Notitime/NOFFICE-server-privates.git
+    branch = develop
