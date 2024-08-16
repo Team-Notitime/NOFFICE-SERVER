@@ -6,6 +6,7 @@ import com.notitime.noffice.request.AnnouncementCreateRequest;
 import com.notitime.noffice.request.AnnouncementUpdateRequest;
 import com.notitime.noffice.response.AnnouncementResponse;
 import com.notitime.noffice.response.AnnouncementResponses;
+import com.notitime.noffice.response.TaskResponses;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -50,4 +51,11 @@ public interface AnnouncementApi {
 			@ApiResponse(responseCode = "400", description = "노티 삭제에 실패하였습니다.")
 	})
 	NofficeResponse<Void> deleteAnnouncement(@PathVariable final Long announcementId);
+
+	@Operation(summary = "노티에 발급된 투두 조회", description = "노티에 발급된 투두를 조회합니다.", responses = {
+			@ApiResponse(responseCode = "200", description = "노티에 발급된 투두 조회 성공"),
+			@ApiResponse(responseCode = "404", description = "노티에 발급된 투두가 없습니다.")
+	})
+	NofficeResponse<TaskResponses> getTasksById(@AuthMember final Long memberId,
+	                                            @PathVariable final Long announcementId);
 }
