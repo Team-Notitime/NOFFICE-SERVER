@@ -67,11 +67,15 @@ public class Announcement extends BaseTimeEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "organization_id")
 	private Organization organization;
-	
+
 	public static Announcement createAnnouncement(String title, String content, LocalDateTime endAt, Member member,
 	                                              Organization organizaion) {
 		return new Announcement(null, title, content, null, false, null, null, endAt,
-				new ArrayList<>(), new ArrayList<>(), member, organizaion);
+				null, new ArrayList<>(), member, organizaion);
+	}
+
+	public void withTasks(List<Task> tasks) {
+		this.tasks = tasks;
 	}
 
 	public void withProfileImageUrl(String profileImageUrl) {
