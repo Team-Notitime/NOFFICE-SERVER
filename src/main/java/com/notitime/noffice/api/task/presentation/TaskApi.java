@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @Tag(name = "투두", description = "노티 하위 발급 투두 리스트 관련 API")
 interface TaskApi {
@@ -20,12 +19,6 @@ interface TaskApi {
 			@ApiResponse(responseCode = "400", description = "투두 수정 실패")
 	})
 	NofficeResponse<TaskModifyResponse> modify(TaskModifyRequest taskModifyRequest);
-
-	@Operation(summary = "투두 삭제", responses = {
-			@ApiResponse(responseCode = "204", description = "투두 삭제 성공"),
-			@ApiResponse(responseCode = "400", description = "투두 삭제 실패")
-	})
-	NofficeResponse<Void> delete(@PathVariable Long taskId);
 
 	@Operation(summary = "사용자 할당 투두 목록 조회", responses = {
 			@ApiResponse(responseCode = "200", description = "사용자 할당 투두 조회 성공"),

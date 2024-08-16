@@ -58,4 +58,10 @@ public interface AnnouncementApi {
 	})
 	NofficeResponse<TaskResponses> getTasksById(@AuthMember final Long memberId,
 	                                            @PathVariable final Long announcementId);
+
+	@Operation(summary = "노티에 발급된 투두 삭제", description = "노티에 발급된 투두를 삭제합니다.", responses = {
+			@ApiResponse(responseCode = "204", description = "노티에 발급된 투두 삭제 성공"),
+			@ApiResponse(responseCode = "400", description = "노티에 발급된 투두 삭제에 실패하였습니다.")
+	})
+	NofficeResponse<Void> deleteTaskById(@PathVariable final Long announcementId, @PathVariable final Long taskId);
 }

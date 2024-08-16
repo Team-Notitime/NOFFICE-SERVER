@@ -1,6 +1,7 @@
 package com.notitime.noffice.api.announcement.presentation;
 
 import static com.notitime.noffice.global.response.BusinessSuccessCode.DELETE_ANNOUNCEMENT_SUCCESS;
+import static com.notitime.noffice.global.response.BusinessSuccessCode.DELETE_TASK_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_ANNOUNCEMENTS_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_ANNOUNCEMENT_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_TASKS_BY_ANNOUNCEMENT_SUCCESS;
@@ -70,6 +71,13 @@ public class AnnouncementController implements AnnouncementApi {
 	public NofficeResponse<TaskResponses> getTasksById(@AuthMember final Long memberId,
 	                                                   @PathVariable final Long announcementId) {
 		return NofficeResponse.success(GET_TASKS_BY_ANNOUNCEMENT_SUCCESS,
-				announcementService.getTasksById(announcementId));
+				taskService.getTasksById(announcementId));
+	}
+
+	@DeleteMapping("/{announcementId}/tasks/{taskId}")
+	public NofficeResponse<Void> deleteTaskById(@PathVariable final Long announcementId,
+	                                            @PathVariable final Long taskId) {
+		taskService.delete(announcementId, taskId);
+		return NofficeResponse.success(DELETE_TASK_SUCCESS);
 	}
 }
