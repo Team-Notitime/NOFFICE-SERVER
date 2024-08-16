@@ -16,6 +16,7 @@ import com.notitime.noffice.response.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
@@ -41,6 +42,7 @@ public class AppleAuthStrategy implements SocialAuthStrategy {
 	}
 
 	@Override
+	@Transactional
 	public SocialAuthResponse login(SocialAuthRequest request) {
 		ApplePublicKeys applePublicKeys = appleFeignClient.getApplePublicKey();
 		AuthorizedMemberInfo memberResponse = appleOAuthProvider.getAppleUserInfo(request.code(),

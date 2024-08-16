@@ -14,6 +14,7 @@ import com.notitime.noffice.response.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +41,7 @@ public class GoogleAuthStrategy implements SocialAuthStrategy {
 	}
 
 	@Override
+	@Transactional
 	public SocialAuthResponse login(SocialAuthRequest request) {
 		GoogleTokenResponse googleTokenResponse = googleAuthApiClient.googleAuth(
 				request.code(),
