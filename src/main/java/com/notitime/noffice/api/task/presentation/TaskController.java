@@ -4,9 +4,9 @@ import com.notitime.noffice.api.task.business.TaskService;
 import com.notitime.noffice.auth.AuthMember;
 import com.notitime.noffice.global.response.BusinessSuccessCode;
 import com.notitime.noffice.global.response.NofficeResponse;
-import com.notitime.noffice.request.TaskCreateRequest;
+import com.notitime.noffice.request.TaskModifyRequest;
 import com.notitime.noffice.response.AssignedTaskResponse;
-import com.notitime.noffice.response.TaskCreateResponse;
+import com.notitime.noffice.response.TaskModifyResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -26,9 +26,8 @@ public class TaskController implements TaskApi {
 	private final TaskService taskService;
 
 	@PostMapping
-	public NofficeResponse<TaskCreateResponse> create(TaskCreateRequest taskCreateRequest) {
-		return NofficeResponse.success(BusinessSuccessCode.OK, taskService.create(taskCreateRequest));
-
+	public NofficeResponse<TaskModifyResponse> modify(TaskModifyRequest taskModifyRequest) {
+		return NofficeResponse.success(BusinessSuccessCode.OK, taskService.modify(taskModifyRequest));
 	}
 
 	@DeleteMapping("/{taskId}")

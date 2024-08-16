@@ -7,7 +7,11 @@ import com.notitime.noffice.domain.task.model.Task;
 import com.notitime.noffice.domain.task.model.TaskStatus;
 import com.notitime.noffice.domain.task.persistence.TaskRepository;
 import com.notitime.noffice.domain.task.persistence.TaskStatusRepository;
+import com.notitime.noffice.global.exception.NotFoundException;
+import com.notitime.noffice.global.response.BusinessErrorCode;
+import com.notitime.noffice.request.TaskModifyRequest;
 import com.notitime.noffice.response.AssignedTaskResponse;
+import com.notitime.noffice.response.TaskModifyResponse;
 import com.notitime.noffice.response.TaskResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +31,11 @@ public class TaskService {
 	private final TaskRepository taskRepository;
 	private final AnnouncementService announcementService;
 
+	public TaskModifyResponse modify(TaskModifyRequest taskModifyRequest) {
+		Task task = findById(taskModifyRequest.id());
+		return TaskModifyResponse.from(task.modify(taskModifyRequest.content()));
+	}
+
 	public Slice<AssignedTaskResponse> getAssignedTasks(Long memberId, Pageable pageable) {
 		Slice<Organization> organizations = getSlicedOrganizations(memberId, pageable);
 		List<AssignedTaskResponse> responses = organizations.stream()
@@ -41,6 +50,11 @@ public class TaskService {
 
 	private Slice<Organization> getSlicedOrganizations(Long memberId, Pageable pageable) {
 		return organizationMemberRepository.findOrganizationsByMemberId(memberId, pageable);
+	}
+
+	private Task findById(Long taskId) {
+		return taskRepository.findById(taskId)
+				.orElseThrow(() -> new NotFoundException(BusinessErrorCode.NOT_FOUND_TASK));
 	}
 
 	private AssignedTaskResponse searchAssignedTasks(Long memberId, Organization organization) {

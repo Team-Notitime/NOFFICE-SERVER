@@ -38,4 +38,9 @@ public class Task extends BaseTimeEntity {
 	public static Task create(String content, Announcement announcement) {
 		return new Task(content, announcement);
 	}
+
+	public Task modify(String content) {
+		this.content = content;
+		return this;
+	}
 }
