@@ -1,8 +1,11 @@
 package com.notitime.noffice.api.task.business;
 
+import com.notitime.noffice.api.announcement.business.AnnouncementService;
 import com.notitime.noffice.domain.organization.model.Organization;
 import com.notitime.noffice.domain.organization.persistence.OrganizationMemberRepository;
+import com.notitime.noffice.domain.task.model.Task;
 import com.notitime.noffice.domain.task.model.TaskStatus;
+import com.notitime.noffice.domain.task.persistence.TaskRepository;
 import com.notitime.noffice.domain.task.persistence.TaskStatusRepository;
 import com.notitime.noffice.response.AssignedTaskResponse;
 import com.notitime.noffice.response.TaskResponse;
@@ -21,6 +24,8 @@ public class TaskService {
 
 	private final TaskStatusRepository taskStatusRepository;
 	private final OrganizationMemberRepository organizationMemberRepository;
+	private final TaskRepository taskRepository;
+	private final AnnouncementService announcementService;
 
 	public Slice<AssignedTaskResponse> getAssignedTasks(Long memberId, Pageable pageable) {
 		Slice<Organization> organizations = getSlicedOrganizations(memberId, pageable);
@@ -28,6 +33,10 @@ public class TaskService {
 				.map(organization -> searchAssignedTasks(memberId, organization))
 				.toList();
 		return new PageImpl<>(responses, pageable, organizations.getSize());
+	}
+
+	public List<Task> findByAnnouncementId(Long announcementId) {
+		return taskRepository.findByAnnouncementId(announcementId);
 	}
 
 	private Slice<Organization> getSlicedOrganizations(Long memberId, Pageable pageable) {

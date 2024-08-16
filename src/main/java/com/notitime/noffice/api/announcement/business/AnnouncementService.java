@@ -2,6 +2,7 @@ package com.notitime.noffice.api.announcement.business;
 
 import com.notitime.noffice.api.notification.business.NotificationService;
 import com.notitime.noffice.api.organization.business.RoleVerifier;
+import com.notitime.noffice.api.task.business.TaskService;
 import com.notitime.noffice.domain.announcement.model.Announcement;
 import com.notitime.noffice.domain.announcement.persistence.AnnouncementRepository;
 import com.notitime.noffice.domain.member.model.Member;
@@ -15,6 +16,7 @@ import com.notitime.noffice.request.AnnouncementUpdateRequest;
 import com.notitime.noffice.response.AnnouncementCoverResponse;
 import com.notitime.noffice.response.AnnouncementResponse;
 import com.notitime.noffice.response.AnnouncementResponses;
+import com.notitime.noffice.response.TaskResponses;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +35,7 @@ public class AnnouncementService {
 	private final MemberRepository memberRepository;
 	private final OrganizationRepository organizationRepository;
 	private final NotificationService notificationService;
+	private final TaskService taskService;
 	private final RoleVerifier roleVerifier;
 	private final ReadStatusRecoder readStatusRecoder;
 
@@ -75,6 +78,17 @@ public class AnnouncementService {
 					Long totalMemberCount = getTotalMemberCount(organizationId);
 					return AnnouncementCoverResponse.of(announcement, readCount, totalMemberCount);
 				});
+	}
+
+	public TaskResponses getTasksById(Long announcementId) {
+		validateAnnouncementExists(announcementId);
+		return TaskResponses.from(taskService.findByAnnouncementId(announcementId));
+	}
+
+	private void validateAnnouncementExists(Long announcementId) {
+		if (!announcementRepository.existsById(announcementId)) {
+			throw new NotFoundException(BusinessErrorCode.NOT_FOUND_ANNOUNCEMENT);
+		}
 	}
 
 	private Announcement buildAnnouncementFromRequest(AnnouncementCreateRequest request) {
