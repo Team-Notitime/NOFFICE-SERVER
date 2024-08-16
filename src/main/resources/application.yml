@@ -1,26 +1,10 @@
 spring:
-  datasource:
-    url: jdbc:h2:file:~/nofficeDevDB;DB_CLOSE_ON_EXIT=FALSE;AUTO_RECONNECT=TRUE
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
-
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-      settings:
-        web-allow-others: true
-
-  jpa:
-    open-in-view: false
-    generate-ddl: true
-    show-sql: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
-        ddl-auto: update
-        format_sql: true
+  profiles:
+    group:
+      local: "local, key"
+      dev: "develop, datasource, key"
+      prod: "production, datasource, key"
+    active: dev
 
   jackson:
     property-naming-strategy: LOWER_CAMEL_CASE
@@ -33,40 +17,5 @@ springdoc:
   api-docs:
     path: /v3/api-docs
   paths-to-match: /api/**
-
-jwt:
-  secret: harthartharthartharthartharthartharthartharthartharthartharthartharthartharthartharthartharthartharthartharthartharthartharthart
-  access-token-expiration: 1209600000
-  refresh-token-expiration: 2419200000
-
-server:
-  domain:
-    origin: ${SERVER_DOMAIN_ORIGIN}
-    certified: ${SERVER_DOMAIN_CERTIFIED}
-
-client:
-  apple-auth:
-    url: https://appleid.apple.com/auth
-  google-auth:
-    url: https://oauth2.googleapis.com
-
-oauth:
-  google:
-    client-id: ${GOOGLE_CLIENT_ID}
-    client-secret: ${GOOGLE_CLIENT_SECRET}
-    grant-type: authorization_code
-    redirect-uri: ${GOOGLE_REDIRECT_URI}
-
-  apple:
-    grant-type: authorization_code
-    client-id: ${APPLE_CLIENT_ID}
-    key-id: ${APPLE_KEY_ID}
-    team-id: ${APPLE_TEAM_ID}
-    audience: https://appleid.apple.com
-    private-key: ${APPLE_PRIVATE_KEY}
-  
-aws:
-  access-key: ${AWS_ACCESS_KEY}
-  secret-key: ${AWS_SECRET_KEY}
-  region: ${AWS_REGION}
-  s3-bucket-name: ${AWS_S3_BUCKET_NAME}
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
