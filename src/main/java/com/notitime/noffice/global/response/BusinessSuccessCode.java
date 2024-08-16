@@ -25,6 +25,7 @@ public enum BusinessSuccessCode implements SuccessCode {
 	GET_PUBLISHED_ANNOUNCEMENTS_SUCCESS(HttpStatus.OK, "NOF-2073", "조직별 노티 페이징 조회 성공"),
 	PUT_CATEGORIES_SUCCESS(HttpStatus.OK, "NOF-2082", "조직 카테고리 수정 성공"),
 	GET_TASKS_BY_ANNOUNCEMENT_SUCCESS(HttpStatus.OK, "NOF-2091", "노티별 투두 조회 성공"),
+	PATCH_TASK_MODIFY_SUCCESS(HttpStatus.OK, "NOF-2092", "투두 수정 성공"),
 
 	// CREATED (2100 ~ 2199)
 	CREATED(HttpStatus.CREATED, "NOF-210", "리소스가 생성되었습니다. - 201"),
@@ -40,7 +41,7 @@ public enum BusinessSuccessCode implements SuccessCode {
 	PATCH_CHANGE_ROLES_SUCCESS(HttpStatus.NO_CONTENT, "NOF-2401", "사용자 권한 변경에 성공하였습니다."),
 	DELETE_ANNOUNCEMENT_SUCCESS(HttpStatus.NO_CONTENT, "NOF-2053", "노티 삭제에 성공하였습니다."),
 	DELETE_NOTIFICATION_SUCCESS(HttpStatus.NO_CONTENT, "NOF-2073", "알림 삭제 성공"),
-	DELETE_TASK_SUCCESS(HttpStatus.NO_CONTENT, "NOF-2092", "투두 삭제 성공"),
+	DELETE_TASK_SUCCESS(HttpStatus.NO_CONTENT, "NOF-2093", "투두 삭제 성공"),
 
 	// RESET CONTENT (2500 ~ 2599)
 	RESET_CONTENT(HttpStatus.RESET_CONTENT, "NOF-205", "리소스가 갱신되었습니다. - 205");
