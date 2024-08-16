@@ -73,6 +73,13 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+task copyGitSubmodule(type: Copy) {
+    copy {
+        from './NOFFICE-server-privates'
+        include '*.yml'
+        into './src/main/resources'
+    }
+}
 
 jar {
     // disable default bootJar task
