@@ -4,15 +4,24 @@ package com.notitime.noffice.global.config;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.media.ArraySchema;
+import io.swagger.v3.oas.models.media.ObjectSchema;
+import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SwaggerConfig {
+
+	@Value("${server.domain.certified}")
+	private String serverDomainCertified;
+
 	@Bean
 	public OpenAPI openAPI() {
 
@@ -22,7 +31,7 @@ public class SwaggerConfig {
 
 		Server productionServer = new Server();
 		productionServer.setDescription("develop server");
-		productionServer.setUrl("https://api.noffice.store");
+		productionServer.setUrl(serverDomainCertified);
 
 		SecurityScheme apiKey = new SecurityScheme()
 				.type(SecurityScheme.Type.HTTP)
@@ -33,12 +42,23 @@ public class SwaggerConfig {
 
 		SecurityRequirement securityRequirement = new SecurityRequirement()
 				.addList("Bearer Token");
+		Components components = new Components()
+				.addSecuritySchemes("Bearer Token", apiKey)
+				.addSchemas("SortObject", createSortSchema());
 
 		return new OpenAPI()
 				.info(getSwaggerInfo())
-				.components(new Components().addSecuritySchemes("Bearer Token", apiKey))
+				.components(components)
 				.addSecurityItem(securityRequirement)
-				.servers(List.of(localServer, productionServer));
+				.servers(List.of(productionServer, localServer));
+	}
+
+	private Schema<?> createSortSchema() {
+		return new ArraySchema()
+				.items(new ObjectSchema()
+						.addProperty("sorted", new StringSchema().example("true"))
+						.addProperty("unsorted", new StringSchema().example("false"))
+						.addProperty("empty", new StringSchema().example("false")));
 	}
 
 	private Info getSwaggerInfo() {
