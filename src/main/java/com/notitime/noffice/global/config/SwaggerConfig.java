@@ -4,6 +4,10 @@ package com.notitime.noffice.global.config;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.media.ArraySchema;
+import io.swagger.v3.oas.models.media.ObjectSchema;
+import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
@@ -33,12 +37,23 @@ public class SwaggerConfig {
 
 		SecurityRequirement securityRequirement = new SecurityRequirement()
 				.addList("Bearer Token");
+		Components components = new Components()
+				.addSecuritySchemes("Bearer Token", apiKey)
+				.addSchemas("SortObject", createSortSchema());
 
 		return new OpenAPI()
 				.info(getSwaggerInfo())
-				.components(new Components().addSecuritySchemes("Bearer Token", apiKey))
+				.components(components)
 				.addSecurityItem(securityRequirement)
 				.servers(List.of(localServer, productionServer));
+	}
+
+	private Schema<?> createSortSchema() {
+		return new ArraySchema()
+				.items(new ObjectSchema()
+						.addProperty("sorted", new StringSchema().example("true"))
+						.addProperty("unsorted", new StringSchema().example("false"))
+						.addProperty("empty", new StringSchema().example("false")));
 	}
 
 	private Info getSwaggerInfo() {
