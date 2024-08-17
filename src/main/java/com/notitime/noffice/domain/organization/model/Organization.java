@@ -3,6 +3,7 @@ package com.notitime.noffice.domain.organization.model;
 import com.notitime.noffice.domain.BaseTimeEntity;
 import com.notitime.noffice.domain.announcement.model.Announcement;
 import com.notitime.noffice.domain.category.model.Category;
+import com.notitime.noffice.domain.member.model.Member;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -46,9 +47,11 @@ public class Organization extends BaseTimeEntity {
 	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL, orphanRemoval = true)
 	private final List<OrganizationMember> members = new ArrayList<>();
 
-	public Organization addCategories(List<Category> categories) {
-		categories.forEach(category -> this.categories.add(new OrganizationCategory(this, category)));
-		return this;
+	public static Organization create(String name, LocalDateTime endAt, String profileImage,
+	                                  List<Category> categories, Member leader) {
+		Organization organization = new Organization(name, endAt, profileImage, categories);
+		organization.addLeader(leader);
+		return organization;
 	}
 
 	public void updateCategories(List<Category> categories) {
@@ -58,5 +61,20 @@ public class Organization extends BaseTimeEntity {
 			}
 		}
 		this.categories.removeIf(oc -> categories.stream().noneMatch(category -> oc.getCategory().equals(category)));
+	}
+
+	private Organization(String name, LocalDateTime endAt, String profileImage, List<Category> categories) {
+		this.name = name;
+		this.endAt = endAt;
+		this.profileImage = profileImage;
+		addCategories(categories);
+	}
+
+	private void addCategories(List<Category> categories) {
+		categories.forEach(category -> this.categories.add(new OrganizationCategory(this, category)));
+	}
+
+	private void addLeader(Member leader) {
+		this.members.add(OrganizationMember.create(this, leader));
 	}
 }

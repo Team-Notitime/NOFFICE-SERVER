@@ -1,5 +1,10 @@
 package com.notitime.noffice.domain.organization.model;
 
+import static com.notitime.noffice.domain.JoinStatus.ACTIVE;
+import static com.notitime.noffice.domain.JoinStatus.PENDING;
+import static com.notitime.noffice.domain.OrganizationRole.LEADER;
+import static com.notitime.noffice.domain.OrganizationRole.PARTICIPANT;
+
 import com.notitime.noffice.domain.JoinStatus;
 import com.notitime.noffice.domain.OrganizationRole;
 import com.notitime.noffice.domain.member.model.Member;
@@ -13,11 +18,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class OrganizationMember {
 
@@ -39,10 +46,11 @@ public class OrganizationMember {
 	@JoinColumn(name = "member_id")
 	private Member member;
 
-	public OrganizationMember(Organization organization, Member member) {
-		this.organization = organization;
-		this.member = member;
-		this.role = OrganizationRole.GUEST;
-		this.status = JoinStatus.PENDING;
+	public static OrganizationMember join(Organization organization, Member member) {
+		return new OrganizationMember(null, PARTICIPANT, PENDING, organization, member);
+	}
+
+	public static OrganizationMember create(Organization organization, Member member) {
+		return new OrganizationMember(null, LEADER, ACTIVE, organization, member);
 	}
 }
