@@ -7,6 +7,7 @@ import com.notitime.noffice.response.MemberResponse;
 import com.notitime.noffice.response.SocialAuthResponse;
 import com.notitime.noffice.response.TokenResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,8 +25,8 @@ public interface MemberApi {
 	})
 	NofficeResponse<TokenResponse> reissue(@RequestHeader("Authorization") final String refreshToken);
 
-	@Operation(summary = "단일 회원 정보 조회", description = "회원의 정보를 조회합니다.", responses = {
+	@Operation(summary = "[인증] 단일 회원 정보 조회", description = "회원의 정보를 조회합니다.", responses = {
 			@ApiResponse(responseCode = "200", description = "회원 정보 조회에 성공하였습니다.")
 	})
-	NofficeResponse<MemberResponse> getMember(@AuthMember final Long memberId);
+	NofficeResponse<MemberResponse> getMember(@Parameter(hidden = true) @AuthMember final Long memberId);
 }

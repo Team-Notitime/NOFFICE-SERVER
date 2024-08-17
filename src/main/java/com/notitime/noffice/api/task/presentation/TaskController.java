@@ -31,7 +31,8 @@ public class TaskController implements TaskApi {
 	}
 
 	@GetMapping("/assigned")
-	public NofficeResponse<Slice<AssignedTaskResponse>> getAssigned(@AuthMember Long memberId, Pageable pageable) {
+	public NofficeResponse<Slice<AssignedTaskResponse>> getAssigned(@AuthMember final Long memberId,
+	                                                                Pageable pageable) {
 		return NofficeResponse.success(GET_ASSIGNED_TASKS_SUCCESS,
 				taskService.getAssignedTasks(memberId, pageable));
 	}

@@ -55,7 +55,8 @@ public class AnnouncementController implements AnnouncementApi {
 	}
 
 	@PostMapping("/{announcementId}")
-	public NofficeResponse<AnnouncementResponse> updateAnnouncement(@PathVariable final Long announcementId,
+	public NofficeResponse<AnnouncementResponse> updateAnnouncement(@AuthMember final Long memberId,
+	                                                                @PathVariable final Long announcementId,
 	                                                                @RequestBody final AnnouncementUpdateRequest announcementUpdateRequest) {
 		return NofficeResponse.success(PUT_ANNOUNCEMENT_SUCCESS,
 				announcementService.updateAnnouncement(announcementId, announcementUpdateRequest));
