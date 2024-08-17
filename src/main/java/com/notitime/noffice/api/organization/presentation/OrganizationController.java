@@ -84,7 +84,7 @@ public class OrganizationController implements OrganizationApi {
 	}
 
 	@PatchMapping("/{organizationId}/roles")
-	public NofficeResponse<Void> changeRoles(@AuthMember Long memberId, @PathVariable Long organizationId,
+	public NofficeResponse<Void> changeRoles(@AuthMember final Long memberId, @PathVariable Long organizationId,
 	                                         @RequestBody @Valid final ChangeRoleRequest request) {
 		organizationService.changeRoles(memberId, organizationId, request);
 		return NofficeResponse.success(PATCH_CHANGE_ROLES_SUCCESS);

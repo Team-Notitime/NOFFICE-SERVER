@@ -6,6 +6,7 @@ import com.notitime.noffice.request.TaskModifyRequest;
 import com.notitime.noffice.response.AssignedTaskResponse;
 import com.notitime.noffice.response.TaskModifyResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
@@ -24,5 +25,6 @@ interface TaskApi {
 			@ApiResponse(responseCode = "200", description = "사용자 할당 투두 조회 성공"),
 			@ApiResponse(responseCode = "404", description = "사용자 할당된 투두가 없습니다.")
 	})
-	NofficeResponse<Slice<AssignedTaskResponse>> getAssigned(@AuthMember Long memberId, Pageable pageable);
+	NofficeResponse<Slice<AssignedTaskResponse>> getAssigned(@Parameter(hidden = true) @AuthMember final Long memberId,
+	                                                         Pageable pageable);
 }
