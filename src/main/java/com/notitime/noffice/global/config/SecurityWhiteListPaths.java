@@ -21,7 +21,7 @@ public class SecurityWhiteListPaths {
 	};
 
 	public static final List<String> FILTER_WHITE_LIST = List.of(
-			"/health/**",
+			"/api/v1/health/**",
 			"/image/**",
 			"/api/v1/auth/google/callback",
 			"/api/v1/image/**",
