@@ -1,6 +1,10 @@
 package com.notitime.noffice.api.organization.presentation;
 
 import com.notitime.noffice.api.announcement.business.AnnouncementService;
+import com.notitime.noffice.api.announcement.presentation.dto.OrganizationCreateResponse;
+import com.notitime.noffice.api.announcement.presentation.dto.OrganizationInfoResponse;
+import com.notitime.noffice.api.announcement.presentation.dto.OrganizationJoinResponse;
+import com.notitime.noffice.api.announcement.presentation.dto.OrganizationResponse;
 import com.notitime.noffice.api.organization.business.OrganizationService;
 import com.notitime.noffice.auth.AuthMember;
 import com.notitime.noffice.global.response.BusinessSuccessCode;
@@ -9,10 +13,6 @@ import com.notitime.noffice.request.CategoryModifyRequest;
 import com.notitime.noffice.request.OrganizationCreateRequest;
 import com.notitime.noffice.response.AnnouncementCoverResponse;
 import com.notitime.noffice.response.CategoryModifyResponse;
-import com.notitime.noffice.response.OrganizationCreateResponse;
-import com.notitime.noffice.response.OrganizationInfoResponse;
-import com.notitime.noffice.response.OrganizationJoinResponse;
-import com.notitime.noffice.response.OrganizationResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;

@@ -1,5 +1,7 @@
 package com.notitime.noffice.response;
 
+import com.notitime.noffice.api.announcement.presentation.dto.OrganizationResponse;
+import com.notitime.noffice.api.announcement.presentation.dto.OrganizationResponses;
 import com.notitime.noffice.domain.member.model.Member;
 import java.util.List;
 

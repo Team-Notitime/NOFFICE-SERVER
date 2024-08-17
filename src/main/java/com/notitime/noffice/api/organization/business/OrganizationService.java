@@ -1,5 +1,9 @@
 package com.notitime.noffice.api.organization.business;
 
+import com.notitime.noffice.api.announcement.presentation.dto.OrganizationCreateResponse;
+import com.notitime.noffice.api.announcement.presentation.dto.OrganizationInfoResponse;
+import com.notitime.noffice.api.announcement.presentation.dto.OrganizationJoinResponse;
+import com.notitime.noffice.api.announcement.presentation.dto.OrganizationResponse;
 import com.notitime.noffice.api.organization.presentation.ChangeRoleRequest;
 import com.notitime.noffice.domain.JoinStatus;
 import com.notitime.noffice.domain.OrganizationRole;
@@ -18,10 +22,6 @@ import com.notitime.noffice.request.CategoryModifyRequest;
 import com.notitime.noffice.request.OrganizationCreateRequest;
 import com.notitime.noffice.response.CategoryModifyResponse;
 import com.notitime.noffice.response.CategoryResponses;
-import com.notitime.noffice.response.OrganizationCreateResponse;
-import com.notitime.noffice.response.OrganizationInfoResponse;
-import com.notitime.noffice.response.OrganizationJoinResponse;
-import com.notitime.noffice.response.OrganizationResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;

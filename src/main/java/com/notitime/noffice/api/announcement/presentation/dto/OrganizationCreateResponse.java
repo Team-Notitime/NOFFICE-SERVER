@@ -1,9 +1,10 @@
-package com.notitime.noffice.response;
+package com.notitime.noffice.api.announcement.presentation.dto;
 
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIRED;
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
 import com.notitime.noffice.domain.organization.model.Organization;
+import com.notitime.noffice.response.PromotionVerifyResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 

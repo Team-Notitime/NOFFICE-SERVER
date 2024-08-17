@@ -1,15 +1,15 @@
 package com.notitime.noffice.api.organization.presentation;
 
+import com.notitime.noffice.api.announcement.presentation.dto.OrganizationCreateResponse;
+import com.notitime.noffice.api.announcement.presentation.dto.OrganizationInfoResponse;
+import com.notitime.noffice.api.announcement.presentation.dto.OrganizationJoinResponse;
+import com.notitime.noffice.api.announcement.presentation.dto.OrganizationResponse;
 import com.notitime.noffice.auth.AuthMember;
 import com.notitime.noffice.global.response.NofficeResponse;
 import com.notitime.noffice.request.CategoryModifyRequest;
 import com.notitime.noffice.request.OrganizationCreateRequest;
 import com.notitime.noffice.response.AnnouncementCoverResponse;
 import com.notitime.noffice.response.CategoryModifyResponse;
-import com.notitime.noffice.response.OrganizationCreateResponse;
-import com.notitime.noffice.response.OrganizationInfoResponse;
-import com.notitime.noffice.response.OrganizationJoinResponse;
-import com.notitime.noffice.response.OrganizationResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;

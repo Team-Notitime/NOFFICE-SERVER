@@ -1,4 +1,4 @@
-package com.notitime.noffice.response;
+package com.notitime.noffice.api.announcement.presentation.dto;
 
 import com.notitime.noffice.domain.organization.model.OrganizationMember;
 import java.util.List;
