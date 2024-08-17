@@ -33,21 +33,20 @@ public interface OrganizationApi {
 			@ApiResponse(responseCode = "201", description = "조직 생성에 성공하였습니다."),
 			@ApiResponse(responseCode = "400", description = "조직 생성에 실패하였습니다.")
 	})
-	NofficeResponse<OrganizationCreateResponse> createOrganization(@AuthMember Long memberId,
-	                                                               @RequestBody @Valid final OrganizationCreateRequest request);
+	NofficeResponse<OrganizationCreateResponse> create(@AuthMember Long memberId,
+	                                                   @RequestBody @Valid final OrganizationCreateRequest request);
 
 	@Operation(summary = "조직 가입", description = "조직에 가입합니다.", responses = {
 			@ApiResponse(responseCode = "200", description = "조직 가입에 성공하였습니다.")
 	})
-	NofficeResponse<OrganizationJoinResponse> joinOrganization(@AuthMember Long memberId,
-	                                                           @PathVariable Long organizationId);
+	NofficeResponse<OrganizationJoinResponse> join(@AuthMember Long memberId,
+	                                               @PathVariable Long organizationId);
 
 	@Operation(summary = "사용자의 가입된 조직 페이징 조회", description = "멤버가 가입한 조직 목록을 조회합니다.", responses = {
 			@ApiResponse(responseCode = "200", description = "회원의 가입된 조직 조회에 성공하였습니다."),
 			@ApiResponse(responseCode = "404", description = "가입된 조직이 없습니다.")
 	})
-	NofficeResponse<Slice<OrganizationResponse>> getJoinedOrganizations(@AuthMember Long memberId,
-	                                                                    Pageable pageable);
+	NofficeResponse<Slice<OrganizationResponse>> getJoined(@AuthMember Long memberId, Pageable pageable);
 
 	@Operation(summary = "조직별 노티 페이징 조회", description = "조직별 노티를 페이징 조회합니다.", responses = {
 			@ApiResponse(responseCode = "200", description = "조직별 노티 페이징 조회 성공"),

@@ -15,7 +15,8 @@ public record OrganizationResponse(
 		String organizationName,
 		@Schema(requiredMode = REQUIRED, description = "프로필 이미지", example = "https://notitime.com/profile.png")
 		String profileImage) {
-	public static OrganizationResponse of(Organization organization) {
-		return new OrganizationResponse(organization.getId(), organization.getName(), organization.getProfileImage());
+	public static OrganizationResponse of(OrganizationRole role, Organization organization) {
+		return new OrganizationResponse(role, organization.getId(), organization.getName(),
+				organization.getProfileImage());
 	}
 }

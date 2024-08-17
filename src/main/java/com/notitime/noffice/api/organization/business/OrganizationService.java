@@ -1,5 +1,8 @@
 package com.notitime.noffice.api.organization.business;
 
+import static com.notitime.noffice.domain.OrganizationRole.LEADER;
+import static com.notitime.noffice.domain.OrganizationRole.PARTICIPANT;
+
 import com.notitime.noffice.api.announcement.presentation.dto.OrganizationCreateResponse;
 import com.notitime.noffice.api.announcement.presentation.dto.OrganizationInfoResponse;
 import com.notitime.noffice.api.announcement.presentation.dto.OrganizationJoinResponse;
@@ -24,9 +27,9 @@ import com.notitime.noffice.response.CategoryModifyResponse;
 import com.notitime.noffice.response.CategoryResponses;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,21 +46,21 @@ public class OrganizationService {
 	private final RoleVerifier roleVerifier;
 
 	public OrganizationInfoResponse getInformation(Long memberId, Long organizationId) {
-		roleVerifier.verifyJoinedMember(memberId, organizationId);
 		Organization organization = getOrganizationEntity(organizationId);
 		return OrganizationInfoResponse.of(
+				roleVerifier.findRole(memberId, organizationId),
 				organization,
 				getCategoryNames(organization),
-				getMemberCountByRole(organizationId, OrganizationRole.LEADER),
-				getMemberCountByRole(organizationId, OrganizationRole.PARTICIPANT),
+				getMemberCountByRole(organizationId, LEADER),
+				getMemberCountByRole(organizationId, PARTICIPANT),
 				isAnyMemberPending(organizationId));
 	}
 
-	public OrganizationCreateResponse createOrganization(Long createMemberId, OrganizationCreateRequest request) {
+	public OrganizationCreateResponse create(Long createMemberId, OrganizationCreateRequest request) {
 		return OrganizationCreateResponse.of(organizationRepository.save(createByRequest(createMemberId, request)));
 	}
 
-	public OrganizationJoinResponse joinOrganization(Long memberId, Long organizationId) {
+	public OrganizationJoinResponse join(Long memberId, Long organizationId) {
 		roleVerifier.verifyJoinedMember(memberId, organizationId);
 		Organization organization = getOrganizationEntity(organizationId);
 		Member member = getMemberEntity(memberId);
@@ -65,13 +68,16 @@ public class OrganizationService {
 		return OrganizationJoinResponse.from(organization, member);
 	}
 
-	public Slice<OrganizationResponse> getOrganizationsByMemberId(Long memberId, Pageable pageable) {
+	public Slice<OrganizationResponse> getJoined(Long memberId, Pageable pageable) {
 		Slice<Organization> organizations = organizationMemberRepository.findOrganizationsByMemberId(memberId,
 				pageable);
 		List<OrganizationResponse> responses = organizations.stream()
-				.map(OrganizationResponse::of)
+				.map(organization -> {
+					OrganizationRole role = roleVerifier.findRole(memberId, organization.getId());
+					return OrganizationResponse.of(role, organization);
+				})
 				.toList();
-		return new PageImpl<>(responses, pageable, responses.size());
+		return new SliceImpl<>(responses, pageable, organizations.hasNext());
 	}
 
 	public CategoryModifyResponse modifyCategories(Long memberId, Long organizationId, CategoryModifyRequest request) {
