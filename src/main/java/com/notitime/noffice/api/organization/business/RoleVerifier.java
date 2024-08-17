@@ -2,12 +2,15 @@ package com.notitime.noffice.api.organization.business;
 
 import static com.notitime.noffice.domain.JoinStatus.ACTIVE;
 import static com.notitime.noffice.domain.OrganizationRole.LEADER;
+import static com.notitime.noffice.global.response.BusinessErrorCode.FORBIDDEN_ORGANIZATION_ACCESS;
+import static com.notitime.noffice.global.response.BusinessErrorCode.FORBIDDEN_ROLE_ACCESS;
+import static com.notitime.noffice.global.response.BusinessErrorCode.NOT_FOUND_MEMBER;
+import static com.notitime.noffice.global.response.BusinessErrorCode.NOT_FOUND_ORGANIZATION;
 
 import com.notitime.noffice.domain.OrganizationRole;
 import com.notitime.noffice.domain.organization.persistence.OrganizationMemberRepository;
 import com.notitime.noffice.global.exception.ForbiddenException;
 import com.notitime.noffice.global.exception.NotFoundException;
-import com.notitime.noffice.global.response.BusinessErrorCode;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -21,24 +24,25 @@ public class RoleVerifier {
 
 	public void verifyJoinedMember(Long memberId, Long organizationId) {
 		if (isActiveMember(memberId, organizationId)) {
-			throw new ForbiddenException(BusinessErrorCode.FORBIDDEN_ORGANIZATION_ACCESS);
+			throw new ForbiddenException(FORBIDDEN_ORGANIZATION_ACCESS);
 		}
 	}
 
 	public OrganizationRole findRole(Long memberId, Long organizationId) {
-		return organizationMemberRepository.findRoleByOrganizationIdAndMemberId(organizationId, memberId)
-				.orElseThrow(() -> new NotFoundException("멤버가 속한 조직이 없습니다.", BusinessErrorCode.NOT_FOUND_ORGANIZATION));
+		return organizationMemberRepository.findByOrganizationIdAndMemberId(organizationId, memberId)
+				.orElseThrow(() -> new NotFoundException("멤버가 속한 조직이 없습니다.", NOT_FOUND_ORGANIZATION))
+				.getRole();
 	}
 
 	public void verifyLeader(Long memberId, Long organizationId) {
-		if (isActiveMemberWithRole(memberId, organizationId, LEADER)) {
-			throw new ForbiddenException(BusinessErrorCode.FORBIDDEN_ROLE_ACCESS);
+		if (!isActiveMemberWithRole(memberId, organizationId, LEADER)) {
+			throw new ForbiddenException(FORBIDDEN_ROLE_ACCESS);
 		}
 	}
 
 	private void verifyRole(Long memberId, Long organizationId, OrganizationRole role) {
 		if (isActiveMemberWithRole(memberId, organizationId, role)) {
-			throw new ForbiddenException(BusinessErrorCode.FORBIDDEN_ORGANIZATION_ACCESS);
+			throw new ForbiddenException(FORBIDDEN_ORGANIZATION_ACCESS);
 		}
 	}
 
@@ -55,11 +59,10 @@ public class RoleVerifier {
 	public void verifyMultipleMembers(Long organizationId, List<Long> memberIds) {
 		List<Long> activeMemberIds = organizationMemberRepository.findActiveMemberIdsByOrganizationId(organizationId,
 				memberIds);
-
 		if (activeMemberIds.size() != memberIds.size()) {
 			List<Long> invalidMemberIds = new ArrayList<>(memberIds);
 			invalidMemberIds.removeAll(activeMemberIds);
-			throw new NotFoundException("잘못된 멤버 식별자: " + invalidMemberIds, BusinessErrorCode.NOT_FOUND_MEMBER);
+			throw new NotFoundException("잘못된 멤버 식별자: " + invalidMemberIds, NOT_FOUND_MEMBER);
 		}
 	}
 }

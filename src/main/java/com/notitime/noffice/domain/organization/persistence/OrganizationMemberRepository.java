@@ -18,7 +18,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface OrganizationMemberRepository extends JpaRepository<OrganizationMember, Long> {
-	List<OrganizationMember> findByMemberId(Long memberId);
+	Optional<OrganizationMember> findByOrganizationIdAndMemberId(Long organizationId, Long memberId);
 
 	@Query("SELECT om.organization FROM OrganizationMember om WHERE om.member.id = :memberId")
 	Slice<Organization> findOrganizationsByMemberId(@Param("memberId") Long memberId, Pageable pageable);
@@ -43,9 +43,6 @@ public interface OrganizationMemberRepository extends JpaRepository<Organization
 		return findMembersByOrganizationIdAndRole(organizationId, PARTICIPANT);
 	}
 
-	boolean existsByMemberIdAndOrganizationIdAndRole(Long memberId, Long organizationId,
-	                                                 OrganizationRole organizationRole);
-
 	boolean existsByMemberIdAndOrganizationIdAndStatus(Long memberId, Long organizationId, JoinStatus status);
 
 	boolean existsByMemberIdAndOrganizationIdAndRoleAndStatus(Long memberId, Long organizationId, OrganizationRole role,
@@ -58,6 +55,4 @@ public interface OrganizationMemberRepository extends JpaRepository<Organization
 	@Query("SELECT om.member.id FROM OrganizationMember om WHERE om.organization.id = :organizationId AND om.member.id IN :memberIds AND om.status = 'ACTIVE'")
 	List<Long> findActiveMemberIdsByOrganizationId(@Param("organizationId") Long organizationId,
 	                                               @Param("memberIds") List<Long> memberIds);
-
-	Optional<OrganizationRole> findRoleByOrganizationIdAndMemberId(Long organizationId, Long memberId);
 }
