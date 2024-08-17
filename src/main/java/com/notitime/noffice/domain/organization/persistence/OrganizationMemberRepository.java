@@ -9,6 +9,7 @@ import com.notitime.noffice.domain.member.model.Member;
 import com.notitime.noffice.domain.organization.model.Organization;
 import com.notitime.noffice.domain.organization.model.OrganizationMember;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -58,4 +59,5 @@ public interface OrganizationMemberRepository extends JpaRepository<Organization
 	List<Long> findActiveMemberIdsByOrganizationId(@Param("organizationId") Long organizationId,
 	                                               @Param("memberIds") List<Long> memberIds);
 
+	Optional<OrganizationRole> findRoleByOrganizationIdAndMemberId(Long organizationId, Long memberId);
 }

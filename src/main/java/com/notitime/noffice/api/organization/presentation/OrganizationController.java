@@ -1,18 +1,25 @@
 package com.notitime.noffice.api.organization.presentation;
 
+import static com.notitime.noffice.global.response.BusinessSuccessCode.CREATE_ORGANIZATION_SUCCESS;
+import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_JOINED_ORGANIZATIONS_SUCCESS;
+import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_ORGANIZATION_SUCCESS;
+import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_PUBLISHED_ANNOUNCEMENTS_SUCCESS;
+import static com.notitime.noffice.global.response.BusinessSuccessCode.PATCH_CHANGE_ROLES_SUCCESS;
+import static com.notitime.noffice.global.response.BusinessSuccessCode.POST_JOIN_ORGANIZATION_SUCCESS;
+import static com.notitime.noffice.global.response.BusinessSuccessCode.PUT_CATEGORIES_SUCCESS;
+
 import com.notitime.noffice.api.announcement.business.AnnouncementService;
+import com.notitime.noffice.api.announcement.presentation.dto.OrganizationCreateResponse;
+import com.notitime.noffice.api.announcement.presentation.dto.OrganizationInfoResponse;
+import com.notitime.noffice.api.announcement.presentation.dto.OrganizationJoinResponse;
+import com.notitime.noffice.api.announcement.presentation.dto.OrganizationResponse;
 import com.notitime.noffice.api.organization.business.OrganizationService;
 import com.notitime.noffice.auth.AuthMember;
-import com.notitime.noffice.global.response.BusinessSuccessCode;
 import com.notitime.noffice.global.response.NofficeResponse;
 import com.notitime.noffice.request.CategoryModifyRequest;
 import com.notitime.noffice.request.OrganizationCreateRequest;
 import com.notitime.noffice.response.AnnouncementCoverResponse;
 import com.notitime.noffice.response.CategoryModifyResponse;
-import com.notitime.noffice.response.OrganizationCreateResponse;
-import com.notitime.noffice.response.OrganizationInfoResponse;
-import com.notitime.noffice.response.OrganizationJoinResponse;
-import com.notitime.noffice.response.OrganizationResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -35,37 +42,36 @@ public class OrganizationController implements OrganizationApi {
 	private final AnnouncementService announcementService;
 
 	@GetMapping
-	public NofficeResponse<Slice<OrganizationResponse>> getJoinedOrganizations(@AuthMember final Long memberId,
-	                                                                           Pageable pageable) {
-		return NofficeResponse.success(BusinessSuccessCode.GET_JOINED_ORGANIZATIONS_SUCCESS,
-				organizationService.getOrganizationsByMemberId(memberId, pageable));
+	public NofficeResponse<Slice<OrganizationResponse>> getJoined(@AuthMember final Long memberId, Pageable pageable) {
+		return NofficeResponse.success(GET_JOINED_ORGANIZATIONS_SUCCESS,
+				organizationService.getJoined(memberId, pageable));
 	}
 
 	@GetMapping("/{organizationId}")
 	public NofficeResponse<OrganizationInfoResponse> getInformation(@AuthMember final Long memberId,
 	                                                                @PathVariable Long organizationId) {
-		return NofficeResponse.success(BusinessSuccessCode.GET_ORGANIZATION_SUCCESS,
+		return NofficeResponse.success(GET_ORGANIZATION_SUCCESS,
 				organizationService.getInformation(memberId, organizationId));
 	}
 
 	@PostMapping
-	public NofficeResponse<OrganizationCreateResponse> createOrganization(@AuthMember final Long memberId,
-	                                                                      @RequestBody @Valid final OrganizationCreateRequest request) {
-		return NofficeResponse.success(BusinessSuccessCode.CREATE_ORGANIZATION_SUCCESS,
-				organizationService.createOrganization(memberId, request));
+	public NofficeResponse<OrganizationCreateResponse> create(@AuthMember final Long memberId,
+	                                                          @RequestBody @Valid final OrganizationCreateRequest request) {
+		return NofficeResponse.success(CREATE_ORGANIZATION_SUCCESS,
+				organizationService.create(memberId, request));
 	}
 
 	@PostMapping("/{organizationId}/join")
-	public NofficeResponse<OrganizationJoinResponse> joinOrganization(@AuthMember final Long memberId,
-	                                                                  @PathVariable Long organizationId) {
-		return NofficeResponse.success(BusinessSuccessCode.POST_JOIN_ORGANIZATION_SUCCESS,
-				organizationService.joinOrganization(memberId, organizationId));
+	public NofficeResponse<OrganizationJoinResponse> join(@AuthMember final Long memberId,
+	                                                      @PathVariable Long organizationId) {
+		return NofficeResponse.success(POST_JOIN_ORGANIZATION_SUCCESS,
+				organizationService.join(memberId, organizationId));
 	}
 
 	@GetMapping("/{organizationId}/announcements")
 	public NofficeResponse<Slice<AnnouncementCoverResponse>> getPublishedAnnouncements(
 			@AuthMember final Long memberId, @PathVariable final Long organizationId, Pageable pageable) {
-		return NofficeResponse.success(BusinessSuccessCode.GET_PUBLISHED_ANNOUNCEMENTS_SUCCESS,
+		return NofficeResponse.success(GET_PUBLISHED_ANNOUNCEMENTS_SUCCESS,
 				announcementService.getPublishedAnnouncements(organizationId, pageable));
 	}
 
@@ -73,7 +79,7 @@ public class OrganizationController implements OrganizationApi {
 	public NofficeResponse<CategoryModifyResponse> modifyCategories(@AuthMember final Long memberId,
 	                                                                @PathVariable Long organizationId,
 	                                                                @RequestBody @Valid final CategoryModifyRequest request) {
-		return NofficeResponse.success(BusinessSuccessCode.PUT_CATEGORIES_SUCCESS,
+		return NofficeResponse.success(PUT_CATEGORIES_SUCCESS,
 				organizationService.modifyCategories(memberId, organizationId, request));
 	}
 
@@ -81,6 +87,6 @@ public class OrganizationController implements OrganizationApi {
 	public NofficeResponse<Void> changeRoles(@AuthMember Long memberId, @PathVariable Long organizationId,
 	                                         @RequestBody @Valid final ChangeRoleRequest request) {
 		organizationService.changeRoles(memberId, organizationId, request);
-		return NofficeResponse.success(BusinessSuccessCode.PATCH_CHANGE_ROLES_SUCCESS);
+		return NofficeResponse.success(PATCH_CHANGE_ROLES_SUCCESS);
 	}
 }
