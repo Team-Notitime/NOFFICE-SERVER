@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 @Tag(name = "회원", description = "회원 로그인, 정보 조회 API")
-public interface MemberApi {
+interface MemberApi {
 	@Operation(summary = "회원 로그인", description = "본문에 소셜 공급자명과 인가코드를 넣어 노피스 서버 로그인을 시도합니다.", responses = {
 			@ApiResponse(responseCode = "200", description = "로그인에 성공하였습니다.")
 	})
@@ -28,5 +28,5 @@ public interface MemberApi {
 	@Operation(summary = "[인증] 단일 회원 정보 조회", description = "회원의 정보를 조회합니다.", responses = {
 			@ApiResponse(responseCode = "200", description = "회원 정보 조회에 성공하였습니다.")
 	})
-	NofficeResponse<MemberResponse> getMember(@Parameter(hidden = true) @AuthMember final Long memberId);
+	NofficeResponse<MemberResponse> getById(@Parameter(hidden = true) @AuthMember final Long memberId);
 }

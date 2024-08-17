@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Tag(name = "조직", description = "조직 관련 API")
-public interface OrganizationApi {
+interface OrganizationApi {
 
 	@Operation(summary = "[인증] 단일 조직 정보 조회", description = "조직의 정보(조직명, 가입 대기여부, 가입자수) 를 조회합니다.", responses = {
 			@ApiResponse(responseCode = "200", description = "조직 정보 조회에 성공하였습니다."),

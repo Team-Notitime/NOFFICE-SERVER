@@ -20,21 +20,21 @@ interface NotificationApi {
 			@ApiResponse(responseCode = "200", description = "알림 대기열 등록 성공"),
 			@ApiResponse(responseCode = "400", description = "알림 발송 실패")
 	})
-	NofficeResponse<Void> createNotification(@Parameter(hidden = true) @AuthMember final Long memberId,
-	                                         @RequestBody final NotificationRequest request);
+	NofficeResponse<Void> create(@Parameter(hidden = true) @AuthMember final Long memberId,
+	                             @RequestBody final NotificationRequest request);
 
 	@Operation(summary = "[인증] 조직 단위 알림 대량 발송", description = "조직 내 모든 사용자에게 전체 발송되는 알림을 등록합니다.", responses = {
 			@ApiResponse(responseCode = "200", description = "조직 전체 알림 대량 등록 성공"),
 			@ApiResponse(responseCode = "400", description = "조직 전체 알림 대량 등록 실패")
 	})
-	NofficeResponse<Void> createBulkNotification(@Parameter(hidden = true) @AuthMember final Long memberId,
-	                                             @RequestBody final NotificationBulkRequest request);
+	NofficeResponse<Void> createAll(@Parameter(hidden = true) @AuthMember final Long memberId,
+	                                @RequestBody final NotificationBulkRequest request);
 
 	@Operation(summary = "[인증] 사용자에게 수신된 알림 조회", description = "사용자에게 수신된 알림을 조회합니다.", responses = {
 			@ApiResponse(responseCode = "200", description = "알림 조회 성공"),
 			@ApiResponse(responseCode = "404", description = "알림이 없습니다.")
 	})
-	NofficeResponse<Void> getNotifications(@Parameter(hidden = true) @AuthMember final Long memberId);
+	NofficeResponse<Void> findById(@Parameter(hidden = true) @AuthMember final Long memberId);
 
 	@Operation(summary = "[인증] 알림 발송 시간 변경", description = "노티 알림 발송 시간을 변경합니다.", responses = {
 			@ApiResponse(responseCode = "200", description = "알림 발송 시간 변경 성공"),
@@ -48,5 +48,5 @@ interface NotificationApi {
 			@ApiResponse(responseCode = "204", description = "알림 삭제 성공"),
 			@ApiResponse(responseCode = "400", description = "알림 삭제 실패")
 	})
-	NofficeResponse<Void> deleteNotification(@PathVariable final Long notificationId);
+	NofficeResponse<Void> delete(@PathVariable final Long notificationId);
 }

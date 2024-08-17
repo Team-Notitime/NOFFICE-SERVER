@@ -41,29 +41,29 @@ public class AnnouncementController implements AnnouncementApi {
 	}
 
 	@PostMapping
-	public NofficeResponse<AnnouncementResponse> createAnnouncement(
+	public NofficeResponse<AnnouncementResponse> create(
 			@RequestBody final AnnouncementCreateRequest announcementCreateRequest) {
 		return NofficeResponse.success(POST_ANNOUNCEMENT_SUCCESS,
 				announcementService.createAnnouncement(announcementCreateRequest));
 	}
 
 	@GetMapping("/{announcementId}")
-	public NofficeResponse<AnnouncementResponse> readAnnouncement(@AuthMember final Long memberId,
-	                                                              @PathVariable final Long announcementId) {
+	public NofficeResponse<AnnouncementResponse> read(@AuthMember final Long memberId,
+	                                                  @PathVariable final Long announcementId) {
 		return NofficeResponse.success(GET_ANNOUNCEMENT_SUCCESS,
 				announcementService.readAnnouncement(memberId, announcementId));
 	}
 
 	@PostMapping("/{announcementId}")
-	public NofficeResponse<AnnouncementResponse> updateAnnouncement(@AuthMember final Long memberId,
-	                                                                @PathVariable final Long announcementId,
-	                                                                @RequestBody final AnnouncementUpdateRequest announcementUpdateRequest) {
+	public NofficeResponse<AnnouncementResponse> update(@AuthMember final Long memberId,
+	                                                    @PathVariable final Long announcementId,
+	                                                    @RequestBody final AnnouncementUpdateRequest announcementUpdateRequest) {
 		return NofficeResponse.success(PUT_ANNOUNCEMENT_SUCCESS,
 				announcementService.updateAnnouncement(announcementId, announcementUpdateRequest));
 	}
 
 	@DeleteMapping("/{announcementId}")
-	public NofficeResponse<Void> deleteAnnouncement(@PathVariable final Long announcementId) {
+	public NofficeResponse<Void> delete(@PathVariable final Long announcementId) {
 		announcementService.deleteAnnouncement(announcementId);
 		return NofficeResponse.success(DELETE_ANNOUNCEMENT_SUCCESS);
 	}
