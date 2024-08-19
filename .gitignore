@@ -42,3 +42,4 @@ build/
 
 ### Github Submodules ###
 src/main/resources/application-*
+src/main/resources/firebase/*
