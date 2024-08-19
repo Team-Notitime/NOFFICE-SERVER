@@ -37,7 +37,6 @@ public class AnnouncementService {
 	private final RoleVerifier roleVerifier;
 	private final ReadStatusRecoder readStatusRecoder;
 
-	@Transactional(readOnly = true)
 	public AnnouncementResponse readAnnouncement(Long memberId, Long announcementId) {
 		roleVerifier.verifyJoinedMember(memberId, announcementId);
 		recordReadStatus(memberId, announcementId);
