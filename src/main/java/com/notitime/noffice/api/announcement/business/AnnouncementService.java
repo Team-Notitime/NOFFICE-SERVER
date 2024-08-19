@@ -1,5 +1,9 @@
 package com.notitime.noffice.api.announcement.business;
 
+import static com.notitime.noffice.global.response.BusinessErrorCode.NOT_FOUND_ANNOUNCEMENT;
+import static com.notitime.noffice.global.response.BusinessErrorCode.NOT_FOUND_MEMBER;
+import static com.notitime.noffice.global.response.BusinessErrorCode.NOT_FOUND_ORGANIZATION;
+
 import com.notitime.noffice.api.notification.business.NotificationService;
 import com.notitime.noffice.api.organization.business.RoleVerifier;
 import com.notitime.noffice.domain.announcement.model.Announcement;
@@ -8,17 +12,13 @@ import com.notitime.noffice.domain.member.model.Member;
 import com.notitime.noffice.domain.member.persistence.MemberRepository;
 import com.notitime.noffice.domain.organization.model.Organization;
 import com.notitime.noffice.domain.organization.persistence.OrganizationRepository;
-import com.notitime.noffice.domain.task.model.Task;
 import com.notitime.noffice.global.exception.NotFoundException;
-import com.notitime.noffice.global.response.BusinessErrorCode;
 import com.notitime.noffice.request.AnnouncementCreateRequest;
 import com.notitime.noffice.request.AnnouncementUpdateRequest;
 import com.notitime.noffice.response.AnnouncementCoverResponse;
 import com.notitime.noffice.response.AnnouncementResponse;
 import com.notitime.noffice.response.AnnouncementResponses;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -38,11 +38,11 @@ public class AnnouncementService {
 	private final ReadStatusRecoder readStatusRecoder;
 
 	@Transactional(readOnly = true)
-	public AnnouncementResponse readAnnouncement(Long memberId, Long announcementId) {
+	public AnnouncementResponse read(Long memberId, Long announcementId) {
 		roleVerifier.verifyJoinedMember(memberId, announcementId);
 		recordReadStatus(memberId, announcementId);
 		return AnnouncementResponse.of(announcementRepository.findById(announcementId)
-				.orElseThrow(() -> new NotFoundException(BusinessErrorCode.NOT_FOUND_ANNOUNCEMENT)));
+				.orElseThrow(() -> new NotFoundException(NOT_FOUND_ANNOUNCEMENT)));
 	}
 
 	@Transactional(readOnly = true)
@@ -54,14 +54,15 @@ public class AnnouncementService {
 	public AnnouncementResponse createAnnouncement(final AnnouncementCreateRequest request) {
 		Announcement announcement = buildAnnouncementFromRequest(request);
 		saveAnnouncement(announcement);
-		createNotificationForAnnouncement(request, announcement);
+		createNotification(request, announcement);
 		return buildResponseFromAnnouncement(announcement);
 	}
 
 	public AnnouncementResponse updateAnnouncement(final Long announcementId,
-	                                               final AnnouncementUpdateRequest announcementCreateRequest) {
+	                                               final AnnouncementUpdateRequest request) {
 		Announcement existAnnouncement = announcementRepository.findById(announcementId).orElseThrow(
-				() -> new NotFoundException(BusinessErrorCode.NOT_FOUND_ANNOUNCEMENT));
+				() -> new NotFoundException(NOT_FOUND_ANNOUNCEMENT));
+		existAnnouncement.update(request);
 		return AnnouncementResponse.of(announcementRepository.save(existAnnouncement));
 	}
 
@@ -79,39 +80,19 @@ public class AnnouncementService {
 	}
 
 	private Announcement buildAnnouncementFromRequest(AnnouncementCreateRequest request) {
-		LocalDateTime endAt = Optional.ofNullable(request.endAt())
-				.map(date -> LocalDateTime.parse(date, Announcement.DATE_TIME_FORMATTER))
-				.orElse(null);
 		Organization organization = organizationRepository.findById(request.organizationId())
-				.orElseThrow(() -> new NotFoundException(BusinessErrorCode.NOT_FOUND_ORGANIZATION));
+				.orElseThrow(() -> new NotFoundException(NOT_FOUND_ORGANIZATION));
 		Member member = memberRepository.findById(request.memberId())
-				.orElseThrow(() -> new NotFoundException(BusinessErrorCode.NOT_FOUND_MEMBER));
-		Announcement announcement = Announcement.createAnnouncement(
-				request.title(),
-				request.content(),
-				endAt,
-				member,
-				organization
-		);
-		if (request.tasks() != null) {
-			List<Task> tasks = request.tasks().stream()
-					.map(task -> Task.create(task.content(), announcement)).toList();
-			announcement.withTasks(tasks);
-		}
-		Optional.ofNullable(request.profileImageUrl()).ifPresent(announcement::withProfileImageUrl);
-		Optional.ofNullable(request.isFaceToFace()).ifPresent(announcement::withIsFaceToFace);
-		Optional.ofNullable(request.placeLinkName()).ifPresent(announcement::withPlaceLinkName);
-		Optional.ofNullable(request.placeLinkUrl()).ifPresent(announcement::withPlaceLinkUrl);
-
-		return announcement;
+				.orElseThrow(() -> new NotFoundException(NOT_FOUND_MEMBER));
+		return Announcement.create(request, member, organization);
 	}
 
 	private void saveAnnouncement(Announcement announcement) {
 		announcementRepository.save(announcement);
 	}
 
-	private void createNotificationForAnnouncement(AnnouncementCreateRequest request, Announcement announcement) {
-		notificationService.createNotification(request, announcement);
+	private void createNotification(AnnouncementCreateRequest request, Announcement announcement) {
+		notificationService.create(request, announcement);
 	}
 
 	private AnnouncementResponse buildResponseFromAnnouncement(Announcement announcement) {
@@ -120,15 +101,15 @@ public class AnnouncementService {
 
 	private void recordReadStatus(Long memberId, Long announcementId) {
 		Member member = memberRepository.findById(memberId)
-				.orElseThrow(() -> new NotFoundException(BusinessErrorCode.NOT_FOUND_MEMBER));
+				.orElseThrow(() -> new NotFoundException(NOT_FOUND_MEMBER));
 		Announcement announcement = announcementRepository.findById(announcementId)
-				.orElseThrow(() -> new NotFoundException(BusinessErrorCode.NOT_FOUND_ANNOUNCEMENT));
+				.orElseThrow(() -> new NotFoundException(NOT_FOUND_ANNOUNCEMENT));
 		readStatusRecoder.record(member, announcement);
 	}
 
 	private Long getTotalMemberCount(Long organizationId) {
 		return (long) organizationRepository.findById(organizationId)
-				.orElseThrow(() -> new NotFoundException(BusinessErrorCode.NOT_FOUND_ORGANIZATION))
+				.orElseThrow(() -> new NotFoundException(NOT_FOUND_ORGANIZATION))
 				.getMembers().size();
 	}
 }

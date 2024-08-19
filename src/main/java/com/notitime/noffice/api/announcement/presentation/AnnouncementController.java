@@ -51,7 +51,7 @@ public class AnnouncementController implements AnnouncementApi {
 	public NofficeResponse<AnnouncementResponse> read(@AuthMember final Long memberId,
 	                                                  @PathVariable final Long announcementId) {
 		return NofficeResponse.success(GET_ANNOUNCEMENT_SUCCESS,
-				announcementService.readAnnouncement(memberId, announcementId));
+				announcementService.read(memberId, announcementId));
 	}
 
 	@PostMapping("/{announcementId}")

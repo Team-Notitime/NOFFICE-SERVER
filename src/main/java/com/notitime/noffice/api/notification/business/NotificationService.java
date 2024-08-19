@@ -18,7 +18,7 @@ public class NotificationService {
 	private final NotificationRepository notificationRepository;
 	private final AnnouncementRepository announcementRepository;
 
-	public void createNotification(AnnouncementCreateRequest request, Announcement announcement) {
+	public void create(AnnouncementCreateRequest request, Announcement announcement) {
 		List<Notification> notifications = NotificationAssembler.assemble(request, announcement);
 		notificationRepository.saveAll(notifications);
 	}
