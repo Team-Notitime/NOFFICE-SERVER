@@ -12,6 +12,7 @@ import com.notitime.noffice.domain.member.model.Member;
 import com.notitime.noffice.domain.member.persistence.MemberRepository;
 import com.notitime.noffice.domain.organization.model.Organization;
 import com.notitime.noffice.domain.organization.persistence.OrganizationRepository;
+import com.notitime.noffice.external.firebase.FcmService;
 import com.notitime.noffice.global.exception.NotFoundException;
 import com.notitime.noffice.request.AnnouncementCreateRequest;
 import com.notitime.noffice.request.AnnouncementUpdateRequest;
@@ -36,6 +37,7 @@ public class AnnouncementService {
 	private final NotificationService notificationService;
 	private final RoleVerifier roleVerifier;
 	private final ReadStatusRecoder readStatusRecoder;
+	private final FcmService fcmService;
 
 	@Transactional(readOnly = true)
 	public AnnouncementResponse read(Long memberId, Long announcementId) {
@@ -54,7 +56,8 @@ public class AnnouncementService {
 	public AnnouncementResponse createAnnouncement(final AnnouncementCreateRequest request) {
 		Announcement announcement = buildAnnouncementFromRequest(request);
 		saveAnnouncement(announcement);
-		createNotification(request, announcement);
+		fcmService.sendAnnouncementCreatedMessage(announcement);
+		notificationService.create(request, announcement);
 		return buildResponseFromAnnouncement(announcement);
 	}
 
@@ -89,10 +92,6 @@ public class AnnouncementService {
 
 	private void saveAnnouncement(Announcement announcement) {
 		announcementRepository.save(announcement);
-	}
-
-	private void createNotification(AnnouncementCreateRequest request, Announcement announcement) {
-		notificationService.create(request, announcement);
 	}
 
 	private AnnouncementResponse buildResponseFromAnnouncement(Announcement announcement) {
