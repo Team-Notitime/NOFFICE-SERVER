@@ -1,6 +1,7 @@
 package com.notitime.noffice.api.announcement.presentation;
 
 import com.notitime.noffice.auth.AuthMember;
+import com.notitime.noffice.external.firebase.FCMCreateResponse;
 import com.notitime.noffice.global.response.NofficeResponse;
 import com.notitime.noffice.request.AnnouncementCreateRequest;
 import com.notitime.noffice.request.AnnouncementUpdateRequest;
@@ -66,4 +67,11 @@ interface AnnouncementApi {
 			@ApiResponse(responseCode = "400", description = "노티에 발급된 투두 삭제에 실패하였습니다.")
 	})
 	NofficeResponse<Void> deleteTaskById(@PathVariable final Long announcementId, @PathVariable final Long taskId);
+
+	@Operation(summary = "노티 미열람자 대상 FCM 알림", description = "노티 미열람자 대상으로 알림을 전송합니다.", responses = {
+			@ApiResponse(responseCode = "200", description = "알림 전송 성공"),
+			@ApiResponse(responseCode = "400", description = "알림 전송에 실패하였습니다.")
+	})
+	NofficeResponse<FCMCreateResponse> sendToUnReader(@Parameter(hidden = true) @AuthMember final Long memberId,
+	                                                  @PathVariable final Long announcementId);
 }

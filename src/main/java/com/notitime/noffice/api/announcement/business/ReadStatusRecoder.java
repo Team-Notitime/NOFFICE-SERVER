@@ -5,6 +5,7 @@ import com.notitime.noffice.domain.announcement.model.AnnouncementReadStatus;
 import com.notitime.noffice.domain.announcement.persistence.AnnouncementReadStatusRepository;
 import com.notitime.noffice.domain.member.model.Member;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,10 @@ public class ReadStatusRecoder {
 
 	public Long countReader(Long announcementId) {
 		return announcementReadStatusRepository.countByAnnouncementId(announcementId);
+	}
+
+	public List<Long> getUnreadMemberIds(Long announcementId) {
+		return announcementReadStatusRepository.findUnreadMemberIds(announcementId);
 	}
 
 	public boolean isRead(Long memberId, Long announcementId) {

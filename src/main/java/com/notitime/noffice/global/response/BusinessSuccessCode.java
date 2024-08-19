@@ -26,6 +26,7 @@ public enum BusinessSuccessCode implements SuccessCode {
 	PUT_CATEGORIES_SUCCESS(HttpStatus.OK, "NOF-2082", "조직 카테고리 수정 성공"),
 	GET_TASKS_BY_ANNOUNCEMENT_SUCCESS(HttpStatus.OK, "NOF-2091", "노티별 투두 조회 성공"),
 	PATCH_TASK_MODIFY_SUCCESS(HttpStatus.OK, "NOF-2092", "투두 수정 성공"),
+	SEND_UNREADER_REMIND_SUCCSS(HttpStatus.OK, "NOF-2500", "공지 미열람자 알림 발송 성공"),
 
 	// CREATED (2100 ~ 2199)
 	CREATED(HttpStatus.CREATED, "NOF-210", "리소스가 생성되었습니다. - 201"),
@@ -44,6 +45,7 @@ public enum BusinessSuccessCode implements SuccessCode {
 
 	// RESET CONTENT (2500 ~ 2599)
 	RESET_CONTENT(HttpStatus.RESET_CONTENT, "NOF-205", "리소스가 갱신되었습니다. - 205");
+
 
 	private final HttpStatus httpStatus;
 	private final String code;

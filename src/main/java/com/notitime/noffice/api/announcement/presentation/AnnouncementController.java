@@ -7,10 +7,13 @@ import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_ANNOU
 import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_TASKS_BY_ANNOUNCEMENT_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.POST_ANNOUNCEMENT_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.PUT_ANNOUNCEMENT_SUCCESS;
+import static com.notitime.noffice.global.response.BusinessSuccessCode.SEND_UNREADER_REMIND_SUCCSS;
 
 import com.notitime.noffice.api.announcement.business.AnnouncementService;
 import com.notitime.noffice.api.task.business.TaskService;
 import com.notitime.noffice.auth.AuthMember;
+import com.notitime.noffice.external.firebase.FCMCreateResponse;
+import com.notitime.noffice.external.firebase.FcmService;
 import com.notitime.noffice.global.response.NofficeResponse;
 import com.notitime.noffice.request.AnnouncementCreateRequest;
 import com.notitime.noffice.request.AnnouncementUpdateRequest;
@@ -33,6 +36,7 @@ public class AnnouncementController implements AnnouncementApi {
 
 	private final AnnouncementService announcementService;
 	private final TaskService taskService;
+	private final FcmService fcmService;
 
 	@GetMapping
 	public NofficeResponse<AnnouncementResponses> getAnnouncements() {
@@ -80,5 +84,12 @@ public class AnnouncementController implements AnnouncementApi {
 	                                            @PathVariable final Long taskId) {
 		taskService.delete(announcementId, taskId);
 		return NofficeResponse.success(DELETE_TASK_SUCCESS);
+	}
+
+	@PostMapping("/{announcementId}/remind-unread")
+	public NofficeResponse<FCMCreateResponse> sendToUnReader(@AuthMember final Long memberId,
+	                                                         @PathVariable final Long announcementId) {
+		return NofficeResponse.success(SEND_UNREADER_REMIND_SUCCSS,
+				fcmService.sendToUnReader(memberId, announcementId));
 	}
 }
