@@ -31,11 +31,10 @@ public enum BusinessSuccessCode implements SuccessCode {
 	CREATED(HttpStatus.CREATED, "NOF-210", "리소스가 생성되었습니다. - 201"),
 	CREATED_NOTIFICATION_SUCCESS(HttpStatus.CREATED, "NOF-20710", "알림 대기열 등록 성공"),
 	CREATED_BULK_NOTIFICATION_SUCCESS(HttpStatus.CREATED, "NOF-20711", "조직 전체 알림 대량 등록 성공"),
-
 	CREATE_ORGANIZATION_SUCCESS(HttpStatus.CREATED, "NOF-2100", "조직 생성에 성공하였습니다."),
 	POST_JOIN_ORGANIZATION_SUCCESS(HttpStatus.CREATED, "NOF-2101", "조직 가입에 성공하였습니다."),
 	POST_ANNOUNCEMENT_SUCCESS(HttpStatus.CREATED, "NOF-2150", "노티 생성에 성공하였습니다."),
-
+	POST_SAVE_FCM_TOKEN_SUCCESS(HttpStatus.CREATED, "NOF-210", "FCM 토큰 저장 성공"),
 	// NO CONTENT (2400 ~ 2499)
 	NO_CONTENT(HttpStatus.NO_CONTENT, "NOF-2400", "요청이 성공했습니다. - 204"),
 	PATCH_CHANGE_ROLES_SUCCESS(HttpStatus.NO_CONTENT, "NOF-2401", "사용자 권한 변경에 성공하였습니다."),
