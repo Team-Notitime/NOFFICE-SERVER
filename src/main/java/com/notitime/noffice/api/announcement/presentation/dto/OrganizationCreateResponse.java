@@ -3,8 +3,8 @@ package com.notitime.noffice.api.announcement.presentation.dto;
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIRED;
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
+import com.notitime.noffice.api.promotion.presentation.dto.PromotionVerifyResponse;
 import com.notitime.noffice.domain.organization.model.Organization;
-import com.notitime.noffice.response.PromotionVerifyResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 
@@ -27,15 +27,5 @@ public record OrganizationCreateResponse(
 				organization.getName(),
 				organization.getEndAt(),
 				organization.getProfileImage(), null);
-	}
-
-	public static OrganizationCreateResponse withPromotion(Organization organization,
-	                                                       PromotionVerifyResponse promotion) {
-		return new OrganizationCreateResponse(
-				organization.getId(),
-				organization.getName(),
-				organization.getEndAt(),
-				organization.getProfileImage(),
-				promotion);
 	}
 }

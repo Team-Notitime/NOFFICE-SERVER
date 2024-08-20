@@ -1,9 +1,9 @@
 package com.notitime.noffice.api.promotion.presentation;
 
 import com.notitime.noffice.api.promotion.business.PromotionCodeVerifier;
+import com.notitime.noffice.api.promotion.presentation.dto.PromotionVerifyResponse;
 import com.notitime.noffice.global.response.BusinessSuccessCode;
 import com.notitime.noffice.global.response.NofficeResponse;
-import com.notitime.noffice.response.PromotionVerifyResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
