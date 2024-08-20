@@ -110,4 +110,8 @@ public class Announcement extends BaseTimeEntity {
 					.toList();
 		}
 	}
+
+	public void addNotification(Notification notification) {
+		this.notifications.add(notification);
+	}
 }

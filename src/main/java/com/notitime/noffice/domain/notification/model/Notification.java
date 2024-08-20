@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -27,6 +28,7 @@ public class Notification {
 	@Enumerated(EnumType.STRING)
 	private NoticeType noticeType;
 
+	@Setter
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "announcement_id", nullable = false)
 	private Announcement announcement;

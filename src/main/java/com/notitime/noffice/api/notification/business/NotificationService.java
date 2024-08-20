@@ -21,5 +21,6 @@ public class NotificationService {
 	public void createNotification(AnnouncementCreateRequest request, Announcement announcement) {
 		List<Notification> notifications = NotificationAssembler.assemble(request, announcement);
 		notificationRepository.saveAll(notifications);
+		notifications.forEach(announcement::addNotification);
 	}
 }

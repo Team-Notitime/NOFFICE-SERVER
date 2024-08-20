@@ -28,9 +28,9 @@ public record AnnouncementCreateRequest(
 		List<TaskCreateRequest> tasks,
 		@Schema(description = "활동 진행 만료일", requiredMode = REQUIRED, example = "2021-07-01T 00:00:00")
 		LocalDateTime endAt,
-		@Schema(description = "리마인드 알림 시간 (ISO_LOCAL_DATE_TIME)", requiredMode = REQUIRED, example = "['2024-08-20T15:30:45', '2024-08-21T15:30:45']")
+		@Schema(description = "리마인드 알림 시간 (ISO_LOCAL_DATE_TIME)", requiredMode = REQUIRED, example = "[\"2024-08-20T15:30:45\", \"2024-08-21T15:30:45\"]")
 		List<LocalDateTime> noticeBefore,
-		@Schema(description = "리마인드 알림 직접설정시간 (ISO_LOCAL_DATE_TIME)", requiredMode = REQUIRED, example = "['2024-08-20T15:30:45', '2024-08-21T15:30:45']")
+		@Schema(description = "리마인드 알림 직접설정시간 (ISO_LOCAL_DATE_TIME)", requiredMode = REQUIRED, example = "[\"2024-08-20T15:30:45\", \"2024-08-21T15:30:45\"]")
 		List<LocalDateTime> noticeDate) {
 	public AnnouncementCreateRequest {
 		profileImageUrl = (profileImageUrl != null && profileImageUrl.isEmpty()) ? null : profileImageUrl;
