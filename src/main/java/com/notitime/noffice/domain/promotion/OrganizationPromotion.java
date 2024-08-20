@@ -1,4 +1,4 @@
-package com.notitime.noffice.domain;
+package com.notitime.noffice.domain.promotion;
 
 import com.notitime.noffice.domain.organization.model.Organization;
 import jakarta.persistence.Entity;
@@ -8,11 +8,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class OrganizationPromotion {
 	@Id
@@ -28,4 +31,8 @@ public class OrganizationPromotion {
 	private Promotion promotion;
 
 	private LocalDateTime endAt;
+
+	public static OrganizationPromotion of(Organization organization, Promotion promotion, LocalDateTime endAt) {
+		return new OrganizationPromotion(null, organization, promotion, endAt);
+	}
 }

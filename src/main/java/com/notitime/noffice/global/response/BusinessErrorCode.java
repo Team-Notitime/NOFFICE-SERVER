@@ -41,6 +41,7 @@ public enum BusinessErrorCode implements ErrorCode {
 	NOT_FOUND_TASK(HttpStatus.NOT_FOUND, "NOF-4460", "요청한 투두를 찾을 수 없습니다."),
 	NOT_FOUND_MEMBER(HttpStatus.NOT_FOUND, "NOF-4470", "멤버를 찾을 수 없습니다."),
 	NOT_FOUND_ORGANIZATION(HttpStatus.NOT_FOUND, "NOF-4480", "조직을 찾을 수 없습니다."),
+	NOT_FOUND_PROMOTION(HttpStatus.NOT_FOUND, "NOF-4490", "프로모션을 찾을 수 없습니다."),
 	STORE_FILE_SIZE_EXCEEDED(HttpStatus.NOT_FOUND, "NOF-404", "업로드 가능한 파일 크기를 초과했습니다."),
 
 	// 500 Internal Server Error
