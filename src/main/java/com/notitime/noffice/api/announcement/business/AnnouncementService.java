@@ -39,7 +39,7 @@ public class AnnouncementService {
 	private final ReadStatusRecoder readStatusRecoder;
 	private final FcmService fcmService;
 
-	public AnnouncementResponse readAnnouncement(Long memberId, Long announcementId) {
+	public AnnouncementResponse read(Long memberId, Long announcementId) {
 		roleVerifier.verifyJoinedMember(memberId, announcementId);
 		recordReadStatus(memberId, announcementId);
 		return AnnouncementResponse.of(announcementRepository.findById(announcementId)
@@ -54,8 +54,8 @@ public class AnnouncementService {
 
 	public AnnouncementResponse create(final AnnouncementCreateRequest request) {
 		Announcement announcement = createEntity(request);
-    fcmService.sendAnnouncementCreatedMessage(announcement);
-		notificationService.createNotification(request, announcement);
+		fcmService.sendAnnouncementCreatedMessage(announcement);
+		notificationService.create(request, announcement);
 		return AnnouncementResponse.of(announcement);
 	}
 
@@ -80,7 +80,7 @@ public class AnnouncementService {
 				});
 	}
 
-  private Announcement createEntity(AnnouncementCreateRequest request) {
+	private Announcement createEntity(AnnouncementCreateRequest request) {
 		Organization organization = organizationRepository.findById(request.organizationId())
 				.orElseThrow(() -> new NotFoundException(NOT_FOUND_ORGANIZATION));
 		Member member = memberRepository.findById(request.memberId())
