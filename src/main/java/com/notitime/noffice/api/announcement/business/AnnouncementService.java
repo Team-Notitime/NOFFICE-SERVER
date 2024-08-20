@@ -12,6 +12,7 @@ import com.notitime.noffice.domain.member.model.Member;
 import com.notitime.noffice.domain.member.persistence.MemberRepository;
 import com.notitime.noffice.domain.organization.model.Organization;
 import com.notitime.noffice.domain.organization.persistence.OrganizationRepository;
+import com.notitime.noffice.external.firebase.FcmService;
 import com.notitime.noffice.global.exception.NotFoundException;
 import com.notitime.noffice.request.AnnouncementCreateRequest;
 import com.notitime.noffice.request.AnnouncementUpdateRequest;
@@ -36,8 +37,9 @@ public class AnnouncementService {
 	private final NotificationService notificationService;
 	private final RoleVerifier roleVerifier;
 	private final ReadStatusRecoder readStatusRecoder;
+	private final FcmService fcmService;
 
-	public AnnouncementResponse readAnnouncement(Long memberId, Long announcementId) {
+	public AnnouncementResponse read(Long memberId, Long announcementId) {
 		roleVerifier.verifyJoinedMember(memberId, announcementId);
 		recordReadStatus(memberId, announcementId);
 		return AnnouncementResponse.of(announcementRepository.findById(announcementId)
@@ -52,14 +54,16 @@ public class AnnouncementService {
 
 	public AnnouncementResponse create(final AnnouncementCreateRequest request) {
 		Announcement announcement = createEntity(request);
-		notificationService.createNotification(request, announcement);
+		fcmService.sendAnnouncementCreatedMessage(announcement);
+		notificationService.create(request, announcement);
 		return AnnouncementResponse.of(announcement);
 	}
 
 	public AnnouncementResponse updateAnnouncement(final Long announcementId,
-	                                               final AnnouncementUpdateRequest announcementCreateRequest) {
+	                                               final AnnouncementUpdateRequest request) {
 		Announcement existAnnouncement = announcementRepository.findById(announcementId).orElseThrow(
 				() -> new NotFoundException(NOT_FOUND_ANNOUNCEMENT));
+		existAnnouncement.update(request);
 		return AnnouncementResponse.of(announcementRepository.save(existAnnouncement));
 	}
 

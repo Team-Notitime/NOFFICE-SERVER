@@ -5,6 +5,7 @@ import com.notitime.noffice.domain.member.model.Member;
 import com.notitime.noffice.domain.notification.model.Notification;
 import com.notitime.noffice.domain.organization.model.Organization;
 import com.notitime.noffice.domain.task.model.Task;
+import com.notitime.noffice.request.AnnouncementUpdateRequest;
 import com.notitime.noffice.request.TaskCreateRequest;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -25,11 +26,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
+@DynamicInsert
+@DynamicUpdate
 public class Announcement extends BaseTimeEntity {
 
 	public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
@@ -101,6 +106,17 @@ public class Announcement extends BaseTimeEntity {
 				.placeLinkName(placeLinkName)
 				.placeLinkUrl(placeLinkUrl)
 				.build();
+	}
+
+	public void update(AnnouncementUpdateRequest request) {
+		if (request.title() != null) {this.title = request.title();}
+		if (request.content() != null) {this.content = request.content();}
+		if (request.endAt() != null) {this.endAt = LocalDateTime.parse(request.endAt(), DATE_TIME_FORMATTER);}
+		if (request.profileImageUrl() != null) {this.profileImageUrl = request.profileImageUrl();}
+		if (request.isFaceToFace() != null) {this.isFaceToFace = request.isFaceToFace();}
+		if (request.placeLinkName() != null) {this.placeLinkName = request.placeLinkName();}
+		if (request.placeLinkUrl() != null) {this.placeLinkUrl = request.placeLinkUrl();}
+		if (request.tasks() != null) {this.withTasks(request.tasks());}
 	}
 
 	public void withTasks(List<TaskCreateRequest> taskRequests) {

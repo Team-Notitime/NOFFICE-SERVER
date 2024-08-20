@@ -1,6 +1,6 @@
 package com.notitime.noffice.domain;
 
-import com.notitime.noffice.domain.member.model.Member;
+import com.notitime.noffice.domain.organization.model.Organization;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -9,23 +9,29 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
-public class FcmNotificationToken {
-
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
+public class OrganizationToken {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member_id")
-	private Member member;
+	@JoinColumn(name = "organization_id")
+	private Organization organization;
 
-	private String fcmToken;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "token_id")
+	private FcmToken token;
 
-	private String deviceId;
+	public OrganizationToken(Organization organization, FcmToken token) {
+		this.organization = organization;
+		this.token = token;
+	}
 }

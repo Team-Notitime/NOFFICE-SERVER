@@ -1,6 +1,7 @@
 package com.notitime.noffice.domain.member.model;
 
 import com.notitime.noffice.domain.BaseTimeEntity;
+import com.notitime.noffice.domain.FcmToken;
 import com.notitime.noffice.domain.SocialAuthProvider;
 import com.notitime.noffice.domain.organization.model.OrganizationMember;
 import jakarta.persistence.Column;
@@ -49,6 +50,9 @@ public class Member extends BaseTimeEntity {
 	@OneToMany(mappedBy = "member")
 	private final List<OrganizationMember> organizations = new ArrayList<>();
 
+	@OneToMany(mappedBy = "member")
+	private final List<FcmToken> fcmTokens = new ArrayList<>();
+
 	public static Member createAuthorizedMember(
 			final String serialId,
 			final String name,
@@ -63,5 +67,9 @@ public class Member extends BaseTimeEntity {
 				.socialAuthProvider(socialAuthProvider)
 				.profileImage(profileImage)
 				.build();
+	}
+
+	public void addFcmToken(FcmToken fcmToken) {
+		this.fcmTokens.add(fcmToken);
 	}
 }

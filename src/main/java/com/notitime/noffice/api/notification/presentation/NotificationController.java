@@ -5,13 +5,16 @@ import static com.notitime.noffice.global.response.BusinessSuccessCode.CREATED_B
 import static com.notitime.noffice.global.response.BusinessSuccessCode.CREATED_NOTIFICATION_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.DELETE_NOTIFICATION_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.OK;
+import static com.notitime.noffice.global.response.BusinessSuccessCode.POST_SAVE_FCM_TOKEN_SUCCESS;
 
+import com.notitime.noffice.api.notification.business.NotificationService;
 import com.notitime.noffice.auth.AuthMember;
 import com.notitime.noffice.global.response.NofficeResponse;
 import com.notitime.noffice.request.NotificationRequest;
 import com.notitime.noffice.request.NotificationTimeChangeRequest;
 import com.notitime.noffice.response.NotificationBulkRequest;
 import com.notitime.noffice.response.NotificationTimeChangeResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -22,8 +25,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/notifications")
 public class NotificationController implements NotificationApi {
+
+	private final NotificationService notificationService;
 
 	@PostMapping
 	public NofficeResponse<Void> create(@AuthMember final Long memberId,
@@ -51,5 +57,12 @@ public class NotificationController implements NotificationApi {
 	@DeleteMapping("/{notificationId}")
 	public NofficeResponse<Void> delete(@PathVariable final Long notificationId) {
 		return NofficeResponse.success(DELETE_NOTIFICATION_SUCCESS);
+	}
+
+	@PostMapping("/fcm-token")
+	public NofficeResponse<Void> saveFcmToken(@AuthMember final Long memberId,
+	                                          @RequestBody final String fcmToken) {
+		notificationService.saveFcmToken(memberId, fcmToken);
+		return NofficeResponse.success(POST_SAVE_FCM_TOKEN_SUCCESS);
 	}
 }
