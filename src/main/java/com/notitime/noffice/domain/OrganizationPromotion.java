@@ -1,6 +1,7 @@
 package com.notitime.noffice.domain;
 
 import com.notitime.noffice.domain.organization.model.Organization;
+import com.notitime.noffice.domain.promotion.Promotion;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

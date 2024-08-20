@@ -1,4 +1,4 @@
-package com.notitime.noffice.domain;
+package com.notitime.noffice.domain.promotion;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,7 +18,7 @@ public class PromotionImage {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "promotion_id", nullable = false)
 	private Promotion promotion;
-	
+
 	@Column(columnDefinition = "TEXT")
 	private String imageUrl;
 }
