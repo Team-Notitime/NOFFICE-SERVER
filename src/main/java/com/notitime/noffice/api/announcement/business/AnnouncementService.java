@@ -39,8 +39,7 @@ public class AnnouncementService {
 	private final ReadStatusRecoder readStatusRecoder;
 	private final FcmService fcmService;
 
-	@Transactional(readOnly = true)
-	public AnnouncementResponse read(Long memberId, Long announcementId) {
+	public AnnouncementResponse readAnnouncement(Long memberId, Long announcementId) {
 		roleVerifier.verifyJoinedMember(memberId, announcementId);
 		recordReadStatus(memberId, announcementId);
 		return AnnouncementResponse.of(announcementRepository.findById(announcementId)
@@ -53,12 +52,11 @@ public class AnnouncementService {
 		return AnnouncementResponses.of(announcements.stream().map(AnnouncementResponse::of).toList());
 	}
 
-	public AnnouncementResponse createAnnouncement(final AnnouncementCreateRequest request) {
-		Announcement announcement = buildAnnouncementFromRequest(request);
-		saveAnnouncement(announcement);
-		fcmService.sendAnnouncementCreatedMessage(announcement);
-		notificationService.create(request, announcement);
-		return buildResponseFromAnnouncement(announcement);
+	public AnnouncementResponse create(final AnnouncementCreateRequest request) {
+		Announcement announcement = createEntity(request);
+    fcmService.sendAnnouncementCreatedMessage(announcement);
+		notificationService.createNotification(request, announcement);
+		return AnnouncementResponse.of(announcement);
 	}
 
 	public AnnouncementResponse updateAnnouncement(final Long announcementId,
@@ -82,20 +80,25 @@ public class AnnouncementService {
 				});
 	}
 
-	private Announcement buildAnnouncementFromRequest(AnnouncementCreateRequest request) {
+  private Announcement createEntity(AnnouncementCreateRequest request) {
 		Organization organization = organizationRepository.findById(request.organizationId())
 				.orElseThrow(() -> new NotFoundException(NOT_FOUND_ORGANIZATION));
 		Member member = memberRepository.findById(request.memberId())
 				.orElseThrow(() -> new NotFoundException(NOT_FOUND_MEMBER));
-		return Announcement.create(request, member, organization);
-	}
-
-	private void saveAnnouncement(Announcement announcement) {
+		Announcement announcement = Announcement.create(
+				request.title(),
+				request.content(),
+				request.endAt(),
+				member,
+				organization,
+				request.profileImageUrl(),
+				request.isFaceToFace(),
+				request.placeLinkName(),
+				request.placeLinkUrl()
+		);
+		announcement.withTasks(request.tasks());
 		announcementRepository.save(announcement);
-	}
-
-	private AnnouncementResponse buildResponseFromAnnouncement(Announcement announcement) {
-		return AnnouncementResponse.of(announcement);
+		return announcement;
 	}
 
 	private void recordReadStatus(Long memberId, Long announcementId) {

@@ -33,14 +33,13 @@ import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder
+@AllArgsConstructor
 @Getter
 @DynamicInsert
 @DynamicUpdate
 public class Announcement extends BaseTimeEntity {
 
-	public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -68,7 +67,7 @@ public class Announcement extends BaseTimeEntity {
 	private List<Task> tasks = new ArrayList<>();
 
 	@OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Notification> notifications = new ArrayList<>();
+	private final List<Notification> notifications = new ArrayList<>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "creator_id")
@@ -78,54 +77,48 @@ public class Announcement extends BaseTimeEntity {
 	@JoinColumn(name = "organization_id")
 	private Organization organization;
 
-	public static Announcement create(AnnouncementCreateRequest request, Member member,
-	                                  Organization organization) {
-		Announcement announcement = Announcement.builder()
-				.title(request.title())
-				.content(request.content())
-				.endAt(LocalDateTime.parse(request.endAt(), DATE_TIME_FORMATTER))
+	@Builder
+	public Announcement(String title, String content, LocalDateTime endAt,
+	                    Member member, Organization organization,
+	                    String profileImageUrl, boolean isFaceToFace,
+	                    String placeLinkName, String placeLinkUrl) {
+		this.title = title;
+		this.content = content;
+		this.endAt = endAt;
+		this.member = member;
+		this.organization = organization;
+		this.profileImageUrl = profileImageUrl;
+		this.isFaceToFace = isFaceToFace;
+		this.placeLinkName = placeLinkName;
+		this.placeLinkUrl = placeLinkUrl;
+	}
+
+	public static Announcement create(String title, String content, LocalDateTime endAt,
+	                                  Member member, Organization organization,
+	                                  String profileImageUrl, Boolean isFaceToFace,
+	                                  String placeLinkName, String placeLinkUrl) {
+		return Announcement.builder()
+				.title(title)
+				.content(content)
+				.endAt(endAt)
 				.member(member)
 				.organization(organization)
+				.profileImageUrl(profileImageUrl)
+				.isFaceToFace(isFaceToFace)
+				.placeLinkName(placeLinkName)
+				.placeLinkUrl(placeLinkUrl)
 				.build();
-		announcement.withProfileImageUrl(request.profileImageUrl());
-		announcement.withIsFaceToFace(request.isFaceToFace());
-		announcement.withPlaceLinkName(request.placeLinkName());
-		announcement.withPlaceLinkUrl(request.placeLinkUrl());
-		announcement.withTasks(request.tasks());
-		return announcement;
 	}
 
-	public void update(AnnouncementUpdateRequest request) {
-		this.title = request.title();
-		this.content = request.content();
-		this.endAt = LocalDateTime.parse(request.endAt(), DATE_TIME_FORMATTER);
-		this.profileImageUrl = request.profileImageUrl();
-		this.isFaceToFace = request.isFaceToFace();
-		Optional.ofNullable(request.tasks()).ifPresent(this::withTasks);
-		Optional.ofNullable(request.profileImageUrl()).ifPresent(this::withProfileImageUrl);
-		Optional.ofNullable(request.isFaceToFace()).ifPresent(this::withIsFaceToFace);
-		Optional.ofNullable(request.placeLinkName()).ifPresent(this::withPlaceLinkName);
-		Optional.ofNullable(request.placeLinkUrl()).ifPresent(this::withPlaceLinkUrl);
+	public void withTasks(List<TaskCreateRequest> taskRequests) {
+		if (taskRequests != null) {
+			this.tasks = taskRequests.stream()
+					.map(taskRequest -> Task.create(taskRequest.content(), this))
+					.toList();
+		}
 	}
 
-	public void withTasks(List<TaskCreateRequest> request) {
-		this.tasks = request.stream()
-				.map(task -> Task.create(task.content(), this)).toList();
-	}
-
-	public void withProfileImageUrl(String profileImageUrl) {
-		this.profileImageUrl = profileImageUrl;
-	}
-
-	public void withIsFaceToFace(Boolean isFaceToFace) {
-		this.isFaceToFace = isFaceToFace != null ? isFaceToFace : this.isFaceToFace;
-	}
-
-	public void withPlaceLinkName(String placeLinkName) {
-		this.placeLinkName = placeLinkName;
-	}
-
-	public void withPlaceLinkUrl(String placeLinkUrl) {
-		this.placeLinkUrl = placeLinkUrl;
+	public void addNotification(Notification notification) {
+		this.notifications.add(notification);
 	}
 }

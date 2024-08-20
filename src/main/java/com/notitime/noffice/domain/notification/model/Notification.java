@@ -1,8 +1,9 @@
 package com.notitime.noffice.domain.notification.model;
 
 import com.notitime.noffice.domain.announcement.model.Announcement;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -23,26 +25,24 @@ public class Notification {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false)
-	private String title;
+	@Enumerated(EnumType.STRING)
+	private NoticeType noticeType;
 
-	@Column(nullable = false)
-	private String content;
-
+	@Setter
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "announcement_id", nullable = false)
 	private Announcement announcement;
 
 	private LocalDateTime sendAt;
 
-	private Notification(Announcement announcement, LocalDateTime sendAt) {
+	private Notification(Announcement announcement, LocalDateTime sendAt, NoticeType noticeType) {
 		this.announcement = announcement;
-		this.title = announcement.getTitle();
-		this.content = announcement.getContent();
 		this.sendAt = sendAt;
+		this.noticeType = noticeType;
 	}
 
-	public static Notification createNotification(Announcement announcement, LocalDateTime sendAt) {
-		return new Notification(announcement, sendAt);
+	public static Notification createNotification(Announcement announcement, LocalDateTime sendAt,
+	                                              NoticeType noticeType) {
+		return new Notification(announcement, sendAt, noticeType);
 	}
 }

@@ -48,7 +48,7 @@ public class AnnouncementController implements AnnouncementApi {
 	public NofficeResponse<AnnouncementResponse> create(
 			@RequestBody final AnnouncementCreateRequest announcementCreateRequest) {
 		return NofficeResponse.success(POST_ANNOUNCEMENT_SUCCESS,
-				announcementService.createAnnouncement(announcementCreateRequest));
+				announcementService.create(announcementCreateRequest));
 	}
 
 	@GetMapping("/{announcementId}")
