@@ -5,6 +5,7 @@ import com.notitime.noffice.domain.member.model.Member;
 import com.notitime.noffice.domain.notification.model.Notification;
 import com.notitime.noffice.domain.organization.model.Organization;
 import com.notitime.noffice.domain.task.model.Task;
+import com.notitime.noffice.request.TaskCreateRequest;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,16 +22,17 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @Getter
 public class Announcement extends BaseTimeEntity {
 
-	public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,7 +60,7 @@ public class Announcement extends BaseTimeEntity {
 	private List<Task> tasks = new ArrayList<>();
 
 	@OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Notification> notifications = new ArrayList<>();
+	private final List<Notification> notifications = new ArrayList<>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "creator_id")
@@ -68,29 +70,48 @@ public class Announcement extends BaseTimeEntity {
 	@JoinColumn(name = "organization_id")
 	private Organization organization;
 
-	public static Announcement createAnnouncement(String title, String content, LocalDateTime endAt, Member member,
-	                                              Organization organizaion) {
-		return new Announcement(null, title, content, null, false, null, null, endAt,
-				null, new ArrayList<>(), member, organizaion);
-	}
-
-	public void withTasks(List<Task> tasks) {
-		this.tasks = tasks;
-	}
-
-	public void withProfileImageUrl(String profileImageUrl) {
+	@Builder
+	public Announcement(String title, String content, LocalDateTime endAt,
+	                    Member member, Organization organization,
+	                    String profileImageUrl, boolean isFaceToFace,
+	                    String placeLinkName, String placeLinkUrl) {
+		this.title = title;
+		this.content = content;
+		this.endAt = endAt;
+		this.member = member;
+		this.organization = organization;
 		this.profileImageUrl = profileImageUrl;
-	}
-
-	public void withIsFaceToFace(Boolean isFaceToFace) {
-		this.isFaceToFace = isFaceToFace != null ? isFaceToFace : this.isFaceToFace;
-	}
-
-	public void withPlaceLinkName(String placeLinkName) {
+		this.isFaceToFace = isFaceToFace;
 		this.placeLinkName = placeLinkName;
+		this.placeLinkUrl = placeLinkUrl;
 	}
 
-	public void withPlaceLinkUrl(String placeLinkUrl) {
-		this.placeLinkUrl = placeLinkUrl;
+	public static Announcement create(String title, String content, LocalDateTime endAt,
+	                                  Member member, Organization organization,
+	                                  String profileImageUrl, Boolean isFaceToFace,
+	                                  String placeLinkName, String placeLinkUrl) {
+		return Announcement.builder()
+				.title(title)
+				.content(content)
+				.endAt(endAt)
+				.member(member)
+				.organization(organization)
+				.profileImageUrl(profileImageUrl)
+				.isFaceToFace(isFaceToFace)
+				.placeLinkName(placeLinkName)
+				.placeLinkUrl(placeLinkUrl)
+				.build();
+	}
+
+	public void withTasks(List<TaskCreateRequest> taskRequests) {
+		if (taskRequests != null) {
+			this.tasks = taskRequests.stream()
+					.map(taskRequest -> Task.create(taskRequest.content(), this))
+					.toList();
+		}
+	}
+
+	public void addNotification(Notification notification) {
+		this.notifications.add(notification);
 	}
 }

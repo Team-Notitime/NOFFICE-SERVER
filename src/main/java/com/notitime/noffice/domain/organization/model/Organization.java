@@ -49,7 +49,8 @@ public class Organization extends BaseTimeEntity {
 
 	public static Organization create(String name, LocalDateTime endAt, String profileImage,
 	                                  List<Category> categories, Member leader) {
-		Organization organization = new Organization(name, endAt, profileImage, categories);
+		Organization organization = new Organization(name, profileImage, categories);
+		organization.addEndAt(endAt);
 		organization.addLeader(leader);
 		return organization;
 	}
@@ -63,11 +64,14 @@ public class Organization extends BaseTimeEntity {
 		this.categories.removeIf(oc -> categories.stream().noneMatch(category -> oc.getCategory().equals(category)));
 	}
 
-	private Organization(String name, LocalDateTime endAt, String profileImage, List<Category> categories) {
+	private Organization(String name, String profileImage, List<Category> categories) {
 		this.name = name;
-		this.endAt = endAt;
 		this.profileImage = profileImage;
 		addCategories(categories);
+	}
+
+	private void addEndAt(LocalDateTime endAt) {
+		if (endAt != null) {this.endAt = endAt;}
 	}
 
 	private void addCategories(List<Category> categories) {
