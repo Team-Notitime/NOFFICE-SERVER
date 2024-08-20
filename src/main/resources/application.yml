@@ -9,6 +9,9 @@ spring:
   jackson:
     property-naming-strategy: LOWER_CAMEL_CASE
 
+  cache:
+    type: simple
+    
 springdoc:
   swagger-ui:
     path: /api-docs
