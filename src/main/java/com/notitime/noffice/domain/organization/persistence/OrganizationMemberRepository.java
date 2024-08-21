@@ -35,6 +35,11 @@ public interface OrganizationMemberRepository extends JpaRepository<Organization
 	int bulkUpdateRole(@Param("organizationId") Long organizationId, @Param("memberIds") List<Long> memberIds,
 	                   @Param("role") OrganizationRole role);
 
+	@Modifying
+	@Query("UPDATE OrganizationMember om SET om.status = :status WHERE om.organization.id = :organizationId AND om.member.id IN :memberIds")
+	int bulkUpdateStatus(@Param("organizationId") Long organizationId, @Param("memberIds") List<Long> memberIds,
+	                     @Param("JoinStatus") JoinStatus status);
+
 	default List<Member> findLeadersByOrganizationId(Long organizationId) {
 		return findMembersByOrganizationIdAndRole(organizationId, LEADER);
 	}
