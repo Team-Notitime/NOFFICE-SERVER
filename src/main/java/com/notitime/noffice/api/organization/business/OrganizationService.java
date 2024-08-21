@@ -11,7 +11,9 @@ import com.notitime.noffice.api.announcement.presentation.dto.OrganizationInfoRe
 import com.notitime.noffice.api.announcement.presentation.dto.OrganizationJoinResponse;
 import com.notitime.noffice.api.announcement.presentation.dto.OrganizationResponse;
 import com.notitime.noffice.api.announcement.presentation.dto.OrganizationSignupResponse;
-import com.notitime.noffice.api.organization.presentation.ChangeRoleRequest;
+import com.notitime.noffice.api.image.strategy.ImageRetrievalContext;
+import com.notitime.noffice.api.organization.presentation.dto.ChangeRoleRequest;
+import com.notitime.noffice.api.organization.presentation.dto.OrganizationImageResponse;
 import com.notitime.noffice.domain.JoinStatus;
 import com.notitime.noffice.domain.OrganizationRole;
 import com.notitime.noffice.domain.category.model.Category;
@@ -49,6 +51,7 @@ public class OrganizationService {
 	private final CategoryRepository categoryRepository;
 
 	private final RoleVerifier roleVerifier;
+	private final ImageRetrievalContext imageRetrievalContext;
 
 	public OrganizationInfoResponse getInformation(Long memberId, Long organizationId) {
 		Organization organization = getOrganizationEntity(organizationId);
@@ -105,6 +108,25 @@ public class OrganizationService {
 		roleVerifier.verifyMultipleMembers(organizationId, request.memberIds());
 		organizationMemberRepository.bulkUpdateRole(organizationId, request.memberIds(), request.role());
 	}
+	
+	public List<MemberInfoResponse> getPendingMembers(Long memberId, Long organizationId) {
+		roleVerifier.verifyLeader(memberId, organizationId);
+		return organizationMemberRepository.findPendingMembers(organizationId).stream()
+				.map(MemberInfoResponse::from)
+				.toList();
+	}
+
+	public void registerMember(Long memberId, Long organizationId, ChangeRoleRequest request) {
+		roleVerifier.verifyLeader(memberId, organizationId);
+		roleVerifier.verifyMultipleMembers(organizationId, request.memberIds());
+		organizationMemberRepository.bulkUpdateRole(organizationId, request.memberIds(), PARTICIPANT);
+	}
+
+	public OrganizationImageResponse getSelectableCover(Long memberId, Long organizationId) {
+		roleVerifier.verifyLeader(memberId, organizationId);
+		return OrganizationImageResponse.of(organizationId,
+				imageRetrievalContext.retrieve(organizationId));
+	}
 
 	private Member getMemberEntity(Long memberId) {
 		return memberRepository.findById(memberId)
@@ -144,18 +166,5 @@ public class OrganizationService {
 		List<Category> categories = categoryRepository.findByIdIn(request.categoryList());
 		Member leader = getMemberEntity(createMemberId);
 		return Organization.create(request.name(), request.endAt(), request.profileImage(), categories, leader);
-	}
-
-	public List<MemberInfoResponse> getPendingMembers(Long memberId, Long organizationId) {
-		roleVerifier.verifyLeader(memberId, organizationId);
-		return organizationMemberRepository.findPendingMembers(organizationId).stream()
-				.map(MemberInfoResponse::from)
-				.toList();
-	}
-
-	public void registerMember(Long memberId, Long organizationId, ChangeRoleRequest request) {
-		roleVerifier.verifyLeader(memberId, organizationId);
-		roleVerifier.verifyMultipleMembers(organizationId, request.memberIds());
-		organizationMemberRepository.bulkUpdateRole(organizationId, request.memberIds(), PARTICIPANT);
 	}
 }
