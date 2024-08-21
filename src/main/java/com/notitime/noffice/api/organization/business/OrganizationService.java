@@ -7,6 +7,7 @@ import com.notitime.noffice.api.announcement.presentation.dto.OrganizationCreate
 import com.notitime.noffice.api.announcement.presentation.dto.OrganizationInfoResponse;
 import com.notitime.noffice.api.announcement.presentation.dto.OrganizationJoinResponse;
 import com.notitime.noffice.api.announcement.presentation.dto.OrganizationResponse;
+import com.notitime.noffice.api.announcement.presentation.dto.OrganizationSignupResponse;
 import com.notitime.noffice.api.organization.presentation.ChangeRoleRequest;
 import com.notitime.noffice.domain.JoinStatus;
 import com.notitime.noffice.domain.OrganizationRole;
@@ -54,6 +55,10 @@ public class OrganizationService {
 				getMemberCountByRole(organizationId, LEADER),
 				getMemberCountByRole(organizationId, PARTICIPANT),
 				isAnyMemberPending(organizationId));
+	}
+
+	public OrganizationSignupResponse getSignUp(Long organizationId) {
+		return OrganizationSignupResponse.of(getOrganizationEntity(organizationId));
 	}
 
 	public OrganizationCreateResponse create(Long createMemberId, OrganizationCreateRequest request) {
