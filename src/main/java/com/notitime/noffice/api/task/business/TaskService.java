@@ -1,7 +1,7 @@
 package com.notitime.noffice.api.task.business;
 
-import static com.notitime.noffice.global.response.BusinessErrorCode.NOT_FOUND_ANNOUNCEMENT;
-import static com.notitime.noffice.global.response.BusinessErrorCode.NOT_FOUND_TASK;
+import static com.notitime.noffice.global.web.BusinessErrorCode.NOT_FOUND_ANNOUNCEMENT;
+import static com.notitime.noffice.global.web.BusinessErrorCode.NOT_FOUND_TASK;
 
 import com.notitime.noffice.domain.announcement.persistence.AnnouncementRepository;
 import com.notitime.noffice.domain.organization.model.Organization;
@@ -11,11 +11,11 @@ import com.notitime.noffice.domain.task.model.TaskStatus;
 import com.notitime.noffice.domain.task.persistence.TaskRepository;
 import com.notitime.noffice.domain.task.persistence.TaskStatusRepository;
 import com.notitime.noffice.global.exception.NotFoundException;
-import com.notitime.noffice.request.TaskModifyRequest;
-import com.notitime.noffice.response.AssignedTaskResponse;
-import com.notitime.noffice.response.TaskModifyResponse;
-import com.notitime.noffice.response.TaskResponse;
-import com.notitime.noffice.response.TaskResponses;
+import com.notitime.noffice.api.task.presentation.dto.request.TaskModifyRequest;
+import com.notitime.noffice.api.task.presentation.dto.response.AssignedTaskResponse;
+import com.notitime.noffice.api.task.presentation.dto.response.TaskModifyResponse;
+import com.notitime.noffice.api.task.presentation.dto.response.TaskResponse;
+import com.notitime.noffice.api.task.presentation.dto.response.TaskResponses;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;

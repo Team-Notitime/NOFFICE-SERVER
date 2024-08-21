@@ -2,10 +2,10 @@ package com.notitime.noffice.api.organization.business;
 
 import static com.notitime.noffice.domain.JoinStatus.ACTIVE;
 import static com.notitime.noffice.domain.OrganizationRole.LEADER;
-import static com.notitime.noffice.global.response.BusinessErrorCode.FORBIDDEN_ORGANIZATION_ACCESS;
-import static com.notitime.noffice.global.response.BusinessErrorCode.FORBIDDEN_ROLE_ACCESS;
-import static com.notitime.noffice.global.response.BusinessErrorCode.NOT_FOUND_MEMBER;
-import static com.notitime.noffice.global.response.BusinessErrorCode.NOT_FOUND_ORGANIZATION;
+import static com.notitime.noffice.global.web.BusinessErrorCode.FORBIDDEN_ORGANIZATION_ACCESS;
+import static com.notitime.noffice.global.web.BusinessErrorCode.FORBIDDEN_ROLE_ACCESS;
+import static com.notitime.noffice.global.web.BusinessErrorCode.NOT_FOUND_MEMBER;
+import static com.notitime.noffice.global.web.BusinessErrorCode.NOT_FOUND_ORGANIZATION;
 
 import com.notitime.noffice.domain.OrganizationRole;
 import com.notitime.noffice.domain.organization.persistence.OrganizationMemberRepository;

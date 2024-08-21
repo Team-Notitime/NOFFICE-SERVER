@@ -2,7 +2,7 @@ package com.notitime.noffice.external.openfeign.apple;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.notitime.noffice.global.exception.AuthAppleFeignException;
-import com.notitime.noffice.global.response.BusinessErrorCode;
+import com.notitime.noffice.global.web.BusinessErrorCode;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import java.io.IOException;

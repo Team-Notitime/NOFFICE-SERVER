@@ -1,17 +1,17 @@
 package com.notitime.noffice.api.member.presentation;
 
-import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_MEMBER_SUCCESS;
-import static com.notitime.noffice.global.response.BusinessSuccessCode.POST_LOGIN_SUCCESS;
-import static com.notitime.noffice.global.response.BusinessSuccessCode.POST_REISSUE_SUCCESS;
+import static com.notitime.noffice.global.web.BusinessSuccessCode.GET_MEMBER_SUCCESS;
+import static com.notitime.noffice.global.web.BusinessSuccessCode.POST_LOGIN_SUCCESS;
+import static com.notitime.noffice.global.web.BusinessSuccessCode.POST_REISSUE_SUCCESS;
 
 import com.notitime.noffice.api.auth.business.AuthService;
 import com.notitime.noffice.api.member.business.MemberService;
 import com.notitime.noffice.auth.AuthMember;
-import com.notitime.noffice.global.response.NofficeResponse;
-import com.notitime.noffice.request.SocialAuthRequest;
-import com.notitime.noffice.response.MemberResponse;
-import com.notitime.noffice.response.SocialAuthResponse;
-import com.notitime.noffice.response.TokenResponse;
+import com.notitime.noffice.global.web.NofficeResponse;
+import com.notitime.noffice.api.auth.presentation.dto.request.SocialAuthRequest;
+import com.notitime.noffice.api.member.presentation.dto.response.MemberResponse;
+import com.notitime.noffice.api.auth.presentation.dto.response.SocialAuthResponse;
+import com.notitime.noffice.api.auth.presentation.dto.response.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -20,7 +20,7 @@ import com.notitime.noffice.domain.member.persistence.MemberRepository;
 import com.notitime.noffice.domain.organization.model.Organization;
 import com.notitime.noffice.domain.organization.persistence.OrganizationRepository;
 import com.notitime.noffice.global.exception.NotFoundException;
-import com.notitime.noffice.global.response.BusinessErrorCode;
+import com.notitime.noffice.global.web.BusinessErrorCode;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

@@ -1,9 +1,16 @@
 package com.notitime.noffice.api.announcement.business;
 
-import static com.notitime.noffice.global.response.BusinessErrorCode.NOT_FOUND_ANNOUNCEMENT;
-import static com.notitime.noffice.global.response.BusinessErrorCode.NOT_FOUND_MEMBER;
-import static com.notitime.noffice.global.response.BusinessErrorCode.NOT_FOUND_ORGANIZATION;
+import static com.notitime.noffice.global.web.BusinessErrorCode.NOT_FOUND_ANNOUNCEMENT;
+import static com.notitime.noffice.global.web.BusinessErrorCode.NOT_FOUND_MEMBER;
+import static com.notitime.noffice.global.web.BusinessErrorCode.NOT_FOUND_ORGANIZATION;
 
+import com.notitime.noffice.api.announcement.presentation.dto.request.AnnouncementCreateRequest;
+import com.notitime.noffice.api.announcement.presentation.dto.request.AnnouncementUpdateRequest;
+import com.notitime.noffice.api.announcement.presentation.dto.response.AnnouncementCoverResponse;
+import com.notitime.noffice.api.announcement.presentation.dto.response.AnnouncementResponse;
+import com.notitime.noffice.api.announcement.presentation.dto.response.AnnouncementResponses;
+import com.notitime.noffice.api.announcement.presentation.dto.response.ReadStatusResponse;
+import com.notitime.noffice.api.member.presentation.dto.response.MemberInfoResponse;
 import com.notitime.noffice.api.notification.business.NotificationService;
 import com.notitime.noffice.api.organization.business.RoleVerifier;
 import com.notitime.noffice.domain.announcement.model.Announcement;
@@ -14,13 +21,6 @@ import com.notitime.noffice.domain.organization.model.Organization;
 import com.notitime.noffice.domain.organization.persistence.OrganizationRepository;
 import com.notitime.noffice.external.firebase.FcmService;
 import com.notitime.noffice.global.exception.NotFoundException;
-import com.notitime.noffice.request.AnnouncementCreateRequest;
-import com.notitime.noffice.request.AnnouncementUpdateRequest;
-import com.notitime.noffice.response.AnnouncementCoverResponse;
-import com.notitime.noffice.response.AnnouncementResponse;
-import com.notitime.noffice.response.AnnouncementResponses;
-import com.notitime.noffice.response.MemberInfoResponse;
-import com.notitime.noffice.response.ReadStatusResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -42,7 +42,7 @@ public class AnnouncementService {
 	private final FcmService fcmService;
 
 	public AnnouncementResponse read(Long memberId, Long announcementId) {
-		roleVerifier.verifyJoinedMember(memberId, announcementId);
+		roleVerifier.verifyJoinedMember(memberId, getOrganizationId(announcementId));
 		recordReadStatus(memberId, announcementId);
 		return AnnouncementResponse.of(announcementRepository.findById(announcementId)
 				.orElseThrow(() -> new NotFoundException(NOT_FOUND_ANNOUNCEMENT)));
@@ -83,14 +83,14 @@ public class AnnouncementService {
 	}
 
 	public ReadStatusResponse getReadMembers(Long memberId, Long announcementId) {
-		roleVerifier.verifyJoinedMember(memberId, announcementId);
+		roleVerifier.verifyJoinedMember(memberId, getOrganizationId(announcementId));
 		return ReadStatusResponse.of(announcementId, readStatusRecoder.findReadMembers(announcementId).stream()
 				.map(MemberInfoResponse::from)
 				.toList());
 	}
 
 	public ReadStatusResponse getUnreadMembers(Long memberId, Long announcementId) {
-		roleVerifier.verifyJoinedMember(memberId, announcementId);
+		roleVerifier.verifyJoinedMember(memberId, getOrganizationId(announcementId));
 		return ReadStatusResponse.of(announcementId, readStatusRecoder.findUnReadMembers(announcementId).stream()
 				.map(MemberInfoResponse::from)
 				.toList());
@@ -129,5 +129,11 @@ public class AnnouncementService {
 		return (long) organizationRepository.findById(organizationId)
 				.orElseThrow(() -> new NotFoundException(NOT_FOUND_ORGANIZATION))
 				.getMembers().size();
+	}
+
+	private Long getOrganizationId(Long announcementId) {
+		return announcementRepository.findById(announcementId)
+				.orElseThrow(() -> new NotFoundException(NOT_FOUND_ANNOUNCEMENT))
+				.getOrganization().getId();
 	}
 }

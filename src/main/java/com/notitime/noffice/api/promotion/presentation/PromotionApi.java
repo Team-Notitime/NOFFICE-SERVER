@@ -1,8 +1,8 @@
 package com.notitime.noffice.api.promotion.presentation;
 
-import com.notitime.noffice.api.promotion.presentation.dto.PromotionGrantRequest;
-import com.notitime.noffice.api.promotion.presentation.dto.PromotionVerifyResponse;
-import com.notitime.noffice.global.response.NofficeResponse;
+import com.notitime.noffice.api.promotion.presentation.dto.request.PromotionGrantRequest;
+import com.notitime.noffice.api.promotion.presentation.dto.response.PromotionVerifyResponse;
+import com.notitime.noffice.global.web.NofficeResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;

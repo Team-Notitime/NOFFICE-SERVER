@@ -1,7 +1,7 @@
 package com.notitime.noffice.external.openfeign.apple.dto;
 
 import com.notitime.noffice.global.exception.UnauthorizedException;
-import com.notitime.noffice.global.response.BusinessErrorCode;
+import com.notitime.noffice.global.web.BusinessErrorCode;
 import java.util.List;
 
 public record ApplePublicKeys(

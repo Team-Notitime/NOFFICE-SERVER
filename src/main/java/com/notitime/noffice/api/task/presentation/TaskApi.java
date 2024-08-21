@@ -1,10 +1,10 @@
 package com.notitime.noffice.api.task.presentation;
 
 import com.notitime.noffice.auth.AuthMember;
-import com.notitime.noffice.global.response.NofficeResponse;
-import com.notitime.noffice.request.TaskModifyRequest;
-import com.notitime.noffice.response.AssignedTaskResponse;
-import com.notitime.noffice.response.TaskModifyResponse;
+import com.notitime.noffice.global.web.NofficeResponse;
+import com.notitime.noffice.api.task.presentation.dto.request.TaskModifyRequest;
+import com.notitime.noffice.api.task.presentation.dto.response.AssignedTaskResponse;
+import com.notitime.noffice.api.task.presentation.dto.response.TaskModifyResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

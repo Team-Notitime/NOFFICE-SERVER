@@ -1,7 +1,7 @@
 package com.notitime.noffice.api.category.business;
 
 import com.notitime.noffice.domain.category.persistence.CategoryRepository;
-import com.notitime.noffice.response.CategoryResponses;
+import com.notitime.noffice.api.category.presentation.dto.response.CategoryResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
