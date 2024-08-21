@@ -57,4 +57,7 @@ public interface OrganizationMemberRepository extends JpaRepository<Organization
 	@Query("SELECT om.member.id FROM OrganizationMember om WHERE om.organization.id = :organizationId AND om.member.id IN :memberIds AND om.status = 'ACTIVE'")
 	List<Long> findActiveMemberIdsByOrganizationId(@Param("organizationId") Long organizationId,
 	                                               @Param("memberIds") List<Long> memberIds);
+
+	@Query("SELECT om.member FROM OrganizationMember om WHERE om.organization.id = :organizationId AND om.status = 'PENDING'")
+	List<Member> findPendingMembers(Long organizationId);
 }

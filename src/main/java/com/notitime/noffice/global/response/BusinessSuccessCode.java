@@ -29,8 +29,9 @@ public enum BusinessSuccessCode implements SuccessCode {
 	PATCH_TASK_MODIFY_SUCCESS(HttpStatus.OK, "NOF-2092", "투두 수정 성공"),
 	SEND_UNREADER_REMIND_SUCCSS(HttpStatus.OK, "NOF-2500", "공지 미열람자 알림 발송 성공"),
 	VERIFY_PROMOTION_CODE_SUCCESS(HttpStatus.OK, "NOF-2000", "프로모션 코드 검증 성공"),
-	GET_READ_MEMBERS_SUCCESS(HttpStatus.OK, "NOF-2080", "공지 열람 사용자 목록 조회 성공"),
-	GET_UNREAD_MEMBERS_SUCCESS(HttpStatus.OK, "NOF-2081", "공지 미열람 사용자 목록 조회 성공"),
+	GET_READ_MEMBERS_SUCCESS(HttpStatus.OK, "NOF-2084", "공지 열람 사용자 목록 조회 성공"),
+	GET_UNREAD_MEMBERS_SUCCESS(HttpStatus.OK, "NOF-2085", "공지 미열람 사용자 목록 조회 성공"),
+	GET_PENDING_MEMBERS_SUCCESS(HttpStatus.OK, "NOF-2086", "조직 가입 대기자 목록 조회 성공"),
 
 	// CREATED (2100 ~ 2199)
 	CREATED(HttpStatus.CREATED, "NOF-210", "리소스가 생성되었습니다. - 201"),
@@ -48,6 +49,7 @@ public enum BusinessSuccessCode implements SuccessCode {
 	DELETE_ANNOUNCEMENT_SUCCESS(HttpStatus.NO_CONTENT, "NOF-2053", "노티 삭제에 성공하였습니다."),
 	DELETE_NOTIFICATION_SUCCESS(HttpStatus.NO_CONTENT, "NOF-2073", "알림 삭제 성공"),
 	DELETE_TASK_SUCCESS(HttpStatus.NO_CONTENT, "NOF-2093", "투두 삭제 성공"),
+	PATCH_REGISTER_MEMBER_SUCCESS(HttpStatus.NO_CONTENT, "NOF-2081", "조직 가입 승인 성공"),
 
 	// RESET CONTENT (2500 ~ 2599)
 	RESET_CONTENT(HttpStatus.RESET_CONTENT, "NOF-205", "리소스가 갱신되었습니다. - 205");

@@ -29,6 +29,7 @@ import com.notitime.noffice.request.CategoryModifyRequest;
 import com.notitime.noffice.request.OrganizationCreateRequest;
 import com.notitime.noffice.response.CategoryModifyResponse;
 import com.notitime.noffice.response.CategoryResponses;
+import com.notitime.noffice.response.MemberInfoResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -143,5 +144,18 @@ public class OrganizationService {
 		List<Category> categories = categoryRepository.findByIdIn(request.categoryList());
 		Member leader = getMemberEntity(createMemberId);
 		return Organization.create(request.name(), request.endAt(), request.profileImage(), categories, leader);
+	}
+
+	public List<MemberInfoResponse> getPendingMembers(Long memberId, Long organizationId) {
+		roleVerifier.verifyLeader(memberId, organizationId);
+		return organizationMemberRepository.findPendingMembers(organizationId).stream()
+				.map(MemberInfoResponse::from)
+				.toList();
+	}
+
+	public void registerMember(Long memberId, Long organizationId, ChangeRoleRequest request) {
+		roleVerifier.verifyLeader(memberId, organizationId);
+		roleVerifier.verifyMultipleMembers(organizationId, request.memberIds());
+		organizationMemberRepository.bulkUpdateRole(organizationId, request.memberIds(), PARTICIPANT);
 	}
 }
