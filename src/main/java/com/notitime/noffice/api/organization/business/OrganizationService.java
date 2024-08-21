@@ -2,6 +2,9 @@ package com.notitime.noffice.api.organization.business;
 
 import static com.notitime.noffice.domain.OrganizationRole.LEADER;
 import static com.notitime.noffice.domain.OrganizationRole.PARTICIPANT;
+import static com.notitime.noffice.global.response.BusinessErrorCode.ALREADY_JOINED_ORGANIZATION;
+import static com.notitime.noffice.global.response.BusinessErrorCode.NOT_FOUND_MEMBER;
+import static com.notitime.noffice.global.response.BusinessErrorCode.NOT_FOUND_ORGANIZATION;
 
 import com.notitime.noffice.api.announcement.presentation.dto.OrganizationCreateResponse;
 import com.notitime.noffice.api.announcement.presentation.dto.OrganizationInfoResponse;
@@ -20,8 +23,8 @@ import com.notitime.noffice.domain.organization.model.OrganizationCategory;
 import com.notitime.noffice.domain.organization.model.OrganizationMember;
 import com.notitime.noffice.domain.organization.persistence.OrganizationMemberRepository;
 import com.notitime.noffice.domain.organization.persistence.OrganizationRepository;
+import com.notitime.noffice.global.exception.ForbiddenException;
 import com.notitime.noffice.global.exception.NotFoundException;
-import com.notitime.noffice.global.response.BusinessErrorCode;
 import com.notitime.noffice.request.CategoryModifyRequest;
 import com.notitime.noffice.request.OrganizationCreateRequest;
 import com.notitime.noffice.response.CategoryModifyResponse;
@@ -57,7 +60,10 @@ public class OrganizationService {
 				isAnyMemberPending(organizationId));
 	}
 
-	public OrganizationSignupResponse getSignUpInfo(Long organizationId) {
+	public OrganizationSignupResponse getSignUpInfo(Long memberId, Long organizationId) {
+		if (roleVerifier.isMemberInOrganization(memberId, organizationId)) {
+			throw new ForbiddenException(ALREADY_JOINED_ORGANIZATION);
+		}
 		return OrganizationSignupResponse.of(getOrganizationEntity(organizationId));
 	}
 
@@ -101,12 +107,12 @@ public class OrganizationService {
 
 	private Member getMemberEntity(Long memberId) {
 		return memberRepository.findById(memberId)
-				.orElseThrow(() -> new NotFoundException(BusinessErrorCode.NOT_FOUND_MEMBER));
+				.orElseThrow(() -> new NotFoundException(NOT_FOUND_MEMBER));
 	}
 
 	private Organization getOrganizationEntity(Long organizationId) {
 		return organizationRepository.findById(organizationId)
-				.orElseThrow(() -> new NotFoundException(BusinessErrorCode.NOT_FOUND_ORGANIZATION));
+				.orElseThrow(() -> new NotFoundException(NOT_FOUND_ORGANIZATION));
 	}
 
 	private List<Category> getCategoryList(List<Long> categoryIds) {

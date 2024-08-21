@@ -54,7 +54,7 @@ public class OrganizationController implements OrganizationApi {
 	public NofficeResponse<OrganizationSignupResponse> getSignUpInfo(@AuthMember final Long memberId,
 	                                                                 @PathVariable final Long organizationId) {
 		return NofficeResponse.success(GET_SIGNUP_INFO_SUCCESS,
-				organizationService.getSignUpInfo(organizationId));
+				organizationService.getSignUpInfo(memberId, organizationId));
 	}
 
 	@GetMapping

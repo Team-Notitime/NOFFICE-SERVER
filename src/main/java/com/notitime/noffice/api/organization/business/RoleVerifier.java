@@ -23,9 +23,13 @@ public class RoleVerifier {
 	private final OrganizationMemberRepository organizationMemberRepository;
 
 	public void verifyJoinedMember(Long memberId, Long organizationId) {
-		if (isActiveMember(memberId, organizationId)) {
+		if (!isActiveMember(memberId, organizationId)) {
 			throw new ForbiddenException(FORBIDDEN_ORGANIZATION_ACCESS);
 		}
+	}
+
+	public boolean isMemberInOrganization(Long memberId, Long organizationId) {
+		return organizationMemberRepository.existsByMemberIdAndOrganizationId(memberId, organizationId);
 	}
 
 	public OrganizationRole findRole(Long memberId, Long organizationId) {

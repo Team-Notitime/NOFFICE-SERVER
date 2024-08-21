@@ -34,6 +34,7 @@ public enum BusinessErrorCode implements ErrorCode {
 	FORBIDDEN(HttpStatus.FORBIDDEN, "NOF-403", "리소스에 대한 접근 권한이 없습니다."),
 	FORBIDDEN_ORGANIZATION_ACCESS(HttpStatus.FORBIDDEN, "NOF-403", "조직에 대한 접근 권한이 없습니다."),
 	FORBIDDEN_ROLE_ACCESS(HttpStatus.FORBIDDEN, "NOF-403", "해당 조직의 권한이 올바르지 않습니다."),
+	ALREADY_JOINED_ORGANIZATION(HttpStatus.FORBIDDEN, "NOF-4034", "이미 가입 신청 이력이 존재합니다."),
 
 	// 404 Not Found
 	NOT_FOUND(HttpStatus.NOT_FOUND, "NOF-404", "리소스를 찾을 수 없습니다."),
