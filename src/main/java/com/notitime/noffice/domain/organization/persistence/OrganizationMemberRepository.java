@@ -38,7 +38,7 @@ public interface OrganizationMemberRepository extends JpaRepository<Organization
 	@Modifying
 	@Query("UPDATE OrganizationMember om SET om.status = :status WHERE om.organization.id = :organizationId AND om.member.id IN :memberIds")
 	int bulkUpdateStatus(@Param("organizationId") Long organizationId, @Param("memberIds") List<Long> memberIds,
-	                     @Param("JoinStatus") JoinStatus status);
+	                     @Param("status") JoinStatus status);
 
 	default List<Member> findLeadersByOrganizationId(Long organizationId) {
 		return findMembersByOrganizationIdAndRole(organizationId, LEADER);
@@ -60,8 +60,8 @@ public interface OrganizationMemberRepository extends JpaRepository<Organization
 	boolean existsByOrganizationIdAndStatus(Long organizationId, JoinStatus status);
 
 	@Query("SELECT om.member.id FROM OrganizationMember om WHERE om.organization.id = :organizationId AND om.member.id IN :memberIds AND om.status = 'PENDING'")
-	List<Long> findPendingMembers(@Param("organizationId") Long organizationId,
-	                              @Param("memberIds") List<Long> memberIds);
+	List<Long> findPendingMemberIds(@Param("organizationId") Long organizationId,
+	                                @Param("memberIds") List<Long> memberIds);
 
 	@Query("SELECT om.member FROM OrganizationMember om WHERE om.organization.id = :organizationId AND om.status = 'PENDING'")
 	List<Member> findPendingMembers(Long organizationId);

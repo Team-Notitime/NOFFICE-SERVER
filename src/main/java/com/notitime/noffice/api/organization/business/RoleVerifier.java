@@ -61,7 +61,7 @@ public class RoleVerifier {
 	}
 
 	public void verifyMultipleMembers(Long organizationId, List<Long> memberIds) {
-		List<Long> pendingMemberIds = organizationMemberRepository.findPendingMembers(organizationId, memberIds);
+		List<Long> pendingMemberIds = organizationMemberRepository.findPendingMemberIds(organizationId, memberIds);
 		if (pendingMemberIds.size() != memberIds.size()) {
 			List<Long> invalidMemberIds = new ArrayList<>(memberIds);
 			invalidMemberIds.removeAll(pendingMemberIds);
