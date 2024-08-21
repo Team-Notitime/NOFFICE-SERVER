@@ -84,8 +84,8 @@ public class OrganizationService {
 				pageable);
 		List<OrganizationResponse> responses = organizations.stream()
 				.map(organization -> {
-					OrganizationRole role = roleVerifier.findRole(memberId, organization.getId());
-					return OrganizationResponse.of(role, organization);
+					OrganizationMember joined = getJoinedMemberEntity(memberId, organization.getId());
+					return OrganizationResponse.of(organization, joined.getRole(), joined.getStatus());
 				})
 				.toList();
 		return new SliceImpl<>(responses, pageable, organizations.hasNext());
@@ -113,6 +113,11 @@ public class OrganizationService {
 	private Organization getOrganizationEntity(Long organizationId) {
 		return organizationRepository.findById(organizationId)
 				.orElseThrow(() -> new NotFoundException(NOT_FOUND_ORGANIZATION));
+	}
+
+	private OrganizationMember getJoinedMemberEntity(Long memberId, Long organizationId) {
+		return organizationMemberRepository.findByOrganizationIdAndMemberId(organizationId, memberId)
+				.orElseThrow(() -> new NotFoundException("요청한 멤버가 속한 조직이 없습니다.", NOT_FOUND_ORGANIZATION));
 	}
 
 	private List<Category> getCategoryList(List<Long> categoryIds) {
