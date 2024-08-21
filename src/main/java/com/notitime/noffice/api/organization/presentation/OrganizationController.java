@@ -4,6 +4,7 @@ import static com.notitime.noffice.global.response.BusinessSuccessCode.CREATE_OR
 import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_JOINED_ORGANIZATIONS_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_ORGANIZATION_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_PUBLISHED_ANNOUNCEMENTS_SUCCESS;
+import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_SIGNUP_INFO_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.PATCH_CHANGE_ROLES_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.POST_JOIN_ORGANIZATION_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.PUT_CATEGORIES_SUCCESS;
@@ -13,6 +14,7 @@ import com.notitime.noffice.api.announcement.presentation.dto.OrganizationCreate
 import com.notitime.noffice.api.announcement.presentation.dto.OrganizationInfoResponse;
 import com.notitime.noffice.api.announcement.presentation.dto.OrganizationJoinResponse;
 import com.notitime.noffice.api.announcement.presentation.dto.OrganizationResponse;
+import com.notitime.noffice.api.announcement.presentation.dto.OrganizationSignupResponse;
 import com.notitime.noffice.api.organization.business.OrganizationService;
 import com.notitime.noffice.auth.AuthMember;
 import com.notitime.noffice.global.response.NofficeResponse;
@@ -41,17 +43,24 @@ public class OrganizationController implements OrganizationApi {
 	private final OrganizationService organizationService;
 	private final AnnouncementService announcementService;
 
-	@GetMapping
-	public NofficeResponse<Slice<OrganizationResponse>> getJoined(@AuthMember final Long memberId, Pageable pageable) {
-		return NofficeResponse.success(GET_JOINED_ORGANIZATIONS_SUCCESS,
-				organizationService.getJoined(memberId, pageable));
-	}
-
 	@GetMapping("/{organizationId}")
 	public NofficeResponse<OrganizationInfoResponse> getInformation(@AuthMember final Long memberId,
 	                                                                @PathVariable Long organizationId) {
 		return NofficeResponse.success(GET_ORGANIZATION_SUCCESS,
 				organizationService.getInformation(memberId, organizationId));
+	}
+
+	@GetMapping("/{organizationId}/signup-info")
+	public NofficeResponse<OrganizationSignupResponse> getSignUpInfo(@AuthMember final Long memberId,
+	                                                                 @PathVariable final Long organizationId) {
+		return NofficeResponse.success(GET_SIGNUP_INFO_SUCCESS,
+				organizationService.getSignUpInfo(memberId, organizationId));
+	}
+
+	@GetMapping
+	public NofficeResponse<Slice<OrganizationResponse>> getJoined(@AuthMember final Long memberId, Pageable pageable) {
+		return NofficeResponse.success(GET_JOINED_ORGANIZATIONS_SUCCESS,
+				organizationService.getJoined(memberId, pageable));
 	}
 
 	@PostMapping

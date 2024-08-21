@@ -3,6 +3,7 @@ package com.notitime.noffice.global.advice;
 import com.notitime.noffice.global.exception.AuthAppleFeignException;
 import com.notitime.noffice.global.exception.AuthGoogleFeignException;
 import com.notitime.noffice.global.exception.BadRequestException;
+import com.notitime.noffice.global.exception.NofficeException;
 import com.notitime.noffice.global.exception.NotFoundException;
 import com.notitime.noffice.global.response.BusinessErrorCode;
 import com.notitime.noffice.global.response.NofficeResponse;
@@ -74,5 +75,11 @@ public class NofficeExceptionHandler {
 	public NofficeResponse<Void> handleException(Exception e) {
 		log.error("handleException() in NofficeExceptionHandler throw Exception : {}", e.getMessage());
 		return NofficeResponse.fail(BusinessErrorCode.INTERNAL_SERVER_ERROR);
+	}
+
+	@ExceptionHandler(NofficeException.class)
+	public NofficeResponse<?> handleCustomException(NofficeException e) {
+		log.error("handleCustomException() in NofficeExceptionHandler throw NofficeException : {}", e.getMessage());
+		return NofficeResponse.fail(e.getErrorCode());
 	}
 }

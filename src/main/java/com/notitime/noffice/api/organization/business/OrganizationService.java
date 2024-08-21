@@ -2,11 +2,15 @@ package com.notitime.noffice.api.organization.business;
 
 import static com.notitime.noffice.domain.OrganizationRole.LEADER;
 import static com.notitime.noffice.domain.OrganizationRole.PARTICIPANT;
+import static com.notitime.noffice.global.response.BusinessErrorCode.ALREADY_JOINED_ORGANIZATION;
+import static com.notitime.noffice.global.response.BusinessErrorCode.NOT_FOUND_MEMBER;
+import static com.notitime.noffice.global.response.BusinessErrorCode.NOT_FOUND_ORGANIZATION;
 
 import com.notitime.noffice.api.announcement.presentation.dto.OrganizationCreateResponse;
 import com.notitime.noffice.api.announcement.presentation.dto.OrganizationInfoResponse;
 import com.notitime.noffice.api.announcement.presentation.dto.OrganizationJoinResponse;
 import com.notitime.noffice.api.announcement.presentation.dto.OrganizationResponse;
+import com.notitime.noffice.api.announcement.presentation.dto.OrganizationSignupResponse;
 import com.notitime.noffice.api.organization.presentation.ChangeRoleRequest;
 import com.notitime.noffice.domain.JoinStatus;
 import com.notitime.noffice.domain.OrganizationRole;
@@ -19,8 +23,8 @@ import com.notitime.noffice.domain.organization.model.OrganizationCategory;
 import com.notitime.noffice.domain.organization.model.OrganizationMember;
 import com.notitime.noffice.domain.organization.persistence.OrganizationMemberRepository;
 import com.notitime.noffice.domain.organization.persistence.OrganizationRepository;
+import com.notitime.noffice.global.exception.ForbiddenException;
 import com.notitime.noffice.global.exception.NotFoundException;
-import com.notitime.noffice.global.response.BusinessErrorCode;
 import com.notitime.noffice.request.CategoryModifyRequest;
 import com.notitime.noffice.request.OrganizationCreateRequest;
 import com.notitime.noffice.response.CategoryModifyResponse;
@@ -56,6 +60,13 @@ public class OrganizationService {
 				isAnyMemberPending(organizationId));
 	}
 
+	public OrganizationSignupResponse getSignUpInfo(Long memberId, Long organizationId) {
+		if (roleVerifier.isMemberInOrganization(memberId, organizationId)) {
+			throw new ForbiddenException(ALREADY_JOINED_ORGANIZATION);
+		}
+		return OrganizationSignupResponse.of(getOrganizationEntity(organizationId));
+	}
+
 	public OrganizationCreateResponse create(Long createMemberId, OrganizationCreateRequest request) {
 		return OrganizationCreateResponse.of(organizationRepository.save(createByRequest(createMemberId, request)));
 	}
@@ -73,8 +84,8 @@ public class OrganizationService {
 				pageable);
 		List<OrganizationResponse> responses = organizations.stream()
 				.map(organization -> {
-					OrganizationRole role = roleVerifier.findRole(memberId, organization.getId());
-					return OrganizationResponse.of(role, organization);
+					OrganizationMember joined = getJoinedMemberEntity(memberId, organization.getId());
+					return OrganizationResponse.of(organization, joined.getRole(), joined.getStatus());
 				})
 				.toList();
 		return new SliceImpl<>(responses, pageable, organizations.hasNext());
@@ -96,12 +107,17 @@ public class OrganizationService {
 
 	private Member getMemberEntity(Long memberId) {
 		return memberRepository.findById(memberId)
-				.orElseThrow(() -> new NotFoundException(BusinessErrorCode.NOT_FOUND_MEMBER));
+				.orElseThrow(() -> new NotFoundException(NOT_FOUND_MEMBER));
 	}
 
 	private Organization getOrganizationEntity(Long organizationId) {
 		return organizationRepository.findById(organizationId)
-				.orElseThrow(() -> new NotFoundException(BusinessErrorCode.NOT_FOUND_ORGANIZATION));
+				.orElseThrow(() -> new NotFoundException(NOT_FOUND_ORGANIZATION));
+	}
+
+	private OrganizationMember getJoinedMemberEntity(Long memberId, Long organizationId) {
+		return organizationMemberRepository.findByOrganizationIdAndMemberId(organizationId, memberId)
+				.orElseThrow(() -> new NotFoundException("요청한 멤버가 속한 조직이 없습니다.", NOT_FOUND_ORGANIZATION));
 	}
 
 	private List<Category> getCategoryList(List<Long> categoryIds) {
