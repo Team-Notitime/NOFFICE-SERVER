@@ -19,6 +19,8 @@ import com.notitime.noffice.request.AnnouncementUpdateRequest;
 import com.notitime.noffice.response.AnnouncementCoverResponse;
 import com.notitime.noffice.response.AnnouncementResponse;
 import com.notitime.noffice.response.AnnouncementResponses;
+import com.notitime.noffice.response.MemberReaderResponse;
+import com.notitime.noffice.response.ReadStatusResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -78,6 +80,20 @@ public class AnnouncementService {
 					Long totalMemberCount = getTotalMemberCount(organizationId);
 					return AnnouncementCoverResponse.of(announcement, readCount, totalMemberCount);
 				});
+	}
+
+	public ReadStatusResponse getReadMembers(Long memberId, Long announcementId) {
+		roleVerifier.verifyJoinedMember(memberId, announcementId);
+		return ReadStatusResponse.of(announcementId, readStatusRecoder.findReadMembers(announcementId).stream()
+				.map(MemberReaderResponse::from)
+				.toList());
+	}
+
+	public ReadStatusResponse getUnreadMembers(Long memberId, Long announcementId) {
+		roleVerifier.verifyJoinedMember(memberId, announcementId);
+		return ReadStatusResponse.of(announcementId, readStatusRecoder.findUnReadMembers(announcementId).stream()
+				.map(MemberReaderResponse::from)
+				.toList());
 	}
 
 	private Announcement createEntity(AnnouncementCreateRequest request) {

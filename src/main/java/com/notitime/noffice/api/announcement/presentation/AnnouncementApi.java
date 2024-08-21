@@ -7,6 +7,7 @@ import com.notitime.noffice.request.AnnouncementCreateRequest;
 import com.notitime.noffice.request.AnnouncementUpdateRequest;
 import com.notitime.noffice.response.AnnouncementResponse;
 import com.notitime.noffice.response.AnnouncementResponses;
+import com.notitime.noffice.response.ReadStatusResponse;
 import com.notitime.noffice.response.TaskResponses;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
@@ -74,4 +75,18 @@ interface AnnouncementApi {
 	})
 	NofficeResponse<FCMCreateResponse> sendToUnReader(@Parameter(hidden = true) @AuthMember final Long memberId,
 	                                                  @PathVariable final Long announcementId);
+
+	@Operation(summary = "공지 열람 사용자 목록 조회 ", description = "공지에 대한 열람 사용자 목록을 조회합니다.", responses = {
+			@ApiResponse(responseCode = "200", description = "공지 열람 사용자 목록 조회 성공"),
+			@ApiResponse(responseCode = "404", description = "공지에 대한 열람 사용자가 없습니다.")
+	})
+	NofficeResponse<ReadStatusResponse> getReadMembers(@Parameter(hidden = true) @AuthMember final Long memberId,
+	                                                   @PathVariable final Long announcementId);
+
+	@Operation(summary = "공지 미열람 사용자 목록 조회 ", description = "공지에 대한 미열람 사용자 목록을 조회합니다.", responses = {
+			@ApiResponse(responseCode = "200", description = "공지 미열람 사용자 목록 조회 성공"),
+			@ApiResponse(responseCode = "404", description = "공지에 대한 미열람 사용자가 없습니다.")
+	})
+	NofficeResponse<ReadStatusResponse> getUnReadMembers(@Parameter(hidden = true) @AuthMember final Long memberId,
+	                                                     @PathVariable final Long announcementId);
 }

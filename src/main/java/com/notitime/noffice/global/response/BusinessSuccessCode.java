@@ -29,6 +29,8 @@ public enum BusinessSuccessCode implements SuccessCode {
 	PATCH_TASK_MODIFY_SUCCESS(HttpStatus.OK, "NOF-2092", "투두 수정 성공"),
 	SEND_UNREADER_REMIND_SUCCSS(HttpStatus.OK, "NOF-2500", "공지 미열람자 알림 발송 성공"),
 	VERIFY_PROMOTION_CODE_SUCCESS(HttpStatus.OK, "NOF-2000", "프로모션 코드 검증 성공"),
+	GET_READ_MEMBERS_SUCCESS(HttpStatus.OK, "NOF-2080", "공지 열람 사용자 목록 조회 성공"),
+	GET_UNREAD_MEMBERS_SUCCESS(HttpStatus.OK, "NOF-2081", "공지 미열람 사용자 목록 조회 성공"),
 
 	// CREATED (2100 ~ 2199)
 	CREATED(HttpStatus.CREATED, "NOF-210", "리소스가 생성되었습니다. - 201"),

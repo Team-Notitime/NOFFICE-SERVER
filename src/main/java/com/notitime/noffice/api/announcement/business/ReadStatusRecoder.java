@@ -1,8 +1,10 @@
 package com.notitime.noffice.api.announcement.business;
 
+import com.notitime.noffice.api.organization.business.RoleVerifier;
 import com.notitime.noffice.domain.announcement.model.Announcement;
 import com.notitime.noffice.domain.announcement.model.AnnouncementReadStatus;
 import com.notitime.noffice.domain.announcement.persistence.AnnouncementReadStatusRepository;
+import com.notitime.noffice.domain.announcement.persistence.AnnouncementRepository;
 import com.notitime.noffice.domain.member.model.Member;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class ReadStatusRecoder {
 
 	private final AnnouncementReadStatusRepository announcementReadStatusRepository;
+	private final AnnouncementRepository announcementRepository;
+	private final RoleVerifier roleVerifier;
 
 	public void record(Member member, Announcement announcement) {
 		announcementReadStatusRepository.save(AnnouncementReadStatus.builder()
@@ -24,6 +28,18 @@ public class ReadStatusRecoder {
 				.member(member)
 				.announcement(announcement)
 				.build());
+	}
+
+	public List<Member> findReadMembers(Long announcementId) {
+		return announcementReadStatusRepository.findReadMembers(announcementId).stream()
+				.map(AnnouncementReadStatus::getMember)
+				.toList();
+	}
+
+	public List<Member> findUnReadMembers(Long announcementId) {
+		return announcementReadStatusRepository.findUnReadMembers(announcementId).stream()
+				.map(AnnouncementReadStatus::getMember)
+				.toList();
 	}
 
 	public Long countReader(Long announcementId) {
