@@ -51,7 +51,7 @@ interface NotificationApi {
 	NofficeResponse<Void> delete(@PathVariable final Long notificationId);
 
 	@Operation(summary = "기기별 FCM Token 저장", description = "기기별 FCM Token을 저장합니다.", responses = {
-			@ApiResponse(responseCode = "200", description = "FCM Token 저장 성공"),
+			@ApiResponse(responseCode = "201", description = "FCM Token 저장 성공"),
 			@ApiResponse(responseCode = "400", description = "FCM Token 저장 실패")
 	})
 	NofficeResponse<Void> saveFcmToken(@Parameter(hidden = true) @AuthMember final Long memberId,
