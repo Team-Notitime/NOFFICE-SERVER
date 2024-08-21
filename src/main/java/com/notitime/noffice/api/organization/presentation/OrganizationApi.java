@@ -5,6 +5,8 @@ import com.notitime.noffice.api.announcement.presentation.dto.OrganizationInfoRe
 import com.notitime.noffice.api.announcement.presentation.dto.OrganizationJoinResponse;
 import com.notitime.noffice.api.announcement.presentation.dto.OrganizationResponse;
 import com.notitime.noffice.api.announcement.presentation.dto.OrganizationSignupResponse;
+import com.notitime.noffice.api.organization.presentation.dto.ChangeRoleRequest;
+import com.notitime.noffice.api.organization.presentation.dto.OrganizationImageResponse;
 import com.notitime.noffice.auth.AuthMember;
 import com.notitime.noffice.global.response.NofficeResponse;
 import com.notitime.noffice.request.CategoryModifyRequest;
@@ -98,12 +100,21 @@ interface OrganizationApi {
 			@PathVariable final Long organizationId);
 
 	@Operation(summary = "[인증] 조직 가입 수락", description = "조직 가입대기 사용자 목록을 가입 처리합니다.", responses = {
-			@ApiResponse(responseCode = "204", description = "조직 가입 수락에 성공하였습니다."),
-			@ApiResponse(responseCode = "400", description = "조직 가입 수락에 실패하였습니다.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
+			@ApiResponse(responseCode = "204", description = "조직 가입 승인 성공"),
+			@ApiResponse(responseCode = "400", description = "조직 가입 수락 실패", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
 			@ApiResponse(responseCode = "403", description = "요청을 수행할 수 있는 권한이 없습니다.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
-			@ApiResponse(responseCode = "404", description = "조직원이 존재하지 않습니다.", content = @Content(schema = @Schema(implementation = NofficeResponse.class)))
+			@ApiResponse(responseCode = "404", description = "조직원이 존재하지 않습니다.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
+			@ApiResponse(responseCode = "500", description = "서버 내부 에러 발생", content = @Content(schema = @Schema(implementation = NofficeResponse.class)))
 	})
 	NofficeResponse<Void> registerMember(@Parameter(hidden = true) @AuthMember final Long memberId,
 	                                     @PathVariable Long organizationId,
 	                                     @RequestBody final ChangeRoleRequest request);
+
+	@Operation(summary = "[인증] 선택 가능한 커버 이미지 조회", description = "공지 발행 시 선택 가능한 커버 이미지를 모두 조회합니다.", responses = {
+			@ApiResponse(responseCode = "200", description = "선택 가능한 공지 커버 이미지 목록 조회 성"),
+			@ApiResponse(responseCode = "404", description = "공지 커버 이미지가 없습니다.")
+	})
+	NofficeResponse<OrganizationImageResponse> getSelectableCover(
+			@Parameter(hidden = true) @AuthMember final Long memberId,
+			@PathVariable final Long organizationId);
 }

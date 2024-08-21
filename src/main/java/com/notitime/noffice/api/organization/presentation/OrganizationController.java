@@ -5,6 +5,7 @@ import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_JOINE
 import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_ORGANIZATION_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_PENDING_MEMBERS_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_PUBLISHED_ANNOUNCEMENTS_SUCCESS;
+import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_SELECTABLE_COVER_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_SIGNUP_INFO_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.PATCH_CHANGE_ROLES_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.PATCH_REGISTER_MEMBER_SUCCESS;
@@ -18,6 +19,8 @@ import com.notitime.noffice.api.announcement.presentation.dto.OrganizationJoinRe
 import com.notitime.noffice.api.announcement.presentation.dto.OrganizationResponse;
 import com.notitime.noffice.api.announcement.presentation.dto.OrganizationSignupResponse;
 import com.notitime.noffice.api.organization.business.OrganizationService;
+import com.notitime.noffice.api.organization.presentation.dto.ChangeRoleRequest;
+import com.notitime.noffice.api.organization.presentation.dto.OrganizationImageResponse;
 import com.notitime.noffice.auth.AuthMember;
 import com.notitime.noffice.global.response.NofficeResponse;
 import com.notitime.noffice.request.CategoryModifyRequest;
@@ -115,5 +118,12 @@ public class OrganizationController implements OrganizationApi {
 	                                         @RequestBody final ChangeRoleRequest request) {
 		organizationService.changeRoles(memberId, organizationId, request);
 		return NofficeResponse.success(PATCH_CHANGE_ROLES_SUCCESS);
+	}
+
+	@GetMapping("/{organizationId}/selectable-cover")
+	public NofficeResponse<OrganizationImageResponse> getSelectableCover(@AuthMember final Long memberId,
+	                                                                     @PathVariable final Long organizationId) {
+		return NofficeResponse.success(GET_SELECTABLE_COVER_SUCCESS,
+				organizationService.getSelectableCover(memberId, organizationId));
 	}
 }
