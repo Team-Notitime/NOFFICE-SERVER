@@ -61,10 +61,10 @@ public class RoleVerifier {
 	}
 
 	public void verifyMultipleMembers(Long organizationId, List<Long> memberIds) {
-		List<Long> activeMemberIds = organizationMemberRepository.findPendingMembers(organizationId, memberIds);
-		if (activeMemberIds.size() != memberIds.size()) {
+		List<Long> pendingMemberIds = organizationMemberRepository.findPendingMembers(organizationId, memberIds);
+		if (pendingMemberIds.size() != memberIds.size()) {
 			List<Long> invalidMemberIds = new ArrayList<>(memberIds);
-			invalidMemberIds.removeAll(activeMemberIds);
+			invalidMemberIds.removeAll(pendingMemberIds);
 			throw new NotFoundException("잘못된 멤버 식별자: " + invalidMemberIds, NOT_FOUND_MEMBER);
 		}
 	}
