@@ -4,7 +4,9 @@ import static com.notitime.noffice.global.response.BusinessSuccessCode.DELETE_AN
 import static com.notitime.noffice.global.response.BusinessSuccessCode.DELETE_TASK_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_ANNOUNCEMENTS_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_ANNOUNCEMENT_SUCCESS;
+import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_READ_MEMBERS_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_TASKS_BY_ANNOUNCEMENT_SUCCESS;
+import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_UNREAD_MEMBERS_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.POST_ANNOUNCEMENT_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.PUT_ANNOUNCEMENT_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.SEND_UNREADER_REMIND_SUCCSS;
@@ -19,6 +21,7 @@ import com.notitime.noffice.request.AnnouncementCreateRequest;
 import com.notitime.noffice.request.AnnouncementUpdateRequest;
 import com.notitime.noffice.response.AnnouncementResponse;
 import com.notitime.noffice.response.AnnouncementResponses;
+import com.notitime.noffice.response.ReadStatusResponse;
 import com.notitime.noffice.response.TaskResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -91,5 +94,19 @@ public class AnnouncementController implements AnnouncementApi {
 	                                                         @PathVariable final Long announcementId) {
 		return NofficeResponse.success(SEND_UNREADER_REMIND_SUCCSS,
 				fcmService.sendToUnReader(memberId, announcementId));
+	}
+
+	@GetMapping("/{announcementId}/readers")
+	public NofficeResponse<ReadStatusResponse> getReadMembers(@AuthMember final Long memberId,
+	                                                          @PathVariable final Long announcementId) {
+		return NofficeResponse.success(GET_READ_MEMBERS_SUCCESS,
+				announcementService.getReadMembers(memberId, announcementId));
+	}
+
+	@GetMapping("/{announcementId}/unreaders")
+	public NofficeResponse<ReadStatusResponse> getUnReadMembers(@AuthMember final Long memberId,
+	                                                            @PathVariable final Long announcementId) {
+		return NofficeResponse.success(GET_UNREAD_MEMBERS_SUCCESS,
+				announcementService.getUnreadMembers(memberId, announcementId));
 	}
 }
