@@ -19,7 +19,7 @@ import com.notitime.noffice.request.AnnouncementUpdateRequest;
 import com.notitime.noffice.response.AnnouncementCoverResponse;
 import com.notitime.noffice.response.AnnouncementResponse;
 import com.notitime.noffice.response.AnnouncementResponses;
-import com.notitime.noffice.response.MemberReaderResponse;
+import com.notitime.noffice.response.MemberInfoResponse;
 import com.notitime.noffice.response.ReadStatusResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -85,14 +85,14 @@ public class AnnouncementService {
 	public ReadStatusResponse getReadMembers(Long memberId, Long announcementId) {
 		roleVerifier.verifyJoinedMember(memberId, announcementId);
 		return ReadStatusResponse.of(announcementId, readStatusRecoder.findReadMembers(announcementId).stream()
-				.map(MemberReaderResponse::from)
+				.map(MemberInfoResponse::from)
 				.toList());
 	}
 
 	public ReadStatusResponse getUnreadMembers(Long memberId, Long announcementId) {
 		roleVerifier.verifyJoinedMember(memberId, announcementId);
 		return ReadStatusResponse.of(announcementId, readStatusRecoder.findUnReadMembers(announcementId).stream()
-				.map(MemberReaderResponse::from)
+				.map(MemberInfoResponse::from)
 				.toList());
 	}
 

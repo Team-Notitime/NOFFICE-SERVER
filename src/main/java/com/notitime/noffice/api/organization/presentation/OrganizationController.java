@@ -3,6 +3,7 @@ package com.notitime.noffice.api.organization.presentation;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.CREATE_ORGANIZATION_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_JOINED_ORGANIZATIONS_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_ORGANIZATION_SUCCESS;
+import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_PENDING_MEMBERS_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_PUBLISHED_ANNOUNCEMENTS_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_SIGNUP_INFO_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.PATCH_CHANGE_ROLES_SUCCESS;
@@ -22,7 +23,9 @@ import com.notitime.noffice.request.CategoryModifyRequest;
 import com.notitime.noffice.request.OrganizationCreateRequest;
 import com.notitime.noffice.response.AnnouncementCoverResponse;
 import com.notitime.noffice.response.CategoryModifyResponse;
+import com.notitime.noffice.response.MemberInfoResponse;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -75,6 +78,13 @@ public class OrganizationController implements OrganizationApi {
 	                                                      @PathVariable Long organizationId) {
 		return NofficeResponse.success(POST_JOIN_ORGANIZATION_SUCCESS,
 				organizationService.join(memberId, organizationId));
+	}
+
+	@GetMapping("/{organizationId}/pending-members")
+	public NofficeResponse<List<MemberInfoResponse>> getPendingMembers(@AuthMember final Long memberId,
+	                                                                   @PathVariable final Long organizationId) {
+		return NofficeResponse.success(GET_PENDING_MEMBERS_SUCCESS,
+				organizationService.getPendingMembers(memberId, organizationId));
 	}
 
 	@GetMapping("/{organizationId}/announcements")

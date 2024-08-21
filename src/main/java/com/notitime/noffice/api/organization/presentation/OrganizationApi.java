@@ -11,11 +11,13 @@ import com.notitime.noffice.request.CategoryModifyRequest;
 import com.notitime.noffice.request.OrganizationCreateRequest;
 import com.notitime.noffice.response.AnnouncementCoverResponse;
 import com.notitime.noffice.response.CategoryModifyResponse;
+import com.notitime.noffice.response.MemberInfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,15 +64,16 @@ interface OrganizationApi {
 			@ApiResponse(responseCode = "200", description = "조직별 노티 페이징 조회 성공"),
 			@ApiResponse(responseCode = "404", description = "조직에 등록된 노티가 없습니다.")
 	})
-	NofficeResponse<Slice<AnnouncementCoverResponse>> getPublishedAnnouncements(@AuthMember final Long memberId,
-	                                                                            @PathVariable final Long organizationId,
-	                                                                            Pageable pageable);
+	NofficeResponse<Slice<AnnouncementCoverResponse>> getPublishedAnnouncements(
+			@Parameter(hidden = true) @AuthMember final Long memberId,
+			@PathVariable final Long organizationId,
+			Pageable pageable);
 
 	@Operation(summary = "[인증] 조직 카테고리 수정", description = "조직에 등록된 카테고리를 수정합니다.", responses = {
 			@ApiResponse(responseCode = "200", description = "조직 카테고리 수정 성공"),
 			@ApiResponse(responseCode = "404", description = "조직에 등록된 카테고리가 없습니다.")
 	})
-	NofficeResponse<CategoryModifyResponse> modifyCategories(@AuthMember final Long memberId,
+	NofficeResponse<CategoryModifyResponse> modifyCategories(@Parameter(hidden = true) @AuthMember final Long memberId,
 	                                                         @PathVariable final Long organizationId,
 	                                                         @RequestBody @Valid final CategoryModifyRequest request);
 
@@ -83,4 +86,12 @@ interface OrganizationApi {
 	NofficeResponse<Void> changeRoles(@Parameter(hidden = true) @AuthMember Long memberId,
 	                                  @PathVariable Long organizationId,
 	                                  @RequestBody @Valid final ChangeRoleRequest request);
+
+	@Operation(summary = "[인증] 조직 가입 대기자 조회", description = "조직 가입 대기자를 조회합니다.", responses = {
+			@ApiResponse(responseCode = "200", description = "조직 가입 대기자 조회에 성공하였습니다."),
+			@ApiResponse(responseCode = "404", description = "조직 가입 대기자가 없습니다.")
+	})
+	NofficeResponse<List<MemberInfoResponse>> getPendingMembers(
+			@Parameter(hidden = true) @AuthMember final Long memberId,
+			@PathVariable final Long organizationId);
 }
