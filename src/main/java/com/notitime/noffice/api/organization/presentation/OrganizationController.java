@@ -2,9 +2,9 @@ package com.notitime.noffice.api.organization.presentation;
 
 import static com.notitime.noffice.global.response.BusinessSuccessCode.CREATE_ORGANIZATION_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_JOINED_ORGANIZATIONS_SUCCESS;
-import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_JOIN_INFO_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_ORGANIZATION_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_PUBLISHED_ANNOUNCEMENTS_SUCCESS;
+import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_SIGNUP_INFO_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.PATCH_CHANGE_ROLES_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.POST_JOIN_ORGANIZATION_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.PUT_CATEGORIES_SUCCESS;
@@ -50,11 +50,11 @@ public class OrganizationController implements OrganizationApi {
 				organizationService.getInformation(memberId, organizationId));
 	}
 
-	@GetMapping("/{organizationId}/signup")
-	public NofficeResponse<OrganizationSignupResponse> getSignUp(@AuthMember final Long memberId,
-	                                                             @PathVariable final Long organizationId) {
-		return NofficeResponse.success(GET_JOIN_INFO_SUCCESS,
-				organizationService.getSignUp(organizationId));
+	@GetMapping("/{organizationId}/signup-info")
+	public NofficeResponse<OrganizationSignupResponse> getSignUpInfo(@AuthMember final Long memberId,
+	                                                                 @PathVariable final Long organizationId) {
+		return NofficeResponse.success(GET_SIGNUP_INFO_SUCCESS,
+				organizationService.getSignUpInfo(organizationId));
 	}
 
 	@GetMapping

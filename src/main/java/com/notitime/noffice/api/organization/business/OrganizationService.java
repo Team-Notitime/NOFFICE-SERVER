@@ -57,7 +57,7 @@ public class OrganizationService {
 				isAnyMemberPending(organizationId));
 	}
 
-	public OrganizationSignupResponse getSignUp(Long organizationId) {
+	public OrganizationSignupResponse getSignUpInfo(Long organizationId) {
 		return OrganizationSignupResponse.of(getOrganizationEntity(organizationId));
 	}
 
