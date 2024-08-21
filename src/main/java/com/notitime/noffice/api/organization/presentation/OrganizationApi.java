@@ -35,7 +35,7 @@ interface OrganizationApi {
 			@ApiResponse(responseCode = "200", description = "조직 가입 정보 조회에 성공하였습니다."),
 			@ApiResponse(responseCode = "404", description = "조직 정보가 없습니다.")
 	})
-	NofficeResponse<OrganizationSignupResponse> getSignUpInfo(@AuthMember final Long memberId,
+	NofficeResponse<OrganizationSignupResponse> getSignUpInfo(@Parameter(hidden = true) @AuthMember final Long memberId,
 	                                                          @PathVariable final Long organizationId);
 
 	@Operation(summary = "[인증] 조직 생성", description = "조직을 생성합니다.", responses = {
