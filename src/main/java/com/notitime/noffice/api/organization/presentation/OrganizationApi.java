@@ -14,6 +14,8 @@ import com.notitime.noffice.response.CategoryModifyResponse;
 import com.notitime.noffice.response.MemberInfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -94,4 +96,14 @@ interface OrganizationApi {
 	NofficeResponse<List<MemberInfoResponse>> getPendingMembers(
 			@Parameter(hidden = true) @AuthMember final Long memberId,
 			@PathVariable final Long organizationId);
+
+	@Operation(summary = "[인증] 조직 가입 수락", description = "조직 가입대기 사용자 목록을 가입 처리합니다.", responses = {
+			@ApiResponse(responseCode = "204", description = "조직 가입 수락에 성공하였습니다."),
+			@ApiResponse(responseCode = "400", description = "조직 가입 수락에 실패하였습니다.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
+			@ApiResponse(responseCode = "403", description = "요청을 수행할 수 있는 권한이 없습니다.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
+			@ApiResponse(responseCode = "404", description = "조직원이 존재하지 않습니다.", content = @Content(schema = @Schema(implementation = NofficeResponse.class)))
+	})
+	NofficeResponse<Void> registerMember(@Parameter(hidden = true) @AuthMember final Long memberId,
+	                                     @PathVariable Long organizationId,
+	                                     @RequestBody final ChangeRoleRequest request);
 }

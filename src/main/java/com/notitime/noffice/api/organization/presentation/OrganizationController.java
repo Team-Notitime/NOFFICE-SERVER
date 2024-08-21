@@ -7,6 +7,7 @@ import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_PENDI
 import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_PUBLISHED_ANNOUNCEMENTS_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_SIGNUP_INFO_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.PATCH_CHANGE_ROLES_SUCCESS;
+import static com.notitime.noffice.global.response.BusinessSuccessCode.PATCH_REGISTER_MEMBER_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.POST_JOIN_ORGANIZATION_SUCCESS;
 import static com.notitime.noffice.global.response.BusinessSuccessCode.PUT_CATEGORIES_SUCCESS;
 
@@ -87,6 +88,13 @@ public class OrganizationController implements OrganizationApi {
 				organizationService.getPendingMembers(memberId, organizationId));
 	}
 
+	@PatchMapping("/{organizationId}/register")
+	public NofficeResponse<Void> registerMember(@AuthMember final Long memberId, @PathVariable Long organizationId,
+	                                            @RequestBody final ChangeRoleRequest request) {
+		organizationService.registerMember(memberId, organizationId, request);
+		return NofficeResponse.success(PATCH_REGISTER_MEMBER_SUCCESS);
+	}
+
 	@GetMapping("/{organizationId}/announcements")
 	public NofficeResponse<Slice<AnnouncementCoverResponse>> getPublishedAnnouncements(
 			@AuthMember final Long memberId, @PathVariable final Long organizationId, Pageable pageable) {
@@ -104,7 +112,7 @@ public class OrganizationController implements OrganizationApi {
 
 	@PatchMapping("/{organizationId}/roles")
 	public NofficeResponse<Void> changeRoles(@AuthMember final Long memberId, @PathVariable Long organizationId,
-	                                         @RequestBody @Valid final ChangeRoleRequest request) {
+	                                         @RequestBody final ChangeRoleRequest request) {
 		organizationService.changeRoles(memberId, organizationId, request);
 		return NofficeResponse.success(PATCH_CHANGE_ROLES_SUCCESS);
 	}

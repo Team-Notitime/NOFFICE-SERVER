@@ -152,4 +152,10 @@ public class OrganizationService {
 				.map(MemberInfoResponse::from)
 				.toList();
 	}
+
+	public void registerMember(Long memberId, Long organizationId, ChangeRoleRequest request) {
+		roleVerifier.verifyLeader(memberId, organizationId);
+		roleVerifier.verifyMultipleMembers(organizationId, request.memberIds());
+		organizationMemberRepository.bulkUpdateRole(organizationId, request.memberIds(), PARTICIPANT);
+	}
 }
