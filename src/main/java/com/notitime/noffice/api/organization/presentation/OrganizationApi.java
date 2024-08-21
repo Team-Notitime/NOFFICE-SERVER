@@ -4,6 +4,7 @@ import com.notitime.noffice.api.announcement.presentation.dto.OrganizationCreate
 import com.notitime.noffice.api.announcement.presentation.dto.OrganizationInfoResponse;
 import com.notitime.noffice.api.announcement.presentation.dto.OrganizationJoinResponse;
 import com.notitime.noffice.api.announcement.presentation.dto.OrganizationResponse;
+import com.notitime.noffice.api.announcement.presentation.dto.OrganizationSignupResponse;
 import com.notitime.noffice.auth.AuthMember;
 import com.notitime.noffice.global.response.NofficeResponse;
 import com.notitime.noffice.request.CategoryModifyRequest;
@@ -29,6 +30,13 @@ interface OrganizationApi {
 	})
 	NofficeResponse<OrganizationInfoResponse> getInformation(@Parameter(hidden = true) @AuthMember Long memberId,
 	                                                         @PathVariable Long organizationId);
+
+	@Operation(summary = "[인증] 조직 가입 정보 조회", description = "조직 가입을 위한 공개정보를 조회합니다. (조직명, 프로필 이미지 주소)", responses = {
+			@ApiResponse(responseCode = "200", description = "조직 가입 정보 조회에 성공하였습니다."),
+			@ApiResponse(responseCode = "404", description = "조직 정보가 없습니다.")
+	})
+	NofficeResponse<OrganizationSignupResponse> getSignUp(@AuthMember final Long memberId,
+	                                                      @PathVariable final Long organizationId);
 
 	@Operation(summary = "[인증] 조직 생성", description = "조직을 생성합니다.", responses = {
 			@ApiResponse(responseCode = "201", description = "조직 생성에 성공하였습니다."),

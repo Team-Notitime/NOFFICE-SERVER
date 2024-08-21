@@ -16,6 +16,7 @@ public enum BusinessSuccessCode implements SuccessCode {
 	GET_MEMBER_SUCCESS(HttpStatus.OK, "NOF-2001", "회원 정보 조회에 성공하였습니다."),
 	GET_JOINED_ORGANIZATIONS_SUCCESS(HttpStatus.OK, "NOF-2002", "회원의 가입된 조직 조회에 성공하였습니다."),
 	GET_ORGANIZATION_SUCCESS(HttpStatus.OK, "NOF-2003", "조직 정보 조회에 성공하였습니다."),
+	GET_JOIN_INFO_SUCCESS(HttpStatus.OK, "NOF-2004", "조직 가입 정보 조회에 성공하였습니다."),
 	GET_CATEGORY_SUCCESS(HttpStatus.OK, "NOF-2004", "카테고리 조회에 성공하였습니다."),
 	GET_ANNOUNCEMENT_SUCCESS(HttpStatus.OK, "NOF-2050", "노티 단일 조회에 성공하였습니다."),
 	GET_ANNOUNCEMENTS_SUCCESS(HttpStatus.OK, "NOF-2051", "노티 목록 조회에 성공하였습니다."),
