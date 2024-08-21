@@ -1,11 +1,11 @@
 package com.notitime.noffice.api.notification.presentation;
 
 import com.notitime.noffice.auth.AuthMember;
-import com.notitime.noffice.global.response.NofficeResponse;
-import com.notitime.noffice.request.NotificationRequest;
-import com.notitime.noffice.request.NotificationTimeChangeRequest;
-import com.notitime.noffice.response.NotificationBulkRequest;
-import com.notitime.noffice.response.NotificationTimeChangeResponse;
+import com.notitime.noffice.global.web.NofficeResponse;
+import com.notitime.noffice.api.notification.presentation.dto.request.NotificationRequest;
+import com.notitime.noffice.api.notification.presentation.dto.request.NotificationTimeChangeRequest;
+import com.notitime.noffice.api.notification.presentation.dto.request.NotificationBulkRequest;
+import com.notitime.noffice.api.notification.presentation.dto.response.NotificationTimeChangeResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

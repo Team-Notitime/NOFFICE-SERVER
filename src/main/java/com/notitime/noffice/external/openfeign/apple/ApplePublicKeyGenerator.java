@@ -4,7 +4,7 @@ import com.notitime.noffice.external.openfeign.apple.dto.ApplePublicKey;
 import com.notitime.noffice.external.openfeign.apple.dto.ApplePublicKeys;
 import com.notitime.noffice.global.exception.BadRequestException;
 import com.notitime.noffice.global.exception.InternalServerException;
-import com.notitime.noffice.global.response.BusinessErrorCode;
+import com.notitime.noffice.global.web.BusinessErrorCode;
 import java.math.BigInteger;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;

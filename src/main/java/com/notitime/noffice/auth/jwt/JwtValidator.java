@@ -3,7 +3,7 @@ package com.notitime.noffice.auth.jwt;
 import static com.notitime.noffice.auth.filter.JwtAuthenticationFilter.BEARER;
 
 import com.notitime.noffice.global.exception.UnauthorizedException;
-import com.notitime.noffice.global.response.BusinessErrorCode;
+import com.notitime.noffice.global.web.BusinessErrorCode;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;

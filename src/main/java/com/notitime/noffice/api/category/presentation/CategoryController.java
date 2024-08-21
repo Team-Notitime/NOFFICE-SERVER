@@ -1,10 +1,9 @@
 package com.notitime.noffice.api.category.presentation;
 
-import com.notitime.noffice.api.category.CategoryApi;
 import com.notitime.noffice.api.category.business.CategoryService;
-import com.notitime.noffice.global.response.BusinessSuccessCode;
-import com.notitime.noffice.global.response.NofficeResponse;
-import com.notitime.noffice.response.CategoryResponses;
+import com.notitime.noffice.global.web.BusinessSuccessCode;
+import com.notitime.noffice.global.web.NofficeResponse;
+import com.notitime.noffice.api.category.presentation.dto.response.CategoryResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

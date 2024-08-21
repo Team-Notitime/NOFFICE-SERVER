@@ -1,19 +1,19 @@
 package com.notitime.noffice.api.notification.presentation;
 
-import static com.notitime.noffice.global.response.BusinessSuccessCode.CHANGE_SEND_TIME_SUCCESS;
-import static com.notitime.noffice.global.response.BusinessSuccessCode.CREATED_BULK_NOTIFICATION_SUCCESS;
-import static com.notitime.noffice.global.response.BusinessSuccessCode.CREATED_NOTIFICATION_SUCCESS;
-import static com.notitime.noffice.global.response.BusinessSuccessCode.DELETE_NOTIFICATION_SUCCESS;
-import static com.notitime.noffice.global.response.BusinessSuccessCode.OK;
-import static com.notitime.noffice.global.response.BusinessSuccessCode.POST_SAVE_FCM_TOKEN_SUCCESS;
+import static com.notitime.noffice.global.web.BusinessSuccessCode.CHANGE_SEND_TIME_SUCCESS;
+import static com.notitime.noffice.global.web.BusinessSuccessCode.CREATED_BULK_NOTIFICATION_SUCCESS;
+import static com.notitime.noffice.global.web.BusinessSuccessCode.CREATED_NOTIFICATION_SUCCESS;
+import static com.notitime.noffice.global.web.BusinessSuccessCode.DELETE_NOTIFICATION_SUCCESS;
+import static com.notitime.noffice.global.web.BusinessSuccessCode.OK;
+import static com.notitime.noffice.global.web.BusinessSuccessCode.POST_SAVE_FCM_TOKEN_SUCCESS;
 
 import com.notitime.noffice.api.notification.business.NotificationService;
 import com.notitime.noffice.auth.AuthMember;
-import com.notitime.noffice.global.response.NofficeResponse;
-import com.notitime.noffice.request.NotificationRequest;
-import com.notitime.noffice.request.NotificationTimeChangeRequest;
-import com.notitime.noffice.response.NotificationBulkRequest;
-import com.notitime.noffice.response.NotificationTimeChangeResponse;
+import com.notitime.noffice.global.web.NofficeResponse;
+import com.notitime.noffice.api.notification.presentation.dto.request.NotificationRequest;
+import com.notitime.noffice.api.notification.presentation.dto.request.NotificationTimeChangeRequest;
+import com.notitime.noffice.api.notification.presentation.dto.request.NotificationBulkRequest;
+import com.notitime.noffice.api.notification.presentation.dto.response.NotificationTimeChangeResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -2,18 +2,18 @@ package com.notitime.noffice.api.organization.business;
 
 import static com.notitime.noffice.domain.OrganizationRole.LEADER;
 import static com.notitime.noffice.domain.OrganizationRole.PARTICIPANT;
-import static com.notitime.noffice.global.response.BusinessErrorCode.ALREADY_JOINED_ORGANIZATION;
-import static com.notitime.noffice.global.response.BusinessErrorCode.NOT_FOUND_MEMBER;
-import static com.notitime.noffice.global.response.BusinessErrorCode.NOT_FOUND_ORGANIZATION;
+import static com.notitime.noffice.global.web.BusinessErrorCode.ALREADY_JOINED_ORGANIZATION;
+import static com.notitime.noffice.global.web.BusinessErrorCode.NOT_FOUND_MEMBER;
+import static com.notitime.noffice.global.web.BusinessErrorCode.NOT_FOUND_ORGANIZATION;
 
-import com.notitime.noffice.api.announcement.presentation.dto.OrganizationCreateResponse;
-import com.notitime.noffice.api.announcement.presentation.dto.OrganizationInfoResponse;
-import com.notitime.noffice.api.announcement.presentation.dto.OrganizationJoinResponse;
-import com.notitime.noffice.api.announcement.presentation.dto.OrganizationResponse;
-import com.notitime.noffice.api.announcement.presentation.dto.OrganizationSignupResponse;
+import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationCreateResponse;
+import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationInfoResponse;
+import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationJoinResponse;
+import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationResponse;
+import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationSignupResponse;
 import com.notitime.noffice.api.image.strategy.ImageRetrievalContext;
-import com.notitime.noffice.api.organization.presentation.dto.ChangeRoleRequest;
-import com.notitime.noffice.api.organization.presentation.dto.OrganizationImageResponse;
+import com.notitime.noffice.api.organization.presentation.dto.request.ChangeRoleRequest;
+import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationImageResponse;
 import com.notitime.noffice.domain.JoinStatus;
 import com.notitime.noffice.domain.OrganizationRole;
 import com.notitime.noffice.domain.category.model.Category;
@@ -27,11 +27,11 @@ import com.notitime.noffice.domain.organization.persistence.OrganizationMemberRe
 import com.notitime.noffice.domain.organization.persistence.OrganizationRepository;
 import com.notitime.noffice.global.exception.ForbiddenException;
 import com.notitime.noffice.global.exception.NotFoundException;
-import com.notitime.noffice.request.CategoryModifyRequest;
-import com.notitime.noffice.request.OrganizationCreateRequest;
-import com.notitime.noffice.response.CategoryModifyResponse;
-import com.notitime.noffice.response.CategoryResponses;
-import com.notitime.noffice.response.MemberInfoResponse;
+import com.notitime.noffice.api.category.presentation.dto.request.CategoryModifyRequest;
+import com.notitime.noffice.api.organization.presentation.dto.request.OrganizationCreateRequest;
+import com.notitime.noffice.api.category.presentation.dto.response.CategoryModifyResponse;
+import com.notitime.noffice.api.category.presentation.dto.response.CategoryResponses;
+import com.notitime.noffice.api.member.presentation.dto.response.MemberInfoResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -108,7 +108,7 @@ public class OrganizationService {
 		roleVerifier.verifyMultipleMembers(organizationId, request.memberIds());
 		organizationMemberRepository.bulkUpdateRole(organizationId, request.memberIds(), request.role());
 	}
-	
+
 	public List<MemberInfoResponse> getPendingMembers(Long memberId, Long organizationId) {
 		roleVerifier.verifyLeader(memberId, organizationId);
 		return organizationMemberRepository.findPendingMembers(organizationId).stream()

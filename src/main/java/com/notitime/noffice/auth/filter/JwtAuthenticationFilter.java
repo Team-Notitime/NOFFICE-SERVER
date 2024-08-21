@@ -7,7 +7,7 @@ import com.notitime.noffice.auth.jwt.JwtProvider;
 import com.notitime.noffice.auth.jwt.JwtValidator;
 import com.notitime.noffice.global.config.SecurityWhiteListPaths;
 import com.notitime.noffice.global.exception.UnauthorizedException;
-import com.notitime.noffice.global.response.BusinessErrorCode;
+import com.notitime.noffice.global.web.BusinessErrorCode;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

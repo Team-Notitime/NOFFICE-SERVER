@@ -1,14 +1,14 @@
 package com.notitime.noffice.api.task.presentation;
 
-import static com.notitime.noffice.global.response.BusinessSuccessCode.GET_ASSIGNED_TASKS_SUCCESS;
-import static com.notitime.noffice.global.response.BusinessSuccessCode.PATCH_TASK_MODIFY_SUCCESS;
+import static com.notitime.noffice.global.web.BusinessSuccessCode.GET_ASSIGNED_TASKS_SUCCESS;
+import static com.notitime.noffice.global.web.BusinessSuccessCode.PATCH_TASK_MODIFY_SUCCESS;
 
 import com.notitime.noffice.api.task.business.TaskService;
 import com.notitime.noffice.auth.AuthMember;
-import com.notitime.noffice.global.response.NofficeResponse;
-import com.notitime.noffice.request.TaskModifyRequest;
-import com.notitime.noffice.response.AssignedTaskResponse;
-import com.notitime.noffice.response.TaskModifyResponse;
+import com.notitime.noffice.global.web.NofficeResponse;
+import com.notitime.noffice.api.task.presentation.dto.request.TaskModifyRequest;
+import com.notitime.noffice.api.task.presentation.dto.response.AssignedTaskResponse;
+import com.notitime.noffice.api.task.presentation.dto.response.TaskModifyResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;

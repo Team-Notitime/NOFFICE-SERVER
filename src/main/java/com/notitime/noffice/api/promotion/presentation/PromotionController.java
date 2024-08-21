@@ -1,13 +1,13 @@
 package com.notitime.noffice.api.promotion.presentation;
 
-import static com.notitime.noffice.global.response.BusinessSuccessCode.POST_GRANT_PROMOTION_SUCCESS;
-import static com.notitime.noffice.global.response.BusinessSuccessCode.VERIFY_PROMOTION_CODE_SUCCESS;
+import static com.notitime.noffice.global.web.BusinessSuccessCode.POST_GRANT_PROMOTION_SUCCESS;
+import static com.notitime.noffice.global.web.BusinessSuccessCode.VERIFY_PROMOTION_CODE_SUCCESS;
 
 import com.notitime.noffice.api.promotion.business.PromotionCodeVerifier;
 import com.notitime.noffice.api.promotion.business.PromotionService;
-import com.notitime.noffice.api.promotion.presentation.dto.PromotionGrantRequest;
-import com.notitime.noffice.api.promotion.presentation.dto.PromotionVerifyResponse;
-import com.notitime.noffice.global.response.NofficeResponse;
+import com.notitime.noffice.api.promotion.presentation.dto.request.PromotionGrantRequest;
+import com.notitime.noffice.api.promotion.presentation.dto.response.PromotionVerifyResponse;
+import com.notitime.noffice.global.web.NofficeResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

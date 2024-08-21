@@ -1,11 +1,11 @@
 package com.notitime.noffice.api.member.presentation;
 
 import com.notitime.noffice.auth.AuthMember;
-import com.notitime.noffice.global.response.NofficeResponse;
-import com.notitime.noffice.request.SocialAuthRequest;
-import com.notitime.noffice.response.MemberResponse;
-import com.notitime.noffice.response.SocialAuthResponse;
-import com.notitime.noffice.response.TokenResponse;
+import com.notitime.noffice.global.web.NofficeResponse;
+import com.notitime.noffice.api.auth.presentation.dto.request.SocialAuthRequest;
+import com.notitime.noffice.api.member.presentation.dto.response.MemberResponse;
+import com.notitime.noffice.api.auth.presentation.dto.response.SocialAuthResponse;
+import com.notitime.noffice.api.auth.presentation.dto.response.TokenResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

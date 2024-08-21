@@ -1,6 +1,6 @@
 package com.notitime.noffice.global.advice;
 
-import com.notitime.noffice.global.response.NofficeResponse;
+import com.notitime.noffice.global.web.NofficeResponse;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

@@ -5,7 +5,7 @@ import static com.notitime.noffice.domain.notification.model.NoticeType.MANUAL;
 
 import com.notitime.noffice.domain.announcement.model.Announcement;
 import com.notitime.noffice.domain.notification.model.Notification;
-import com.notitime.noffice.request.AnnouncementCreateRequest;
+import com.notitime.noffice.api.announcement.presentation.dto.request.AnnouncementCreateRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

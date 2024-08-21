@@ -2,8 +2,8 @@ package com.notitime.noffice.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.notitime.noffice.global.config.SecurityWhiteListPaths;
-import com.notitime.noffice.global.response.BusinessErrorCode;
-import com.notitime.noffice.global.response.NofficeResponse;
+import com.notitime.noffice.global.web.BusinessErrorCode;
+import com.notitime.noffice.global.web.NofficeResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
