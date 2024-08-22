@@ -35,6 +35,11 @@ public interface OrganizationMemberRepository extends JpaRepository<Organization
 	int bulkUpdateRole(@Param("organizationId") Long organizationId, @Param("memberIds") List<Long> memberIds,
 	                   @Param("role") OrganizationRole role);
 
+	@Modifying
+	@Query("UPDATE OrganizationMember om SET om.status = :status WHERE om.organization.id = :organizationId AND om.member.id IN :memberIds")
+	int bulkUpdateStatus(@Param("organizationId") Long organizationId, @Param("memberIds") List<Long> memberIds,
+	                     @Param("status") JoinStatus status);
+
 	default List<Member> findLeadersByOrganizationId(Long organizationId) {
 		return findMembersByOrganizationIdAndRole(organizationId, LEADER);
 	}
@@ -54,9 +59,9 @@ public interface OrganizationMemberRepository extends JpaRepository<Organization
 
 	boolean existsByOrganizationIdAndStatus(Long organizationId, JoinStatus status);
 
-	@Query("SELECT om.member.id FROM OrganizationMember om WHERE om.organization.id = :organizationId AND om.member.id IN :memberIds AND om.status = 'ACTIVE'")
-	List<Long> findActiveMemberIdsByOrganizationId(@Param("organizationId") Long organizationId,
-	                                               @Param("memberIds") List<Long> memberIds);
+	@Query("SELECT om.member.id FROM OrganizationMember om WHERE om.organization.id = :organizationId AND om.member.id IN :memberIds AND om.status = 'PENDING'")
+	List<Long> findPendingMemberIds(@Param("organizationId") Long organizationId,
+	                                @Param("memberIds") List<Long> memberIds);
 
 	@Query("SELECT om.member FROM OrganizationMember om WHERE om.organization.id = :organizationId AND om.status = 'PENDING'")
 	List<Member> findPendingMembers(Long organizationId);

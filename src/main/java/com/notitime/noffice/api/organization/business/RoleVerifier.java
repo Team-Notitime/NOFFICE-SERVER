@@ -15,8 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class RoleVerifier {
 
@@ -61,11 +63,10 @@ public class RoleVerifier {
 	}
 
 	public void verifyMultipleMembers(Long organizationId, List<Long> memberIds) {
-		List<Long> activeMemberIds = organizationMemberRepository.findActiveMemberIdsByOrganizationId(organizationId,
-				memberIds);
-		if (activeMemberIds.size() != memberIds.size()) {
+		List<Long> pendingMemberIds = organizationMemberRepository.findPendingMemberIds(organizationId, memberIds);
+		if (pendingMemberIds.size() != memberIds.size()) {
 			List<Long> invalidMemberIds = new ArrayList<>(memberIds);
-			invalidMemberIds.removeAll(activeMemberIds);
+			invalidMemberIds.removeAll(pendingMemberIds);
 			throw new NotFoundException("잘못된 멤버 식별자: " + invalidMemberIds, NOT_FOUND_MEMBER);
 		}
 	}

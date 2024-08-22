@@ -31,15 +31,11 @@ public class ReadStatusRecoder {
 	}
 
 	public List<Member> findReadMembers(Long announcementId) {
-		return announcementReadStatusRepository.findReadMembers(announcementId).stream()
-				.map(AnnouncementReadStatus::getMember)
-				.toList();
+		return announcementReadStatusRepository.findReadMembers(announcementId);
 	}
 
 	public List<Member> findUnReadMembers(Long announcementId) {
-		return announcementReadStatusRepository.findUnReadMembers(announcementId).stream()
-				.map(AnnouncementReadStatus::getMember)
-				.toList();
+		return announcementReadStatusRepository.findUnReadMembers(announcementId);
 	}
 
 	public Long countReader(Long announcementId) {
