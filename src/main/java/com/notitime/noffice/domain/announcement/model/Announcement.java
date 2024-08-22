@@ -134,6 +134,11 @@ public class Announcement extends BaseTimeEntity {
 		}
 	}
 
+	public void addTask(Task task) {
+		this.tasks.add(task);
+		task.setAnnouncement(this);
+	}
+
 	public void addNotification(Notification notification) {
 		this.notifications.add(notification);
 	}

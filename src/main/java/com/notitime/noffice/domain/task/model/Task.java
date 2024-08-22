@@ -36,11 +36,20 @@ public class Task extends BaseTimeEntity {
 	}
 
 	public static Task create(String content, Announcement announcement) {
-		return new Task(content, announcement);
+		Task task = new Task(content, announcement);
+		task.setAnnouncement(announcement);
+		return task;
 	}
 
 	public Task modify(String content) {
 		this.content = content;
 		return this;
+	}
+
+	public void setAnnouncement(Announcement announcement) {
+		this.announcement = announcement;
+		if (!announcement.getTasks().contains(this)) {
+			announcement.getTasks().add(this);
+		}
 	}
 }
