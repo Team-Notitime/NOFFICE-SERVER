@@ -47,10 +47,28 @@ public class OrganizationMember {
 	private Member member;
 
 	public static OrganizationMember join(Organization organization, Member member) {
-		return new OrganizationMember(null, PARTICIPANT, PENDING, organization, member);
+		OrganizationMember organizationMember = new OrganizationMember(null, PARTICIPANT, PENDING,
+				organization, member);
+		organizationMember.setOrganization(organization);
+		organizationMember.setMember(member);
+		return organizationMember;
 	}
 
 	public static OrganizationMember create(Organization organization, Member member) {
 		return new OrganizationMember(null, LEADER, ACTIVE, organization, member);
+	}
+
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
+		if (!organization.getMembers().contains(this)) {
+			organization.getMembers().add(this);
+		}
+	}
+
+	public void setMember(Member member) {
+		this.member = member;
+		if (!member.getOrganizations().contains(this)) {
+			member.getOrganizations().add(this);
+		}
 	}
 }
