@@ -81,4 +81,11 @@ public class Organization extends BaseTimeEntity {
 	private void addLeader(Member leader) {
 		this.members.add(OrganizationMember.create(this, leader));
 	}
+
+	public void addAnnouncement(Announcement announcement) {
+		if (!this.announcements.contains(announcement)) {
+			announcements.add(announcement);
+		}
+		announcement.setOrganization(this);
+	}
 }
