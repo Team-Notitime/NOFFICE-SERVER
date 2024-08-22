@@ -2,7 +2,9 @@ package com.notitime.noffice.domain.member.model;
 
 import com.notitime.noffice.domain.BaseTimeEntity;
 import com.notitime.noffice.domain.FcmToken;
+import com.notitime.noffice.domain.JoinStatus;
 import com.notitime.noffice.domain.SocialAuthProvider;
+import com.notitime.noffice.domain.organization.model.Organization;
 import com.notitime.noffice.domain.organization.model.OrganizationMember;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -71,5 +73,12 @@ public class Member extends BaseTimeEntity {
 
 	public void addFcmToken(FcmToken fcmToken) {
 		this.fcmTokens.add(fcmToken);
+	}
+
+	public List<Organization> getOrganizationsByStatus(JoinStatus joinStatus) {
+		return organizations.stream()
+				.filter(organizationMember -> organizationMember.getStatus() == joinStatus)
+				.map(OrganizationMember::getOrganization)
+				.toList();
 	}
 }
