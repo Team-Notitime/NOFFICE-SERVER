@@ -129,6 +129,12 @@ public class OrganizationService {
 				imageRetrievalContext.retrieve(organizationId));
 	}
 
+	public void deleteProfileImage(Long organizationId) {
+		Organization organization = getOrganizationEntity(organizationId);
+		organization.deleteProfileImage();
+		organizationRepository.save(organization);
+	}
+
 	private Member getMemberEntity(Long memberId) {
 		return memberRepository.findById(memberId)
 				.orElseThrow(() -> new NotFoundException(NOT_FOUND_MEMBER));
