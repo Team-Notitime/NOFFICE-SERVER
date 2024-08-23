@@ -8,6 +8,8 @@ import com.notitime.noffice.auth.AuthMember;
 import com.notitime.noffice.global.web.NofficeResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,25 +18,31 @@ import org.springframework.web.bind.annotation.RequestHeader;
 @Tag(name = "회원", description = "회원 로그인, 정보 조회 API")
 interface MemberApi {
 	@Operation(summary = "회원 로그인", description = "본문에 소셜 공급자명과 인가코드를 넣어 노피스 서버 로그인을 시도합니다.", responses = {
-			@ApiResponse(responseCode = "200", description = "로그인에 성공하였습니다.")
+			@ApiResponse(responseCode = "200", description = "로그인에 성공하였습니다."),
+			@ApiResponse(responseCode = "500", description = "서버 내부 에러 발생", content = @Content(schema = @Schema(implementation = NofficeResponse.class)))
 	})
 	NofficeResponse<SocialAuthResponse> login(@RequestBody final SocialAuthRequest socialLoginRequest);
 
 	@Operation(summary = "토큰 재발급", description = "리프레시 토큰을 이용해 새로운 액세스 토큰을 발급합니다.", responses = {
-			@ApiResponse(responseCode = "200", description = "액세스 토큰 재발급에 성공하였습니다.")
+			@ApiResponse(responseCode = "200", description = "액세스 토큰 재발급에 성공하였습니다."),
+			@ApiResponse(responseCode = "401", description = "리프레시 토큰이 유효하지 않습니다. 다시 로그인해주세요.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
+			@ApiResponse(responseCode = "500", description = "서버 내부 에러 발생", content = @Content(schema = @Schema(implementation = NofficeResponse.class)))
 	})
 	NofficeResponse<TokenResponse> reissue(@RequestHeader("Authorization") final String refreshToken);
 
 	@Operation(summary = "[인증] 단일 회원 정보 조회", description = "회원의 정보를 조회합니다.", responses = {
-			@ApiResponse(responseCode = "200", description = "회원 정보 조회에 성공하였습니다.")
+			@ApiResponse(responseCode = "200", description = "회원 정보 조회에 성공하였습니다."),
+			@ApiResponse(responseCode = "401", description = "인증되지 않은 사용자입니다. 토큰을 확인해주세요.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
+			@ApiResponse(responseCode = "403", description = "요청을 수행할 수 있는 권한이 없습니다.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
+			@ApiResponse(responseCode = "500", description = "서버 내부 에러 발생", content = @Content(schema = @Schema(implementation = NofficeResponse.class)))
 	})
 	NofficeResponse<MemberResponse> getById(@Parameter(hidden = true) @AuthMember final Long memberId);
 
 	@Operation(summary = "[인증] 회원 프로필 이미지 삭제", description = "회원의 프로필 이미지를 기본값(null)으로 되돌립니다.", responses = {
-			// no content
 			@ApiResponse(responseCode = "204", description = "회원 프로필 이미지 삭제에 성공하였습니다."),
-			@ApiResponse(responseCode = "401", description = "인증되지 않은 사용자입니다."),
-			@ApiResponse(responseCode = "403", description = "해당 회원이 아니므로 권한을 부여하지 않습니다.")
+			@ApiResponse(responseCode = "401", description = "인증되지 않은 사용자입니다. 토큰을 확인해주세요.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
+			@ApiResponse(responseCode = "403", description = "요청을 수행할 수 있는 권한이 없습니다.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
+			@ApiResponse(responseCode = "500", description = "서버 내부 에러 발생", content = @Content(schema = @Schema(implementation = NofficeResponse.class)))
 	})
 	NofficeResponse<Void> deleteProfileImage(@Parameter(hidden = true) @AuthMember final Long memberId);
 }
