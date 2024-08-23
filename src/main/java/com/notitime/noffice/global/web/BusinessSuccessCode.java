@@ -51,6 +51,7 @@ public enum BusinessSuccessCode implements SuccessCode {
 	DELETE_NOTIFICATION_SUCCESS(HttpStatus.NO_CONTENT, "NOF-2073", "알림 삭제 성공"),
 	DELETE_TASK_SUCCESS(HttpStatus.NO_CONTENT, "NOF-2093", "투두 삭제 성공"),
 	PATCH_REGISTER_MEMBER_SUCCESS(HttpStatus.NO_CONTENT, "NOF-2081", "조직 가입 승인 성공"),
+	DELETE_PROFILE_IMAGE_SUCCESS(HttpStatus.NO_CONTENT, "NOF-2402", "프로필 이미지 삭제에 성공하였습니다."),
 
 	// RESET CONTENT (2500 ~ 2599)
 	RESET_CONTENT(HttpStatus.RESET_CONTENT, "NOF-205", "리소스가 갱신되었습니다. - 205");
