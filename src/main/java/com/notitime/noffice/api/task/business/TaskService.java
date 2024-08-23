@@ -9,6 +9,7 @@ import com.notitime.noffice.api.task.presentation.dto.response.TaskModifyRespons
 import com.notitime.noffice.api.task.presentation.dto.response.TaskResponse;
 import com.notitime.noffice.api.task.presentation.dto.response.TaskResponses;
 import com.notitime.noffice.domain.announcement.persistence.AnnouncementRepository;
+import com.notitime.noffice.domain.member.persistence.MemberRepository;
 import com.notitime.noffice.domain.organization.model.Organization;
 import com.notitime.noffice.domain.organization.persistence.OrganizationMemberRepository;
 import com.notitime.noffice.domain.task.model.Task;
@@ -31,6 +32,7 @@ public class TaskService {
 	private final OrganizationMemberRepository organizationMemberRepository;
 	private final TaskRepository taskRepository;
 	private final AnnouncementRepository announcementRepository;
+	private final MemberRepository memberRepository;
 
 	public TaskModifyResponse modify(TaskModifyRequest taskModifyRequest) {
 		Task task = findById(taskModifyRequest.id());
@@ -38,9 +40,10 @@ public class TaskService {
 	}
 
 	public Slice<AssignedTaskResponse> getAssignedTasks(Long memberId, Pageable pageable) {
-		Slice<Organization> organizations = getSlicedOrganizations(memberId, pageable);
-		List<TaskResponse> taskResponses = getTop5LatestTaskResponses(organizations);
-		List<AssignedTaskResponse> responses = assembleTasks(organizations, taskResponses);
+		Slice<Organization> organizations = getSlicedOrganizations(memberId, pageable); // 사용자가 가입한 조직의 페이징된 목록
+		List<AssignedTaskResponse> responses = organizations.stream()
+				.map(this::assembleTasksByOrganization)
+				.toList();
 		return new PageImpl<>(responses, pageable, organizations.getSize());
 	}
 
@@ -69,20 +72,17 @@ public class TaskService {
 		return organizationMemberRepository.findOrganizationsByMemberId(memberId, pageable);
 	}
 
-	private List<TaskResponse> getTop5LatestTaskResponses(Slice<Organization> organizations) {
-		return organizations.stream()
-				.flatMap(org -> org.getAnnouncements().stream())
-				.flatMap(announcement -> announcement.getTasks().stream())
-				.sorted(Comparator.comparing(Task::getCreatedAt).reversed())
-				.limit(5)
-				.map(TaskResponse::from)
-				.toList();
+	private AssignedTaskResponse assembleTasksByOrganization(Organization organization) {
+		List<TaskResponse> taskResponses = getTop5LatestTask(organization);
+		return AssignedTaskResponse.from(organization, taskResponses);
 	}
 
-	private List<AssignedTaskResponse> assembleTasks(Slice<Organization> organizations,
-	                                                 List<TaskResponse> taskResponses) {
-		return organizations.stream()
-				.map(organization -> AssignedTaskResponse.from(organization, taskResponses))
+	private List<TaskResponse> getTop5LatestTask(Organization organization) {
+		return organization.getAnnouncements().stream()
+				.flatMap(announcement -> announcement.getTasks().stream()
+						.sorted(Comparator.comparing(Task::getCreatedAt).reversed())
+						.limit(5))
+				.map(TaskResponse::from)
 				.toList();
 	}
 }

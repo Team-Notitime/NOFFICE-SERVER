@@ -5,6 +5,7 @@ import static com.notitime.noffice.domain.JoinStatus.PENDING;
 import static com.notitime.noffice.domain.OrganizationRole.LEADER;
 import static com.notitime.noffice.domain.OrganizationRole.PARTICIPANT;
 
+import com.notitime.noffice.domain.BaseTimeEntity;
 import com.notitime.noffice.domain.JoinStatus;
 import com.notitime.noffice.domain.OrganizationRole;
 import com.notitime.noffice.domain.member.model.Member;
@@ -26,7 +27,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-public class OrganizationMember {
+public class OrganizationMember extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
