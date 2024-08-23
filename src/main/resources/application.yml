@@ -4,14 +4,14 @@ spring:
       local: "local, key"
       dev: "develop, datasource, key"
       prod: "production, datasource, key"
-    active: dev
+    active: local
 
   jackson:
     property-naming-strategy: LOWER_CAMEL_CASE
 
   cache:
     type: simple
-    
+
 springdoc:
   swagger-ui:
     path: /api-docs
