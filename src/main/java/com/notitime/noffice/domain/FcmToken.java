@@ -28,14 +28,14 @@ public class FcmToken {
 	@JoinColumn(name = "member_id")
 	private Member member;
 
-	private String value;
+	private String token;
 
 	private String deviceId;
 
 	private LocalDateTime expiredAt;
 
-	public static FcmToken of(Member member, String value) {
-		return new FcmToken(null, member, value, null, null);
+	public static FcmToken of(Member member, String token) {
+		return new FcmToken(null, member, token, null, null);
 	}
 
 	private void setDeviceId(String deviceId) {

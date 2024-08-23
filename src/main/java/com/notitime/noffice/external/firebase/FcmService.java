@@ -132,7 +132,7 @@ public class FcmService {
 
 	private List<String> getMemberTokens(Long memberId) {
 		return fcmTokenRepository.findByMemberId(memberId).stream()
-				.map(FcmToken::getValue)
+				.map(FcmToken::getToken)
 				.toList();
 	}
 

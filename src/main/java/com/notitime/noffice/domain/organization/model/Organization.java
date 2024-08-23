@@ -1,6 +1,7 @@
 package com.notitime.noffice.domain.organization.model;
 
 import com.notitime.noffice.domain.BaseTimeEntity;
+import com.notitime.noffice.domain.JoinStatus;
 import com.notitime.noffice.domain.announcement.model.Announcement;
 import com.notitime.noffice.domain.category.model.Category;
 import com.notitime.noffice.domain.member.model.Member;
@@ -80,5 +81,19 @@ public class Organization extends BaseTimeEntity {
 
 	private void addLeader(Member leader) {
 		this.members.add(OrganizationMember.create(this, leader));
+	}
+
+	public void addAnnouncement(Announcement announcement) {
+		if (!this.announcements.contains(announcement)) {
+			announcements.add(announcement);
+		}
+		announcement.setOrganization(this);
+	}
+
+	public List<Member> getMembersByStatus(JoinStatus joinStatus) {
+		return members.stream()
+				.filter(organizationMember -> organizationMember.getStatus() == joinStatus)
+				.map(OrganizationMember::getMember)
+				.toList();
 	}
 }

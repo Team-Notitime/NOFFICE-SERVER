@@ -1,12 +1,12 @@
 package com.notitime.noffice.domain.announcement.model;
 
+import com.notitime.noffice.api.announcement.presentation.dto.request.AnnouncementUpdateRequest;
+import com.notitime.noffice.api.task.presentation.dto.request.TaskCreateRequest;
 import com.notitime.noffice.domain.BaseTimeEntity;
 import com.notitime.noffice.domain.member.model.Member;
 import com.notitime.noffice.domain.notification.model.Notification;
 import com.notitime.noffice.domain.organization.model.Organization;
 import com.notitime.noffice.domain.task.model.Task;
-import com.notitime.noffice.api.announcement.presentation.dto.request.AnnouncementUpdateRequest;
-import com.notitime.noffice.api.task.presentation.dto.request.TaskCreateRequest;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -127,7 +127,23 @@ public class Announcement extends BaseTimeEntity {
 		}
 	}
 
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
+		if (!organization.getAnnouncements().contains(this)) {
+			organization.getAnnouncements().add(this);
+		}
+	}
+
+	public void addTask(Task task) {
+		this.tasks.add(task);
+		task.setAnnouncement(this);
+	}
+
 	public void addNotification(Notification notification) {
 		this.notifications.add(notification);
+	}
+
+	public void removeNotification(Notification notification) {
+		this.notifications.remove(notification);
 	}
 }

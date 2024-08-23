@@ -114,6 +114,7 @@ public class AnnouncementService {
 		);
 		announcement.withTasks(request.tasks());
 		announcementRepository.save(announcement);
+		organization.addAnnouncement(announcement);
 		return announcement;
 	}
 
