@@ -1,6 +1,7 @@
 package com.notitime.noffice.api.organization.presentation;
 
 import static com.notitime.noffice.global.web.BusinessSuccessCode.CREATE_ORGANIZATION_SUCCESS;
+import static com.notitime.noffice.global.web.BusinessSuccessCode.DELETE_PROFILE_IMAGE_SUCCESS;
 import static com.notitime.noffice.global.web.BusinessSuccessCode.GET_JOINED_ORGANIZATIONS_SUCCESS;
 import static com.notitime.noffice.global.web.BusinessSuccessCode.GET_ORGANIZATION_SUCCESS;
 import static com.notitime.noffice.global.web.BusinessSuccessCode.GET_PENDING_MEMBERS_SUCCESS;
@@ -13,26 +14,27 @@ import static com.notitime.noffice.global.web.BusinessSuccessCode.POST_JOIN_ORGA
 import static com.notitime.noffice.global.web.BusinessSuccessCode.PUT_CATEGORIES_SUCCESS;
 
 import com.notitime.noffice.api.announcement.business.AnnouncementService;
+import com.notitime.noffice.api.announcement.presentation.dto.response.AnnouncementCoverResponse;
+import com.notitime.noffice.api.category.presentation.dto.request.CategoryModifyRequest;
+import com.notitime.noffice.api.category.presentation.dto.response.CategoryModifyResponse;
+import com.notitime.noffice.api.member.presentation.dto.response.MemberInfoResponse;
+import com.notitime.noffice.api.organization.business.OrganizationService;
+import com.notitime.noffice.api.organization.presentation.dto.request.ChangeRoleRequest;
+import com.notitime.noffice.api.organization.presentation.dto.request.OrganizationCreateRequest;
 import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationCreateResponse;
+import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationImageResponse;
 import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationInfoResponse;
 import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationJoinResponse;
 import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationResponse;
 import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationSignupResponse;
-import com.notitime.noffice.api.organization.business.OrganizationService;
-import com.notitime.noffice.api.organization.presentation.dto.request.ChangeRoleRequest;
-import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationImageResponse;
 import com.notitime.noffice.auth.AuthMember;
 import com.notitime.noffice.global.web.NofficeResponse;
-import com.notitime.noffice.api.category.presentation.dto.request.CategoryModifyRequest;
-import com.notitime.noffice.api.organization.presentation.dto.request.OrganizationCreateRequest;
-import com.notitime.noffice.api.announcement.presentation.dto.response.AnnouncementCoverResponse;
-import com.notitime.noffice.api.category.presentation.dto.response.CategoryModifyResponse;
-import com.notitime.noffice.api.member.presentation.dto.response.MemberInfoResponse;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -125,5 +127,12 @@ public class OrganizationController implements OrganizationApi {
 	                                                                     @PathVariable final Long organizationId) {
 		return NofficeResponse.success(GET_SELECTABLE_COVER_SUCCESS,
 				organizationService.getSelectableCover(memberId, organizationId));
+	}
+
+	@DeleteMapping("/{organizationId}/profile-image")
+	public NofficeResponse<Void> deleteProfileImage(@AuthMember final Long memberId,
+	                                                @PathVariable Long organizationId) {
+		organizationService.deleteProfileImage(organizationId);
+		return NofficeResponse.success(DELETE_PROFILE_IMAGE_SUCCESS);
 	}
 }

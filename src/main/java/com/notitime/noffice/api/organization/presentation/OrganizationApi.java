@@ -117,4 +117,13 @@ interface OrganizationApi {
 	NofficeResponse<OrganizationImageResponse> getSelectableCover(
 			@Parameter(hidden = true) @AuthMember final Long memberId,
 			@PathVariable final Long organizationId);
+
+	@Operation(summary = "[인증] 조직 프로필 이미지 삭제", description = "조직 프로필 이미지를 삭제합니다.", responses = {
+			@ApiResponse(responseCode = "204", description = "프로필 이미지 삭제 성공"),
+			@ApiResponse(responseCode = "400", description = "프로필 이미지 삭제 실패", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
+			@ApiResponse(responseCode = "403", description = "요청을 수행할 수 있는 권한이 없습니다.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
+			@ApiResponse(responseCode = "500", description = "서버 내부 에러 발생", content = @Content(schema = @Schema(implementation = NofficeResponse.class)))
+	})
+	NofficeResponse<Void> deleteProfileImage(@Parameter(hidden = true) @AuthMember final Long memberId,
+	                                         @PathVariable Long organizationId);
 }

@@ -1,11 +1,11 @@
 package com.notitime.noffice.api.member.presentation;
 
-import com.notitime.noffice.auth.AuthMember;
-import com.notitime.noffice.global.web.NofficeResponse;
 import com.notitime.noffice.api.auth.presentation.dto.request.SocialAuthRequest;
-import com.notitime.noffice.api.member.presentation.dto.response.MemberResponse;
 import com.notitime.noffice.api.auth.presentation.dto.response.SocialAuthResponse;
 import com.notitime.noffice.api.auth.presentation.dto.response.TokenResponse;
+import com.notitime.noffice.api.member.presentation.dto.response.MemberResponse;
+import com.notitime.noffice.auth.AuthMember;
+import com.notitime.noffice.global.web.NofficeResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -29,4 +29,12 @@ interface MemberApi {
 			@ApiResponse(responseCode = "200", description = "회원 정보 조회에 성공하였습니다.")
 	})
 	NofficeResponse<MemberResponse> getById(@Parameter(hidden = true) @AuthMember final Long memberId);
+
+	@Operation(summary = "[인증] 회원 프로필 이미지 삭제", description = "회원의 프로필 이미지를 기본값(null)으로 되돌립니다.", responses = {
+			// no content
+			@ApiResponse(responseCode = "204", description = "회원 프로필 이미지 삭제에 성공하였습니다."),
+			@ApiResponse(responseCode = "401", description = "인증되지 않은 사용자입니다."),
+			@ApiResponse(responseCode = "403", description = "해당 회원이 아니므로 권한을 부여하지 않습니다.")
+	})
+	NofficeResponse<Void> deleteProfileImage(@Parameter(hidden = true) @AuthMember final Long memberId);
 }

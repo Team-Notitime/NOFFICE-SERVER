@@ -96,4 +96,8 @@ public class Organization extends BaseTimeEntity {
 				.map(OrganizationMember::getMember)
 				.toList();
 	}
+
+	public void deleteProfileImage() {
+		this.profileImage = null;
+	}
 }
