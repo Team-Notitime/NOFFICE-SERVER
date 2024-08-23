@@ -112,9 +112,11 @@ public class FcmService {
 		sendAsync(message);
 	}
 
-	public void subscribeTopic(List<String> tokens, Long organizationId) {
-		// TODO : 사용자의 그룹 가입 시 토큰과함께 조직의 토픽을 구독하도록 수정
-		FirebaseMessaging.getInstance().subscribeToTopicAsync(tokens, "organization_" + organizationId.toString());
+	public void subscribeOrganizationTopic(Long organizationId, List<Long> newMemberIds) {
+		Organization organization = organizationRepository.findById(organizationId)
+				.orElseThrow(() -> new NotFoundException(BusinessErrorCode.NOT_FOUND_ORGANIZATION));
+		List<String> newMemberTokens = fcmTokenRepository.findAllTokenByMemberIdIn(newMemberIds);
+		FirebaseMessaging.getInstance().subscribeToTopicAsync(newMemberTokens, "organization_" + organizationId);
 	}
 
 	public void sendAsync(Message message) {

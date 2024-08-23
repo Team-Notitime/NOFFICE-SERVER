@@ -31,6 +31,7 @@ import com.notitime.noffice.domain.organization.model.OrganizationCategory;
 import com.notitime.noffice.domain.organization.model.OrganizationMember;
 import com.notitime.noffice.domain.organization.persistence.OrganizationMemberRepository;
 import com.notitime.noffice.domain.organization.persistence.OrganizationRepository;
+import com.notitime.noffice.external.firebase.FcmService;
 import com.notitime.noffice.global.exception.ForbiddenException;
 import com.notitime.noffice.global.exception.NotFoundException;
 import java.util.List;
@@ -53,6 +54,7 @@ public class OrganizationService {
 
 	private final RoleVerifier roleVerifier;
 	private final ImageRetrievalContext imageRetrievalContext;
+	private final FcmService fcmService;
 
 	public OrganizationInfoResponse getInformation(Long memberId, Long organizationId) {
 		Organization organization = getOrganizationEntity(organizationId);
@@ -119,6 +121,7 @@ public class OrganizationService {
 	public void registerMember(Long memberId, Long organizationId, ChangeRoleRequest request) {
 		roleVerifier.verifyLeader(memberId, organizationId);
 		roleVerifier.verifyMultipleMembers(organizationId, request.memberIds());
+		fcmService.subscribeOrganizationTopic(organizationId, request.memberIds());
 		organizationMemberRepository.bulkUpdateStatus(organizationId, request.memberIds(), ACTIVE);
 	}
 
