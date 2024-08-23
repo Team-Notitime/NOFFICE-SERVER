@@ -1,17 +1,19 @@
 package com.notitime.noffice.api.announcement.presentation;
 
-import com.notitime.noffice.auth.AuthMember;
-import com.notitime.noffice.external.firebase.FCMCreateResponse;
-import com.notitime.noffice.global.web.NofficeResponse;
 import com.notitime.noffice.api.announcement.presentation.dto.request.AnnouncementCreateRequest;
 import com.notitime.noffice.api.announcement.presentation.dto.request.AnnouncementUpdateRequest;
 import com.notitime.noffice.api.announcement.presentation.dto.response.AnnouncementResponse;
 import com.notitime.noffice.api.announcement.presentation.dto.response.AnnouncementResponses;
 import com.notitime.noffice.api.announcement.presentation.dto.response.ReadStatusResponse;
 import com.notitime.noffice.api.task.presentation.dto.response.TaskResponses;
+import com.notitime.noffice.auth.AuthMember;
+import com.notitime.noffice.external.firebase.FCMCreateResponse;
+import com.notitime.noffice.global.web.NofficeResponse;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -89,4 +91,13 @@ interface AnnouncementApi {
 	})
 	NofficeResponse<ReadStatusResponse> getUnReadMembers(@Parameter(hidden = true) @AuthMember final Long memberId,
 	                                                     @PathVariable final Long announcementId);
+
+	@Operation(summary = "공지 커버 이미지 수정", description = "공지에 설정된 이미지를 변경합니다. 이미지는 선택 가능한 이미지 내에서 설정 가능합니다.", responses = {
+			@ApiResponse(responseCode = "204", description = "공지 커버 이미지 수정 성공"),
+			@ApiResponse(responseCode = "403", description = "요청을 수행할 수 있는 권한이 없습니다.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
+			@ApiResponse(responseCode = "404", description = "선택 가능한 이미지 주소가 아닙니다.", content = @Content(schema = @Schema(implementation = NofficeResponse.class)))
+	})
+	NofficeResponse<Void> modifyCover(@Parameter(hidden = true) @AuthMember final Long memberId,
+	                                  @PathVariable final Long announcementId,
+	                                  @RequestBody final String coverImageUrl);
 }

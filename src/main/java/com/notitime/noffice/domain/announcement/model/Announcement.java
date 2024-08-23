@@ -146,4 +146,8 @@ public class Announcement extends BaseTimeEntity {
 	public void removeNotification(Notification notification) {
 		this.notifications.remove(notification);
 	}
+
+	public void modifyCover(String profileImageUrl) {
+		this.profileImageUrl = profileImageUrl;
+	}
 }

@@ -137,4 +137,11 @@ public class AnnouncementService {
 				.orElseThrow(() -> new NotFoundException(NOT_FOUND_ANNOUNCEMENT))
 				.getOrganization().getId();
 	}
+
+	public void modifyCover(Long memberId, Long announcementId, String coverImageUrl) {
+		Announcement announcement = announcementRepository.findById(announcementId)
+				.orElseThrow(() -> new NotFoundException(NOT_FOUND_ANNOUNCEMENT));
+		announcement.modifyCover(coverImageUrl);
+		announcementRepository.save(announcement);
+	}
 }
