@@ -1,19 +1,19 @@
 package com.notitime.noffice.api.organization.presentation;
 
+import com.notitime.noffice.api.announcement.presentation.dto.response.AnnouncementCoverResponse;
+import com.notitime.noffice.api.category.presentation.dto.request.CategoryModifyRequest;
+import com.notitime.noffice.api.category.presentation.dto.response.CategoryModifyResponse;
+import com.notitime.noffice.api.member.presentation.dto.response.MemberInfoResponse;
+import com.notitime.noffice.api.organization.presentation.dto.request.ChangeRoleRequest;
+import com.notitime.noffice.api.organization.presentation.dto.request.OrganizationCreateRequest;
 import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationCreateResponse;
+import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationImageResponse;
 import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationInfoResponse;
 import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationJoinResponse;
 import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationResponse;
 import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationSignupResponse;
-import com.notitime.noffice.api.organization.presentation.dto.request.ChangeRoleRequest;
-import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationImageResponse;
 import com.notitime.noffice.auth.AuthMember;
 import com.notitime.noffice.global.web.NofficeResponse;
-import com.notitime.noffice.api.category.presentation.dto.request.CategoryModifyRequest;
-import com.notitime.noffice.api.organization.presentation.dto.request.OrganizationCreateRequest;
-import com.notitime.noffice.api.announcement.presentation.dto.response.AnnouncementCoverResponse;
-import com.notitime.noffice.api.category.presentation.dto.response.CategoryModifyResponse;
-import com.notitime.noffice.api.member.presentation.dto.response.MemberInfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -51,7 +51,7 @@ interface OrganizationApi {
 	NofficeResponse<OrganizationCreateResponse> create(@Parameter(hidden = true) @AuthMember final Long memberId,
 	                                                   @RequestBody @Valid final OrganizationCreateRequest request);
 
-	@Operation(summary = "[인증] 조직 가입", description = "조직에 가입합니다.", responses = {
+	@Operation(summary = "[인증] 조직 가입 신청", description = "조직에 가입을 신청합니다. 조직의 가입 대기자 목록에 추가됩니다.", responses = {
 			@ApiResponse(responseCode = "200", description = "조직 가입에 성공하였습니다.")
 	})
 	NofficeResponse<OrganizationJoinResponse> join(@Parameter(hidden = true) @AuthMember final Long memberId,
