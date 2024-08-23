@@ -77,7 +77,6 @@ public class OrganizationService {
 	}
 
 	public OrganizationJoinResponse join(Long memberId, Long organizationId) {
-		roleVerifier.verifyJoinedMember(memberId, organizationId);
 		Organization organization = getOrganizationEntity(organizationId);
 		Member member = getMemberEntity(memberId);
 		organizationMemberRepository.save(OrganizationMember.join(organization, member));
