@@ -92,8 +92,14 @@ public class AnnouncementService {
 	}
 
 	public ReadStatusResponse getUnreadMembers(Long memberId, Long announcementId) {
-		roleVerifier.verifyJoinedMember(memberId, getOrganizationId(announcementId));
-		return ReadStatusResponse.of(announcementId, readStatusRecoder.findUnReadMembers(announcementId).stream()
+		Long organizationId = getOrganizationId(announcementId);
+		roleVerifier.verifyJoinedMember(memberId, organizationId);
+		Announcement announcement = announcementRepository.findById(announcementId)
+				.orElseThrow(() -> new NotFoundException(NOT_FOUND_ANNOUNCEMENT));
+		Organization organization = organizationRepository.findById(organizationId)
+				.orElseThrow(() -> new NotFoundException(NOT_FOUND_ORGANIZATION));
+		List<Member> unreadMembers = readStatusRecoder.findUnReadMembers(announcement, organization);
+		return ReadStatusResponse.of(announcementId, unreadMembers.stream()
 				.map(MemberInfoResponse::from)
 				.toList());
 	}
