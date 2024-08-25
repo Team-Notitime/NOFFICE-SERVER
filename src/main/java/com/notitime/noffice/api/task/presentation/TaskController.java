@@ -20,6 +20,7 @@ import org.springframework.data.web.SortDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,7 +33,7 @@ public class TaskController implements TaskApi {
 	private final TaskService taskService;
 
 	@PatchMapping
-	public NofficeResponse<TaskModifyResponse> modify(TaskModifyRequest taskModifyRequest) {
+	public NofficeResponse<TaskModifyResponse> modify(@RequestBody final TaskModifyRequest taskModifyRequest) {
 		return NofficeResponse.success(PATCH_TASK_MODIFY_SUCCESS, taskService.modify(taskModifyRequest));
 	}
 
@@ -47,7 +48,7 @@ public class TaskController implements TaskApi {
 
 	@PutMapping("/assigned")
 	public NofficeResponse<Void> updateTaskStatus(@AuthMember final Long memberId,
-	                                              TaskStatusUpdateRequests request) {
+	                                              @RequestBody final TaskStatusUpdateRequests request) {
 		taskService.updateTaskStatus(memberId, request);
 		return NofficeResponse.success(PATCH_UPDATE_TASK_STATUS_SUCCESS);
 	}
