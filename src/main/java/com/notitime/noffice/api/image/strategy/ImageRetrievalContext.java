@@ -3,7 +3,9 @@ package com.notitime.noffice.api.image.strategy;
 import com.notitime.noffice.api.image.presentation.dto.CommonImageResponse;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ImageRetrievalContext {
 	private final List<ImageRetrievalStrategy<?>> strategies;
 
