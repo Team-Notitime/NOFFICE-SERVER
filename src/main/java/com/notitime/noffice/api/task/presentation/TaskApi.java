@@ -17,6 +17,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Tag(name = "투두", description = "노티 하위 발급 투두 리스트 관련 API")
 interface TaskApi {
@@ -27,7 +28,7 @@ interface TaskApi {
 			@ApiResponse(responseCode = "403", description = "요청을 수행할 수 있는 권한이 없습니다.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
 			@ApiResponse(responseCode = "500", description = "서버 내부 에러 발생", content = @Content(schema = @Schema(implementation = NofficeResponse.class)))
 	})
-	NofficeResponse<TaskModifyResponse> modify(TaskModifyRequest taskModifyRequest);
+	NofficeResponse<TaskModifyResponse> modify(@RequestBody TaskModifyRequest taskModifyRequest);
 
 	@Operation(summary = "[인증] 사용자 할당 투두 목록 조회", responses = {
 			@ApiResponse(responseCode = "200", description = "사용자 할당 투두 조회 성공"),
@@ -49,5 +50,5 @@ interface TaskApi {
 			@ApiResponse(responseCode = "500", description = "서버 내부 에러 발생", content = @Content(schema = @Schema(implementation = NofficeResponse.class)))
 	})
 	NofficeResponse<Void> updateTaskStatus(@Parameter(hidden = true) @AuthMember final Long memberId,
-	                                       TaskStatusUpdateRequests request);
+	                                       @RequestBody TaskStatusUpdateRequests request);
 }
