@@ -24,11 +24,8 @@ public class ContentImageController implements ContentImageApi {
 	@GetMapping
 	public ResponseEntity<ContentImagePresignedUrlVO> getContentImage(@RequestParam final String fileType,
 	                                                                  @RequestParam final String fileName,
-	                                                                  @RequestParam final ImagePurpose imagePurpose
-	) {
-		return ResponseEntity
-				.ok(ContentImagePresignedUrlVO.of(fileName,
-						contentImageService.getPresignedUrl(fileType, fileName, imagePurpose)));
+	                                                                  @RequestParam final ImagePurpose imagePurpose) {
+		return ResponseEntity.ok(contentImageService.getPresignedUrl(fileType, fileName, imagePurpose));
 	}
 
 	@PostMapping

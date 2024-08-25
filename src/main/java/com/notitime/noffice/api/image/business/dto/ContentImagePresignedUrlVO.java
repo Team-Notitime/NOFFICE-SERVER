@@ -1,12 +1,10 @@
 package com.notitime.noffice.api.image.business.dto;
 
-import java.util.Map;
-
 public record ContentImagePresignedUrlVO(
 		String fileName,
-		Map<String, String> urls
+		PresignedUrlInfoVO urls
 ) {
-	public static ContentImagePresignedUrlVO of(String fileName, Map<String, String> urls) {
+	public static ContentImagePresignedUrlVO of(String fileName, PresignedUrlInfoVO urls) {
 		return new ContentImagePresignedUrlVO(fileName, urls);
 	}
 }
