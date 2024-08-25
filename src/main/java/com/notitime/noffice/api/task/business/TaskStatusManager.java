@@ -24,11 +24,17 @@ public class TaskStatusManager {
 
 	public void assignTasks(Organization organization, Announcement announcement) {
 		List<Member> members = getParticipants(organization.getId());
+		List<Member> leaders = getLeaders(organization.getId());
+		members.addAll(leaders);
 		List<TaskStatus> taskStatuses = members.stream()
 				.flatMap(member -> announcement.getTasks().stream()
 						.map(task -> TaskStatus.create(task, member)))
 				.toList();
 		taskStatusRepository.saveAll(taskStatuses);
+	}
+
+	private List<Member> getLeaders(Long organizationId) {
+		return organizationMemberRepository.findLeadersByOrganizationId(organizationId);
 	}
 
 	private List<Member> getParticipants(Long organizationId) {
