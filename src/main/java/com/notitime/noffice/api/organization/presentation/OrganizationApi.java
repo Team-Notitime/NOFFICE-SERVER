@@ -66,7 +66,7 @@ interface OrganizationApi {
 	NofficeResponse<OrganizationJoinResponse> join(@Parameter(hidden = true) @AuthMember final Long memberId,
 	                                               @PathVariable Long organizationId);
 
-	@Operation(summary = "[인증] 사용자의 가입된 조직 페이징 조회", description = "멤버가 가입한 조직 목록을 조회합니다.", responses = {
+	@Operation(summary = "[인증] 사용자의 가입된 조직 조회 (Paging)", description = "멤버가 가입한 조직 목록을 조회합니다.", responses = {
 			@ApiResponse(responseCode = "200", description = "회원의 가입된 조직 조회에 성공하였습니다."),
 			@ApiResponse(responseCode = "401", description = "인증되지 않은 사용자입니다. 토큰을 확인해주세요.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
 			@ApiResponse(responseCode = "403", description = "요청을 수행할 수 있는 권한이 없습니다.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
@@ -76,7 +76,7 @@ interface OrganizationApi {
 	NofficeResponse<Slice<OrganizationResponse>> getJoined(@Parameter(hidden = true) @AuthMember final Long memberId,
 	                                                       Pageable pageable);
 
-	@Operation(summary = "[인증] 조직별 노티 페이징 조회", description = "조직별 노티를 페이징 조회합니다.", responses = {
+	@Operation(summary = "[인증] 조직별 노티 페이징 조회 (Paging)", description = "조직별 노티를 페이징 조회합니다.", responses = {
 			@ApiResponse(responseCode = "200", description = "조직별 노티 페이징 조회 성공"),
 			@ApiResponse(responseCode = "401", description = "인증되지 않은 사용자입니다. 토큰을 확인해주세요.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
 			@ApiResponse(responseCode = "403", description = "요청을 수행할 수 있는 권한이 없습니다.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),

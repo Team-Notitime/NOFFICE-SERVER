@@ -127,4 +127,15 @@ interface AnnouncementApi {
 	NofficeResponse<Void> modifyCover(@Parameter(hidden = true) @AuthMember final Long memberId,
 	                                  @PathVariable final Long announcementId,
 	                                  @RequestBody final String coverImageUrl);
+
+//	@Operation(summary = "[인증] 사용자의 가입된 조직별 할당된 공지 최신 5개 조회 (Paging)", description = "멤버가 가입한 조직 목록과 해당 조직의 최신 공지 5개를 조회합니다.", responses = {
+//			@ApiResponse(responseCode = "200", description = "회원의 가입된 조직과 해당 조직의 최신 공지 5개 조회에 성공하였습니다."),
+//			@ApiResponse(responseCode = "401", description = "인증되지 않은 사용자입니다. 토큰을 확인해주세요.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
+//			@ApiResponse(responseCode = "403", description = "요청을 수행할 수 있는 권한이 없습니다.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
+//			@ApiResponse(responseCode = "404", description = "가입된 조직이 없습니다.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
+//			@ApiResponse(responseCode = "500", description = "서버 내부 에러 발생", content = @Content(schema = @Schema(implementation = NofficeResponse.class)))
+//	})
+//	NofficeResponse<Slice<OrganizationResponse>> getAssignedAnnouncements(
+//			@Parameter(hidden = true) @AuthMember final Long memberId,
+//			Pageable pageable);
 }
