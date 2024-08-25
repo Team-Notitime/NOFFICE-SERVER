@@ -6,7 +6,7 @@ import static com.notitime.noffice.global.web.BusinessSuccessCode.PATCH_UPDATE_T
 
 import com.notitime.noffice.api.task.business.TaskService;
 import com.notitime.noffice.api.task.presentation.dto.request.TaskModifyRequest;
-import com.notitime.noffice.api.task.presentation.dto.request.TaskStatusUpdateRequest;
+import com.notitime.noffice.api.task.presentation.dto.request.TaskStatusUpdateRequests;
 import com.notitime.noffice.api.task.presentation.dto.response.AssignedTaskResponse;
 import com.notitime.noffice.api.task.presentation.dto.response.TaskModifyResponse;
 import com.notitime.noffice.auth.AuthMember;
@@ -47,7 +47,7 @@ public class TaskController implements TaskApi {
 
 	@PutMapping("/assigned")
 	public NofficeResponse<Void> updateTaskStatus(@AuthMember final Long memberId,
-	                                              TaskStatusUpdateRequest request) {
+	                                              TaskStatusUpdateRequests request) {
 		taskService.updateTaskStatus(memberId, request);
 		return NofficeResponse.success(PATCH_UPDATE_TASK_STATUS_SUCCESS);
 	}

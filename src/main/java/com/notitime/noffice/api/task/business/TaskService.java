@@ -5,6 +5,7 @@ import static com.notitime.noffice.global.web.BusinessErrorCode.NOT_FOUND_TASK;
 
 import com.notitime.noffice.api.task.presentation.dto.request.TaskModifyRequest;
 import com.notitime.noffice.api.task.presentation.dto.request.TaskStatusUpdateRequest;
+import com.notitime.noffice.api.task.presentation.dto.request.TaskStatusUpdateRequests;
 import com.notitime.noffice.api.task.presentation.dto.response.AssignedTaskResponse;
 import com.notitime.noffice.api.task.presentation.dto.response.TaskModifyResponse;
 import com.notitime.noffice.api.task.presentation.dto.response.TaskResponse;
@@ -97,15 +98,26 @@ public class TaskService {
 				.toList();
 	}
 
-	public void updateTaskStatus(Long memberId, TaskStatusUpdateRequest request) {
-		List<Long> checkFailedTaskIds = request.taskIds()
-				.stream()
-				.filter(taskId -> {
-					TaskStatus taskStatus = taskStatusRepository.findByTaskIdAndMemberId(taskId, memberId);
-					return taskStatus == null || taskStatus.getIsChecked();
-				}).toList();
-		if (!checkFailedTaskIds.isEmpty()) {
-			throw new NotFoundException("투두가 존재하지 않거나 이미 완료된 투두입니다. : " + checkFailedTaskIds, NOT_FOUND_TASK);
+	public void updateTaskStatus(Long memberId, TaskStatusUpdateRequests request) {
+		List<Long> taskIds = request.tasks().stream().map(TaskStatusUpdateRequest::id).toList();
+		List<TaskStatus> taskStatuses = taskStatusRepository.findByTaskIdInAndMemberIdIn(taskIds, List.of(memberId));
+		validateTaskStatuses(taskIds, taskStatuses);
+		request.tasks().forEach(req -> {
+			taskStatuses.stream()
+					.filter(taskStatus -> taskStatus.getTask().getId().equals(req.id()))
+					.findFirst()
+					.ifPresent(taskStatus -> taskStatus.setChecked(req.status()));
+		});
+		taskStatusRepository.saveAll(taskStatuses);
+	}
+
+	private void validateTaskStatuses(List<Long> taskIds, List<TaskStatus> taskStatuses) {
+		List<Long> failedTaskIds = taskIds.stream()
+				.filter(taskId -> taskStatuses.stream()
+						.noneMatch(ts -> ts.getTask().getId().equals(taskId) && !ts.getIsChecked()))
+				.toList();
+		if (!failedTaskIds.isEmpty()) {
+			throw new NotFoundException("투두가 존재하지 않거나 이미 완료된 투두입니다. : " + failedTaskIds, NOT_FOUND_TASK);
 		}
 	}
 }

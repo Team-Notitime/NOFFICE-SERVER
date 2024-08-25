@@ -1,7 +1,7 @@
 package com.notitime.noffice.api.task.presentation;
 
 import com.notitime.noffice.api.task.presentation.dto.request.TaskModifyRequest;
-import com.notitime.noffice.api.task.presentation.dto.request.TaskStatusUpdateRequest;
+import com.notitime.noffice.api.task.presentation.dto.request.TaskStatusUpdateRequests;
 import com.notitime.noffice.api.task.presentation.dto.response.AssignedTaskResponse;
 import com.notitime.noffice.api.task.presentation.dto.response.TaskModifyResponse;
 import com.notitime.noffice.auth.AuthMember;
@@ -49,5 +49,5 @@ interface TaskApi {
 			@ApiResponse(responseCode = "500", description = "서버 내부 에러 발생", content = @Content(schema = @Schema(implementation = NofficeResponse.class)))
 	})
 	NofficeResponse<Void> updateTaskStatus(@Parameter(hidden = true) @AuthMember final Long memberId,
-	                                       TaskStatusUpdateRequest request);
+	                                       TaskStatusUpdateRequests request);
 }
