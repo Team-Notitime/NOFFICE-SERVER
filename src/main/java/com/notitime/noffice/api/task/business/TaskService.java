@@ -13,7 +13,9 @@ import com.notitime.noffice.domain.member.persistence.MemberRepository;
 import com.notitime.noffice.domain.organization.model.Organization;
 import com.notitime.noffice.domain.organization.persistence.OrganizationMemberRepository;
 import com.notitime.noffice.domain.task.model.Task;
+import com.notitime.noffice.domain.task.model.TaskStatus;
 import com.notitime.noffice.domain.task.persistence.TaskRepository;
+import com.notitime.noffice.domain.task.persistence.TaskStatusRepository;
 import com.notitime.noffice.global.exception.NotFoundException;
 import java.util.Comparator;
 import java.util.List;
@@ -33,6 +35,7 @@ public class TaskService {
 	private final TaskRepository taskRepository;
 	private final AnnouncementRepository announcementRepository;
 	private final MemberRepository memberRepository;
+	private final TaskStatusRepository taskStatusRepository;
 
 	public TaskModifyResponse modify(TaskModifyRequest taskModifyRequest) {
 		Task task = findById(taskModifyRequest.id());
@@ -40,9 +43,9 @@ public class TaskService {
 	}
 
 	public Slice<AssignedTaskResponse> getAssignedTasks(Long memberId, Pageable pageable) {
-		Slice<Organization> organizations = getSlicedOrganizations(memberId, pageable); // 사용자가 가입한 조직의 페이징된 목록
+		Slice<Organization> organizations = getSlicedOrganizations(memberId, pageable);
 		List<AssignedTaskResponse> responses = organizations.stream()
-				.map(this::assembleTasksByOrganization)
+				.map(or -> assembleUncheckedTasks(or, memberId))
 				.toList();
 		return new PageImpl<>(responses, pageable, organizations.getSize());
 	}
@@ -72,17 +75,24 @@ public class TaskService {
 		return organizationMemberRepository.findOrganizationsByMemberId(memberId, pageable);
 	}
 
-	private AssignedTaskResponse assembleTasksByOrganization(Organization organization) {
-		List<TaskResponse> taskResponses = getTop5LatestTask(organization);
-		return AssignedTaskResponse.from(organization, taskResponses);
+	private AssignedTaskResponse assembleUncheckedTasks(Organization organization, Long memberId) {
+		List<TaskStatus> assignedTasks = taskStatusRepository.findByTaskIdInAndMemberIdIn(
+						getAllTasks(organization).stream().map(Task::getId).toList(),
+						List.of(memberId)
+				).stream()
+				.filter(ts -> !ts.getIsChecked())
+				.limit(5)
+				.sorted(Comparator.comparing(TaskStatus::getCreatedAt).reversed())
+				.toList();
+		List<TaskResponse> assembled = assignedTasks.stream()
+				.map(ts -> TaskResponse.from(ts.getTask(), ts.getIsChecked()))
+				.toList();
+		return AssignedTaskResponse.from(organization, assembled);
 	}
 
-	private List<TaskResponse> getTop5LatestTask(Organization organization) {
+	private List<Task> getAllTasks(Organization organization) {
 		return organization.getAnnouncements().stream()
-				.flatMap(announcement -> announcement.getTasks().stream()
-						.sorted(Comparator.comparing(Task::getCreatedAt).reversed())
-						.limit(5))
-				.map(TaskResponse::from)
+				.flatMap(announcement -> announcement.getTasks().stream())
 				.toList();
 	}
 }

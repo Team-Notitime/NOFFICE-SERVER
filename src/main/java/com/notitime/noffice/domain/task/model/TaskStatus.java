@@ -9,12 +9,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class TaskStatus extends BaseTimeEntity {
 	@Id
@@ -32,4 +29,24 @@ public class TaskStatus extends BaseTimeEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id")
 	private Member member;
+
+	protected TaskStatus() {
+		this.isChecked = false;
+		this.checkedAt = null;
+	}
+
+	public static TaskStatus create(Task task, Member member) {
+		TaskStatus taskStatus = new TaskStatus();
+		taskStatus.setTask(task);
+		taskStatus.setMember(member);
+		return taskStatus;
+	}
+
+	private void setTask(Task task) {
+		this.task = task;
+	}
+
+	private void setMember(Member member) {
+		this.member = member;
+	}
 }
