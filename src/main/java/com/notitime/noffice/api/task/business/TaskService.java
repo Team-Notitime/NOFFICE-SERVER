@@ -82,8 +82,8 @@ public class TaskService {
 						List.of(memberId)
 				).stream()
 				.filter(ts -> !ts.getIsChecked())
-				.limit(5)
 				.sorted(Comparator.comparing(TaskStatus::getCreatedAt).reversed())
+				.limit(5)
 				.toList();
 		List<TaskResponse> assembled = assignedTasks.stream()
 				.map(ts -> TaskResponse.from(ts.getTask(), ts.getIsChecked()))
