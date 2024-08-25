@@ -20,7 +20,7 @@ import org.springframework.data.web.SortDefault;
 @Tag(name = "투두", description = "노티 하위 발급 투두 리스트 관련 API")
 interface TaskApi {
 
-	@Operation(summary = "투두 수정", responses = {
+	@Operation(summary = "조직 내 투두 상세 내용 수정", description = "등록된 투두 내용을 수정합니다.", responses = {
 			@ApiResponse(responseCode = "200", description = "투두 수정 성공"),
 			@ApiResponse(responseCode = "400", description = "투두 수정 실패", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
 			@ApiResponse(responseCode = "403", description = "요청을 수행할 수 있는 권한이 없습니다.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
