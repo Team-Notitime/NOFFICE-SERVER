@@ -98,9 +98,14 @@ public class TaskService {
 	}
 
 	public void updateTaskStatus(Long memberId, TaskStatusUpdateRequest request) {
-		request.taskIds().forEach(taskId -> {
-			TaskStatus taskStatus = taskStatusRepository.findByTaskIdAndMemberId(taskId, memberId);
-			taskStatus.setChecked(true);
-		});
+		List<Long> checkFailedTaskIds = request.taskIds()
+				.stream()
+				.filter(taskId -> {
+					TaskStatus taskStatus = taskStatusRepository.findByTaskIdAndMemberId(taskId, memberId);
+					return taskStatus == null || taskStatus.getIsChecked();
+				}).toList();
+		if (!checkFailedTaskIds.isEmpty()) {
+			throw new NotFoundException("투두가 존재하지 않거나 이미 완료된 투두입니다. : " + checkFailedTaskIds, NOT_FOUND_TASK);
+		}
 	}
 }

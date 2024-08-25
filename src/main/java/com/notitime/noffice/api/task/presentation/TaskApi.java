@@ -45,7 +45,7 @@ interface TaskApi {
 			@ApiResponse(responseCode = "204", description = "투두 상태 업데이트 성공", content = @Content),
 			@ApiResponse(responseCode = "401", description = "인증되지 않은 사용자입니다. 토큰을 확인해주세요.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
 			@ApiResponse(responseCode = "403", description = "요청을 수행할 수 있는 권한이 없습니다.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
-			@ApiResponse(responseCode = "404", description = "투두가 존재하지 않습니다.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
+			@ApiResponse(responseCode = "404", description = "(변경 가능한 투두는 체크완료 처리됩니다.) 투두가 존재하지 않거나 이미 완료된 투두입니다. : [2, 3]", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
 			@ApiResponse(responseCode = "500", description = "서버 내부 에러 발생", content = @Content(schema = @Schema(implementation = NofficeResponse.class)))
 	})
 	NofficeResponse<Void> updateTaskStatus(@Parameter(hidden = true) @AuthMember final Long memberId,
