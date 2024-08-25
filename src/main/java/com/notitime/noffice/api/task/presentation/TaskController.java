@@ -2,9 +2,11 @@ package com.notitime.noffice.api.task.presentation;
 
 import static com.notitime.noffice.global.web.BusinessSuccessCode.GET_ASSIGNED_TASKS_SUCCESS;
 import static com.notitime.noffice.global.web.BusinessSuccessCode.PATCH_TASK_MODIFY_SUCCESS;
+import static com.notitime.noffice.global.web.BusinessSuccessCode.PATCH_UPDATE_TASK_STATUS_SUCCESS;
 
 import com.notitime.noffice.api.task.business.TaskService;
 import com.notitime.noffice.api.task.presentation.dto.request.TaskModifyRequest;
+import com.notitime.noffice.api.task.presentation.dto.request.TaskStatusUpdateRequests;
 import com.notitime.noffice.api.task.presentation.dto.response.AssignedTaskResponse;
 import com.notitime.noffice.api.task.presentation.dto.response.TaskModifyResponse;
 import com.notitime.noffice.auth.AuthMember;
@@ -17,6 +19,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,5 +43,12 @@ public class TaskController implements TaskApi {
 	                                                                Pageable pageable) {
 		return NofficeResponse.success(GET_ASSIGNED_TASKS_SUCCESS,
 				taskService.getAssignedTasks(memberId, pageable));
+	}
+
+	@PutMapping("/assigned")
+	public NofficeResponse<Void> updateTaskStatus(@AuthMember final Long memberId,
+	                                              TaskStatusUpdateRequests request) {
+		taskService.updateTaskStatus(memberId, request);
+		return NofficeResponse.success(PATCH_UPDATE_TASK_STATUS_SUCCESS);
 	}
 }

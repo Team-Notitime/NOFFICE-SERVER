@@ -13,6 +13,7 @@ import com.notitime.noffice.api.announcement.presentation.dto.response.ReadStatu
 import com.notitime.noffice.api.member.presentation.dto.response.MemberInfoResponse;
 import com.notitime.noffice.api.notification.business.NotificationService;
 import com.notitime.noffice.api.organization.business.RoleVerifier;
+import com.notitime.noffice.api.task.business.TaskStatusManager;
 import com.notitime.noffice.domain.announcement.model.Announcement;
 import com.notitime.noffice.domain.announcement.persistence.AnnouncementRepository;
 import com.notitime.noffice.domain.member.model.Member;
@@ -40,6 +41,7 @@ public class AnnouncementService {
 	private final RoleVerifier roleVerifier;
 	private final ReadStatusRecoder readStatusRecoder;
 	private final FcmService fcmService;
+	private final TaskStatusManager taskStatusManager;
 
 	public AnnouncementResponse read(Long memberId, Long announcementId) {
 		roleVerifier.verifyJoinedMember(memberId, getOrganizationId(announcementId));
@@ -114,6 +116,7 @@ public class AnnouncementService {
 		);
 		announcement.withTasks(request.tasks());
 		announcementRepository.save(announcement);
+		taskStatusManager.assignTasks(organization, announcement);
 		organization.addAnnouncement(announcement);
 		return announcement;
 	}

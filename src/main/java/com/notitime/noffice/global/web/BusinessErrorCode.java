@@ -21,7 +21,7 @@ public enum BusinessErrorCode implements ErrorCode {
 	// 401 Unauthorized
 	UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "NOF-401", "리소스 접근 권한이 없습니다."),
 	INVALID_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "NOF-401", "유효하지 않은 액세스 토큰입니다."),
-	INVALID_ACCESS_TOKEN_VALUE(HttpStatus.UNAUTHORIZED, "NOF-401", "액세스 토큰의 값이 일치하지 않습니다."),
+	INVALID_ACCESS_TOKEN_VALUE(HttpStatus.UNAUTHORIZED, "NOF-401", "인증되지 않은 사용자입니다. 토큰을 확인해주세요."),
 	EXPIRED_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "NOF-401", "액세스 토큰이 만료되었습니다."),
 	INVALID_REFRESH_TOKEN_VALUE(HttpStatus.UNAUTHORIZED, "NOF-401", "리프레시 토큰의 값이 일치하지 않습니다."),
 	EXPIRED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "NOF-401", "리프레시 토큰이 만료되었습니다."),
