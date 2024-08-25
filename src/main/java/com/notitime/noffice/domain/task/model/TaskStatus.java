@@ -49,4 +49,9 @@ public class TaskStatus extends BaseTimeEntity {
 	private void setMember(Member member) {
 		this.member = member;
 	}
+
+	public void setChecked(boolean status) {
+		this.checkedAt = LocalDateTime.now();
+		this.isChecked = status;
+	}
 }

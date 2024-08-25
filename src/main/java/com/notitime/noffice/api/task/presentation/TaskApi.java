@@ -1,6 +1,7 @@
 package com.notitime.noffice.api.task.presentation;
 
 import com.notitime.noffice.api.task.presentation.dto.request.TaskModifyRequest;
+import com.notitime.noffice.api.task.presentation.dto.request.TaskStatusUpdateRequest;
 import com.notitime.noffice.api.task.presentation.dto.response.AssignedTaskResponse;
 import com.notitime.noffice.api.task.presentation.dto.response.TaskModifyResponse;
 import com.notitime.noffice.auth.AuthMember;
@@ -39,4 +40,14 @@ interface TaskApi {
 	                                                         @PageableDefault(size = 5)
 	                                                         @SortDefault(sort = "id", direction = Sort.Direction.DESC)
 	                                                         Pageable pageable);
+
+	@Operation(summary = "[인증] 사용자 투두 목록 완료 체크", description = "사용자의 조직별 투두 목록에서 완료된 투두를 체크합니다.", responses = {
+			@ApiResponse(responseCode = "204", description = "투두 상태 업데이트 성공", content = @Content),
+			@ApiResponse(responseCode = "401", description = "인증되지 않은 사용자입니다. 토큰을 확인해주세요.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
+			@ApiResponse(responseCode = "403", description = "요청을 수행할 수 있는 권한이 없습니다.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
+			@ApiResponse(responseCode = "404", description = "투두가 존재하지 않습니다.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
+			@ApiResponse(responseCode = "500", description = "서버 내부 에러 발생", content = @Content(schema = @Schema(implementation = NofficeResponse.class)))
+	})
+	NofficeResponse<Void> updateTaskStatus(@Parameter(hidden = true) @AuthMember final Long memberId,
+	                                       TaskStatusUpdateRequest request);
 }

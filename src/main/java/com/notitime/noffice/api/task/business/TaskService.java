@@ -4,6 +4,7 @@ import static com.notitime.noffice.global.web.BusinessErrorCode.NOT_FOUND_ANNOUN
 import static com.notitime.noffice.global.web.BusinessErrorCode.NOT_FOUND_TASK;
 
 import com.notitime.noffice.api.task.presentation.dto.request.TaskModifyRequest;
+import com.notitime.noffice.api.task.presentation.dto.request.TaskStatusUpdateRequest;
 import com.notitime.noffice.api.task.presentation.dto.response.AssignedTaskResponse;
 import com.notitime.noffice.api.task.presentation.dto.response.TaskModifyResponse;
 import com.notitime.noffice.api.task.presentation.dto.response.TaskResponse;
@@ -94,5 +95,12 @@ public class TaskService {
 		return organization.getAnnouncements().stream()
 				.flatMap(announcement -> announcement.getTasks().stream())
 				.toList();
+	}
+
+	public void updateTaskStatus(Long memberId, TaskStatusUpdateRequest request) {
+		request.taskIds().forEach(taskId -> {
+			TaskStatus taskStatus = taskStatusRepository.findByTaskIdAndMemberId(taskId, memberId);
+			taskStatus.setChecked(true);
+		});
 	}
 }
