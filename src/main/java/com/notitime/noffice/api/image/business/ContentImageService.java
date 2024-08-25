@@ -5,12 +5,13 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.Headers;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+import com.notitime.noffice.api.image.business.dto.ContentImagePresignedUrlVO;
 import com.notitime.noffice.api.image.business.dto.ImagePurpose;
+import com.notitime.noffice.api.image.business.dto.PresignedUrlInfoVO;
 import com.notitime.noffice.domain.image.model.ContentImage;
 import com.notitime.noffice.domain.image.persistence.ContentImageRepository;
 import java.net.URL;
 import java.util.Date;
-import java.util.Map;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +29,7 @@ public class ContentImageService {
 	private final AmazonS3 s3Client;
 	private final ContentImageRepository contentImageRepository;
 
-	public Map<String, String> getPresignedUrl(String fileType, String fileName, ImagePurpose imagePurpose) {
+	public ContentImagePresignedUrlVO getPresignedUrl(String fileType, String fileName, ImagePurpose imagePurpose) {
 		if (!fileType.isEmpty()) {
 			fileName = createPath(fileType, fileName, imagePurpose);
 		}
@@ -38,8 +39,8 @@ public class ContentImageService {
 
 		ContentImage contentImage = new ContentImage(fileName, url.toString(), imagePurpose);
 		contentImageRepository.save(contentImage);
-
-		return Map.of("url", url.toString());
+		PresignedUrlInfoVO presignedUrlInfoVO = PresignedUrlInfoVO.of(url.toString());
+		return ContentImagePresignedUrlVO.of(fileName, presignedUrlInfoVO);
 	}
 
 	private GeneratePresignedUrlRequest getGeneratePresignedUrlRequest(String bucket, String fileName) {
