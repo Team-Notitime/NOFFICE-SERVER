@@ -4,6 +4,7 @@ import static com.notitime.noffice.api.image.business.dto.ImagePurpose.PROMOTION
 
 import com.notitime.noffice.api.image.presentation.dto.CommonImageResponse;
 import com.notitime.noffice.domain.promotion.PromotionImage;
+import com.notitime.noffice.domain.promotion.persistence.OrganizationPromotionRepository;
 import com.notitime.noffice.domain.promotion.persistence.PromotionImageRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -15,13 +16,17 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PromotionImageRetrievalStrategy implements ImageRetrievalStrategy<PromotionImage> {
 
+	private final OrganizationPromotionRepository organizationPromotionRepository;
 	private final PromotionImageRepository promotionImageRepository;
 
 	@Override
 	public List<CommonImageResponse> getSelectableImages(Long organizationId) {
-		return promotionImageRepository.findAll().stream()
-				.map(this::toResponse)
-				.toList();
+		return organizationPromotionRepository.findByOrganizationId(organizationId)
+				.filter(op -> op.getPromotion() != null)
+				.map(op -> promotionImageRepository.findAll().stream()
+						.map(this::toResponse)
+						.toList())
+				.orElseGet(List::of);
 	}
 
 	@Override

@@ -91,7 +91,7 @@ public class Organization extends BaseTimeEntity {
 	}
 
 	public List<Member> getMembersByStatus(JoinStatus joinStatus) {
-		return members.stream()
+		return this.members.stream()
 				.filter(organizationMember -> organizationMember.getStatus() == joinStatus)
 				.map(OrganizationMember::getMember)
 				.toList();

@@ -5,5 +5,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface OrganizationPromotionRepository extends JpaRepository<OrganizationPromotion, Long> {
+	Optional<OrganizationPromotion> findByOrganizationId(Long organizationId);
+
 	Optional<OrganizationPromotion> findByOrganizationIdAndPromotionId(Long organizationId, Long promotionId);
 }
