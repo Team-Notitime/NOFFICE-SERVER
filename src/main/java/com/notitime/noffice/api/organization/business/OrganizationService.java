@@ -18,6 +18,7 @@ import com.notitime.noffice.api.organization.presentation.dto.response.Organizat
 import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationImageResponse;
 import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationInfoResponse;
 import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationJoinResponse;
+import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationMemberResponses;
 import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationResponse;
 import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationSignupResponse;
 import com.notitime.noffice.domain.JoinStatus;
@@ -175,5 +176,9 @@ public class OrganizationService {
 		List<Category> categories = categoryRepository.findByIdIn(request.categoryList());
 		Member leader = getMemberEntity(createMemberId);
 		return Organization.create(request.name(), request.endAt(), request.profileImage(), categories, leader);
+	}
+
+	public OrganizationMemberResponses getRegisteredMembers(Long memberId, Long organizationId) {
+		return null;
 	}
 }

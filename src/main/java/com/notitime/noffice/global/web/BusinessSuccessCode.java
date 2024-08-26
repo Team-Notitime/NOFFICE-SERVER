@@ -33,6 +33,7 @@ public enum BusinessSuccessCode implements SuccessCode {
 	GET_UNREAD_MEMBERS_SUCCESS(HttpStatus.OK, "NOF-2085", "공지 미열람 사용자 목록 조회 성공"),
 	GET_PENDING_MEMBERS_SUCCESS(HttpStatus.OK, "NOF-2086", "조직 가입 대기자 목록 조회 성공"),
 	GET_SELECTABLE_COVER_SUCCESS(HttpStatus.OK, "NOF-2087", "선택 가능한 공지 커버 이미지 목록 조회 성공"),
+	GET_REGISTERED_MEMBERS_SUCCESS(HttpStatus.OK, "NOF-2088", "조직 가입자 목록 조회 성공"),
 
 	// CREATED (2100 ~ 2199)
 	CREATED(HttpStatus.CREATED, "NOF-210", "리소스가 생성되었습니다. - 201"),

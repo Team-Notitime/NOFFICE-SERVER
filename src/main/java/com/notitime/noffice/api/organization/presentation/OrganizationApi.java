@@ -10,6 +10,7 @@ import com.notitime.noffice.api.organization.presentation.dto.response.Organizat
 import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationImageResponse;
 import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationInfoResponse;
 import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationJoinResponse;
+import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationMemberResponses;
 import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationResponse;
 import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationSignupResponse;
 import com.notitime.noffice.auth.AuthMember;
@@ -154,4 +155,15 @@ interface OrganizationApi {
 	})
 	NofficeResponse<Void> deleteProfileImage(@Parameter(hidden = true) @AuthMember final Long memberId,
 	                                         @PathVariable Long organizationId);
+
+	@Operation(summary = "[인증] 소속 조직원 권한별 전체 조회", description = "조직 내 소속원 전체를 조회합니다. LEADER, PARTICIPANT로 구분됩니다.", responses = {
+			@ApiResponse(responseCode = "200", description = "조직 가입자 목록 조회 성공"),
+			@ApiResponse(responseCode = "400", description = "프로필 이미지 삭제 실패", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
+			@ApiResponse(responseCode = "401", description = "인증되지 않은 사용자입니다. 토큰을 확인해주세요.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
+			@ApiResponse(responseCode = "403", description = "요청을 수행할 수 있는 권한이 없습니다.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
+			@ApiResponse(responseCode = "500", description = "서버 내부 에러 발생", content = @Content(schema = @Schema(implementation = NofficeResponse.class)))
+	})
+	NofficeResponse<OrganizationMemberResponses> getRegisteredMembers(
+			@Parameter(hidden = true) @AuthMember final Long memberId,
+			@PathVariable Long organizationId);
 }
