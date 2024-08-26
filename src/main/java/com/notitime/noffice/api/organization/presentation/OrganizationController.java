@@ -6,6 +6,7 @@ import static com.notitime.noffice.global.web.BusinessSuccessCode.GET_JOINED_ORG
 import static com.notitime.noffice.global.web.BusinessSuccessCode.GET_ORGANIZATION_SUCCESS;
 import static com.notitime.noffice.global.web.BusinessSuccessCode.GET_PENDING_MEMBERS_SUCCESS;
 import static com.notitime.noffice.global.web.BusinessSuccessCode.GET_PUBLISHED_ANNOUNCEMENTS_SUCCESS;
+import static com.notitime.noffice.global.web.BusinessSuccessCode.GET_REGISTERED_MEMBERS_SUCCESS;
 import static com.notitime.noffice.global.web.BusinessSuccessCode.GET_SELECTABLE_COVER_SUCCESS;
 import static com.notitime.noffice.global.web.BusinessSuccessCode.GET_SIGNUP_INFO_SUCCESS;
 import static com.notitime.noffice.global.web.BusinessSuccessCode.PATCH_CHANGE_ROLES_SUCCESS;
@@ -25,10 +26,12 @@ import com.notitime.noffice.api.organization.presentation.dto.response.Organizat
 import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationImageResponse;
 import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationInfoResponse;
 import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationJoinResponse;
+import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationMemberResponses;
 import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationResponse;
 import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationSignupResponse;
 import com.notitime.noffice.auth.AuthMember;
 import com.notitime.noffice.global.web.NofficeResponse;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -134,5 +137,13 @@ public class OrganizationController implements OrganizationApi {
 	                                                @PathVariable Long organizationId) {
 		organizationService.deleteProfileImage(organizationId);
 		return NofficeResponse.success(DELETE_PROFILE_IMAGE_SUCCESS);
+	}
+
+	@GetMapping("/{organizationId}/members")
+	public NofficeResponse<OrganizationMemberResponses> getRegisteredMembers(
+			@Parameter(hidden = true) @AuthMember final Long memberId,
+			@PathVariable Long organizationId) {
+		return NofficeResponse.success(GET_REGISTERED_MEMBERS_SUCCESS,
+				organizationService.getRegisteredMembers(memberId, organizationId));
 	}
 }
