@@ -178,7 +178,16 @@ public class OrganizationService {
 		return Organization.create(request.name(), request.endAt(), request.profileImage(), categories, leader);
 	}
 
-	public OrganizationMemberResponses getRegisteredMembers(Long memberId, Long organizationId) {
-		return null;
+	public OrganizationMemberResponses getRegisteredMembers(Long requesterMemberId, Long organizationId) {
+		roleVerifier.verifyLeader(requesterMemberId, organizationId);
+		MemberInfoResponse requester = MemberInfoResponse.from(getMemberEntity(requesterMemberId));
+		List<MemberInfoResponse> leadersWithoutRequester = organizationMemberRepository.findLeaders(organizationId)
+				.stream()
+				.filter(leader -> !leader.getId().equals(requesterMemberId))
+				.map(MemberInfoResponse::from).toList();
+		List<MemberInfoResponse> participants = organizationMemberRepository.findParticipants(organizationId)
+				.stream()
+				.map(MemberInfoResponse::from).toList();
+		return OrganizationMemberResponses.of(requester, leadersWithoutRequester, participants);
 	}
 }

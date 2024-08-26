@@ -26,6 +26,9 @@ public interface OrganizationMemberRepository extends JpaRepository<Organization
 	@Query("SELECT om.member FROM OrganizationMember om WHERE om.organization.id = :organizationId")
 	Slice<Member> findMembersByOrganizationId(@Param("organizationId") Long organizationId, Pageable pageable);
 
+	@Query("SELECT om.member FROM OrganizationMember om WHERE om.organization.id = :organizationId AND om.status = :status")
+	List<Member> findMembersByOrganizationIdAndStatus(Long organizationId, JoinStatus status);
+
 	@Query("SELECT om.member FROM OrganizationMember om WHERE om.organization.id = :organizationId AND om.role = :role")
 	List<Member> findMembersByOrganizationIdAndRole(@Param("organizationId") Long organizationId,
 	                                                @Param("role") OrganizationRole role);
@@ -40,11 +43,11 @@ public interface OrganizationMemberRepository extends JpaRepository<Organization
 	int bulkUpdateStatus(@Param("organizationId") Long organizationId, @Param("memberIds") List<Long> memberIds,
 	                     @Param("status") JoinStatus status);
 
-	default List<Member> findLeadersByOrganizationId(Long organizationId) {
+	default List<Member> findLeaders(Long organizationId) {
 		return findMembersByOrganizationIdAndRole(organizationId, LEADER);
 	}
 
-	default List<Member> findParticipantsByOrganizationId(Long organizationId) {
+	default List<Member> findParticipants(Long organizationId) {
 		return findMembersByOrganizationIdAndRole(organizationId, PARTICIPANT);
 	}
 
