@@ -110,12 +110,11 @@ public class OrganizationService {
 
 	public void changeRoles(Long memberId, Long organizationId, ChangeRoleRequest request) {
 		roleVerifier.verifyLeader(memberId, organizationId);
-		List<Long> activeMemberIds = organizationMemberRepository.findMembersByStatus(organizationId,
-				request.memberIds(), ACTIVE);
-		if (activeMemberIds.size() != request.memberIds().size()) {
+		List<Long> activeMemberIds = getActiveMemberIds(organizationId, request.memberIds());
+		if (!areAllMembersActive(request.memberIds(), activeMemberIds)) {
 			throw new ForbiddenException(FORBIDDEN_CHANGE_ROLE_ACCESS);
 		}
-		organizationMemberRepository.bulkUpdateRole(organizationId, activeMemberIds, request.role());
+		updateRoles(organizationId, activeMemberIds, request.role());
 	}
 
 	public List<MemberInfoResponse> getPendingMembers(Long memberId, Long organizationId) {
@@ -147,6 +146,19 @@ public class OrganizationService {
 		organization.deleteProfileImage();
 		organizationRepository.save(organization);
 	}
+
+	private List<Long> getActiveMemberIds(Long organizationId, List<Long> memberIds) {
+		return organizationMemberRepository.findMembersByStatus(organizationId, memberIds, ACTIVE);
+	}
+
+	private boolean areAllMembersActive(List<Long> requestedMemberIds, List<Long> activeMemberIds) {
+		return requestedMemberIds.size() == activeMemberIds.size();
+	}
+
+	private void updateRoles(Long organizationId, List<Long> memberIds, OrganizationRole newRole) {
+		organizationMemberRepository.bulkUpdateRole(organizationId, memberIds, newRole);
+	}
+
 
 	private Member getMemberEntity(Long memberId) {
 		return memberRepository.findById(memberId)
