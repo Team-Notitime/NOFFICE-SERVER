@@ -21,7 +21,7 @@ public interface ContentImageApi {
 	);
 
 	@Operation(summary = "컨텐츠 이미지 업로드 완료", description = "컨텐츠 이미지 업로드 완료를 노피스 서버에 알립니다.", responses = {
-			@ApiResponse(responseCode = "200", description = "별도 파일을 제외한 POST 요청을 발송해주세요.")
+			@ApiResponse(responseCode = "201", description = "별도 파일을 제외한 POST 요청을 발송해주세요.")
 	})
 	ResponseEntity<Void> notifyContentImageSaveSuccess(@RequestBody final NotifyContentImageSaveSuccessRequest request);
 }
