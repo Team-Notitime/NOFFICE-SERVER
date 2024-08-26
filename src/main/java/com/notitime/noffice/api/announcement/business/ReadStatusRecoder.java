@@ -24,12 +24,16 @@ public class ReadStatusRecoder {
 	private final AnnouncementRepository announcementRepository;
 
 	public void record(Member member, Announcement announcement) {
-		announcementReadStatusRepository.save(AnnouncementReadStatus.builder()
-				.readAt(LocalDateTime.now())
-				.isRead(true)
-				.member(member)
-				.announcement(announcement)
-				.build());
+		boolean isAlreadyRead = announcementReadStatusRepository.existsByMemberIdAndAnnouncementId(member.getId(),
+				announcement.getId());
+		if (!isAlreadyRead) {
+			announcementReadStatusRepository.save(AnnouncementReadStatus.builder()
+					.readAt(LocalDateTime.now())
+					.isRead(true)
+					.member(member)
+					.announcement(announcement)
+					.build());
+		}
 	}
 
 	public List<Member> findReadMembers(Long announcementId) {
