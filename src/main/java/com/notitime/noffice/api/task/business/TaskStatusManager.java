@@ -1,5 +1,6 @@
 package com.notitime.noffice.api.task.business;
 
+import com.notitime.noffice.domain.JoinStatus;
 import com.notitime.noffice.domain.announcement.model.Announcement;
 import com.notitime.noffice.domain.member.model.Member;
 import com.notitime.noffice.domain.organization.model.Organization;
@@ -23,22 +24,14 @@ public class TaskStatusManager {
 	private final OrganizationMemberRepository organizationMemberRepository;
 
 	public void assignTasks(Organization organization, Announcement announcement) {
-		List<Member> members = getParticipants(organization.getId());
-		List<Member> leaders = getLeaders(organization.getId());
-		members.addAll(leaders);
-		List<TaskStatus> taskStatuses = members.stream()
+		List<Member> activeMembers = organizationMemberRepository.findMembersByOrganizationIdAndStatus(
+				organization.getId(),
+				JoinStatus.ACTIVE);
+		List<TaskStatus> taskStatuses = activeMembers.stream()
 				.flatMap(member -> announcement.getTasks().stream()
 						.map(task -> TaskStatus.create(task, member)))
 				.toList();
 		taskStatusRepository.saveAll(taskStatuses);
-	}
-
-	private List<Member> getLeaders(Long organizationId) {
-		return organizationMemberRepository.findLeadersByOrganizationId(organizationId);
-	}
-
-	private List<Member> getParticipants(Long organizationId) {
-		return organizationMemberRepository.findParticipantsByOrganizationId(organizationId);
 	}
 
 //	public void recordTaskStatus(Long memberId, Long taskId) {
