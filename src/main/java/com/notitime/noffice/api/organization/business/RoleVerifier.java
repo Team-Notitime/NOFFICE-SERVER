@@ -4,15 +4,12 @@ import static com.notitime.noffice.domain.JoinStatus.ACTIVE;
 import static com.notitime.noffice.domain.OrganizationRole.LEADER;
 import static com.notitime.noffice.global.web.BusinessErrorCode.FORBIDDEN_ORGANIZATION_ACCESS;
 import static com.notitime.noffice.global.web.BusinessErrorCode.FORBIDDEN_ROLE_ACCESS;
-import static com.notitime.noffice.global.web.BusinessErrorCode.NOT_FOUND_MEMBER;
 import static com.notitime.noffice.global.web.BusinessErrorCode.NOT_FOUND_ORGANIZATION;
 
 import com.notitime.noffice.domain.OrganizationRole;
 import com.notitime.noffice.domain.organization.persistence.OrganizationMemberRepository;
 import com.notitime.noffice.global.exception.ForbiddenException;
 import com.notitime.noffice.global.exception.NotFoundException;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,10 +27,6 @@ public class RoleVerifier {
 		}
 	}
 
-	public boolean isMemberInOrganization(Long memberId, Long organizationId) {
-		return organizationMemberRepository.existsByMemberIdAndOrganizationId(memberId, organizationId);
-	}
-
 	public OrganizationRole findRole(Long memberId, Long organizationId) {
 		return organizationMemberRepository.findByOrganizationIdAndMemberId(organizationId, memberId)
 				.orElseThrow(() -> new NotFoundException("멤버가 속한 조직이 없습니다.", NOT_FOUND_ORGANIZATION))
@@ -41,33 +34,14 @@ public class RoleVerifier {
 	}
 
 	public void verifyLeader(Long memberId, Long organizationId) {
-		if (!isActiveMemberWithRole(memberId, organizationId, LEADER)) {
+		if (!organizationMemberRepository.existsByMemberIdAndOrganizationIdAndRole(memberId,
+				organizationId, LEADER)) {
 			throw new ForbiddenException(FORBIDDEN_ROLE_ACCESS);
 		}
-	}
-
-	private void verifyRole(Long memberId, Long organizationId, OrganizationRole role) {
-		if (isActiveMemberWithRole(memberId, organizationId, role)) {
-			throw new ForbiddenException(FORBIDDEN_ORGANIZATION_ACCESS);
-		}
-	}
-
-	private boolean isActiveMemberWithRole(Long memberId, Long organizationId, OrganizationRole role) {
-		return organizationMemberRepository.existsByMemberIdAndOrganizationIdAndRoleAndStatus(memberId, organizationId,
-				role, ACTIVE);
 	}
 
 	private boolean isActiveMember(Long memberId, Long organizationId) {
 		return organizationMemberRepository.existsByMemberIdAndOrganizationIdAndStatus(memberId, organizationId,
 				ACTIVE);
-	}
-
-	public void verifyMultipleMembers(Long organizationId, List<Long> memberIds) {
-		List<Long> pendingMemberIds = organizationMemberRepository.findPendingMemberIds(organizationId, memberIds);
-		if (pendingMemberIds.size() != memberIds.size()) {
-			List<Long> invalidMemberIds = new ArrayList<>(memberIds);
-			invalidMemberIds.removeAll(pendingMemberIds);
-			throw new NotFoundException("잘못된 멤버 식별자: " + invalidMemberIds, NOT_FOUND_MEMBER);
-		}
 	}
 }

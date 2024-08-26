@@ -102,10 +102,8 @@ interface OrganizationApi {
 
 	@Operation(summary = "[인증] 조직원 권한 변경", description = "타겟에 해당하는 멤버의 조직 내 권한을 입력한 권한대로 변경합니다.", responses = {
 			@ApiResponse(responseCode = "204", description = "권한 변경에 성공하였습니다."),
-			@ApiResponse(responseCode = "400", description = "권한 변경에 실패하였습니다.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
 			@ApiResponse(responseCode = "401", description = "인증되지 않은 사용자입니다. 토큰을 확인해주세요.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
-			@ApiResponse(responseCode = "403", description = "요청을 수행할 수 있는 권한이 없습니다.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
-			@ApiResponse(responseCode = "404", description = "조직원이 존재하지 않습니다.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
+			@ApiResponse(responseCode = "403", description = "[권한 오류]: 변경할 수 없는 멤버가 포함되어 있습니다.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
 			@ApiResponse(responseCode = "500", description = "서버 내부 에러 발생", content = @Content(schema = @Schema(implementation = NofficeResponse.class)))
 	})
 	NofficeResponse<Void> changeRoles(@Parameter(hidden = true) @AuthMember Long memberId,

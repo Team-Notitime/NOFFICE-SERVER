@@ -4,6 +4,8 @@ import static com.notitime.noffice.domain.JoinStatus.ACTIVE;
 import static com.notitime.noffice.domain.OrganizationRole.LEADER;
 import static com.notitime.noffice.domain.OrganizationRole.PARTICIPANT;
 import static com.notitime.noffice.global.web.BusinessErrorCode.ALREADY_JOINED_ORGANIZATION;
+import static com.notitime.noffice.global.web.BusinessErrorCode.FORBIDDEN_CHANGE_ROLE_ACCESS;
+import static com.notitime.noffice.global.web.BusinessErrorCode.FORBIDDEN_REGISTER_MEMBER_ACCESS;
 import static com.notitime.noffice.global.web.BusinessErrorCode.NOT_FOUND_MEMBER;
 import static com.notitime.noffice.global.web.BusinessErrorCode.NOT_FOUND_ORGANIZATION;
 
@@ -121,9 +123,13 @@ public class OrganizationService {
 
 	public void registerMember(Long memberId, Long organizationId, ChangeRoleRequest request) {
 		roleVerifier.verifyLeader(memberId, organizationId);
-		roleVerifier.verifyMultipleMembers(organizationId, request.memberIds());
-		fcmService.subscribeOrganizationTopic(organizationId, request.memberIds());
-		organizationMemberRepository.bulkUpdateStatus(organizationId, request.memberIds(), ACTIVE);
+		List<Long> registerIds = organizationMemberRepository.findMembersByStatus(organizationId,
+				request.memberIds(), JoinStatus.PENDING);
+		if (registerIds.size() != request.memberIds().size()) {
+			throw new ForbiddenException(FORBIDDEN_REGISTER_MEMBER_ACCESS);
+		}
+		fcmService.subscribeOrganizationTopic(organizationId, registerIds);
+		organizationMemberRepository.bulkUpdateStatus(organizationId, registerIds, ACTIVE);
 	}
 
 	public OrganizationImageResponse getSelectableCover(Long memberId, Long organizationId) {

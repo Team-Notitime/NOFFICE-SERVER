@@ -54,17 +54,16 @@ public interface OrganizationMemberRepository extends JpaRepository<Organization
 	boolean existsByMemberIdAndOrganizationId(Long memberId, Long organizationId);
 
 	boolean existsByMemberIdAndOrganizationIdAndStatus(Long memberId, Long organizationId, JoinStatus status);
-
-	boolean existsByMemberIdAndOrganizationIdAndRoleAndStatus(Long memberId, Long organizationId, OrganizationRole role,
-	                                                          JoinStatus status);
+	
+	boolean existsByMemberIdAndOrganizationIdAndRole(Long memberId, Long organizationId, OrganizationRole role);
 
 	Long countByOrganizationIdAndRole(Long organizationId, OrganizationRole role);
 
 	boolean existsByOrganizationIdAndStatus(Long organizationId, JoinStatus status);
 
-	@Query("SELECT om.member.id FROM OrganizationMember om WHERE om.organization.id = :organizationId AND om.member.id IN :memberIds AND om.status = 'PENDING'")
-	List<Long> findPendingMemberIds(@Param("organizationId") Long organizationId,
-	                                @Param("memberIds") List<Long> memberIds);
+	@Query("SELECT om.member.id FROM OrganizationMember om WHERE om.organization.id = :organizationId AND om.member.id IN :memberIds AND om.status = :status")
+	List<Long> findMembersByStatus(@Param("organizationId") Long organizationId,
+	                               @Param("memberIds") List<Long> memberIds, JoinStatus status);
 
 	@Query("SELECT om.member FROM OrganizationMember om WHERE om.organization.id = :organizationId AND om.status = 'PENDING'")
 	List<Member> findPendingMembers(Long organizationId);

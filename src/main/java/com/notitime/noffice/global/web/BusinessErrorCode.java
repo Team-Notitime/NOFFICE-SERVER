@@ -31,10 +31,12 @@ public enum BusinessErrorCode implements ErrorCode {
 	MISSING_BEARER_PREFIX(HttpStatus.UNAUTHORIZED, "NOF-401", "Bearer가 누락되었습니다."),
 
 	// 403 Forbidden
-	FORBIDDEN(HttpStatus.FORBIDDEN, "NOF-403", "리소스에 대한 접근 권한이 없습니다."),
-	FORBIDDEN_ORGANIZATION_ACCESS(HttpStatus.FORBIDDEN, "NOF-403", "조직에 대한 접근 권한이 없습니다."),
-	FORBIDDEN_ROLE_ACCESS(HttpStatus.FORBIDDEN, "NOF-403", "해당 조직의 권한이 올바르지 않습니다."),
-	ALREADY_JOINED_ORGANIZATION(HttpStatus.FORBIDDEN, "NOF-4034", "이미 가입 신청 이력이 존재합니다."),
+	FORBIDDEN(HttpStatus.FORBIDDEN, "NOF-430", "리소스에 대한 접근 권한이 없습니다."),
+	FORBIDDEN_ORGANIZATION_ACCESS(HttpStatus.FORBIDDEN, "NOF-4301", "조직에 대한 접근 권한이 없습니다."),
+	FORBIDDEN_CHANGE_ROLE_ACCESS(HttpStatus.FORBIDDEN, "NOF-4302", "[권한 오류]: 변경할 수 없는 멤버가 포함되어 있습니다."),
+	FORBIDDEN_ROLE_ACCESS(HttpStatus.FORBIDDEN, "NOF-4303", "해당 조직의 권한이 올바르지 않습니다."),
+	ALREADY_JOINED_ORGANIZATION(HttpStatus.FORBIDDEN, "NOF-4304", "이미 가입 신청 이력이 존재합니다."),
+	FORBIDDEN_REGISTER_MEMBER_ACCESS(HttpStatus.FORBIDDEN, "NOF-4305", "멤버 등록 권한이 없습니다."),
 
 	// 404 Not Found
 	NOT_FOUND(HttpStatus.NOT_FOUND, "NOF-404", "리소스를 찾을 수 없습니다."),
