@@ -110,8 +110,12 @@ public class OrganizationService {
 
 	public void changeRoles(Long memberId, Long organizationId, ChangeRoleRequest request) {
 		roleVerifier.verifyLeader(memberId, organizationId);
-		roleVerifier.verifyMultipleMembers(organizationId, request.memberIds());
-		organizationMemberRepository.bulkUpdateRole(organizationId, request.memberIds(), request.role());
+		List<Long> activeMemberIds = organizationMemberRepository.findMembersByStatus(organizationId,
+				request.memberIds(), ACTIVE);
+		if (activeMemberIds.size() != request.memberIds().size()) {
+			throw new ForbiddenException(FORBIDDEN_CHANGE_ROLE_ACCESS);
+		}
+		organizationMemberRepository.bulkUpdateRole(organizationId, activeMemberIds, request.role());
 	}
 
 	public List<MemberInfoResponse> getPendingMembers(Long memberId, Long organizationId) {
