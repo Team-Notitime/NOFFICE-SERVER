@@ -71,7 +71,7 @@ public class OrganizationService {
 	}
 
 	public OrganizationSignupResponse getSignUpInfo(Long memberId, Long organizationId) {
-		if (roleVerifier.isMemberInOrganization(memberId, organizationId)) {
+		if (organizationMemberRepository.existsByMemberIdAndOrganizationId(memberId, organizationId)) {
 			throw new ForbiddenException(ALREADY_JOINED_ORGANIZATION);
 		}
 		return OrganizationSignupResponse.of(getOrganizationEntity(organizationId));
