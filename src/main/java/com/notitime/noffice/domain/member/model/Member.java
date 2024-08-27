@@ -85,4 +85,8 @@ public class Member extends BaseTimeEntity {
 	public void deleteProfileImage() {
 		this.profileImage = null;
 	}
+
+	public void updateAlias(String alias) {
+		this.alias = alias;
+	}
 }

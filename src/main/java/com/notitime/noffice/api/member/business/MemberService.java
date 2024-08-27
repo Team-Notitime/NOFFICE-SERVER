@@ -1,5 +1,6 @@
 package com.notitime.noffice.api.member.business;
 
+import com.notitime.noffice.api.member.presentation.dto.request.MemberAliasUpdateRequest;
 import com.notitime.noffice.api.member.presentation.dto.response.MemberResponse;
 import com.notitime.noffice.domain.member.model.Member;
 import com.notitime.noffice.domain.member.persistence.MemberRepository;
@@ -28,6 +29,12 @@ public class MemberService {
 	public void deleteProfileImage(Long memberId) {
 		Member member = getMemberEntity(memberId);
 		member.deleteProfileImage();
+		memberRepository.save(member);
+	}
+
+	public void updateAlias(Long memberId, MemberAliasUpdateRequest request) {
+		Member member = getMemberEntity(memberId);
+		member.updateAlias(request.alias());
 		memberRepository.save(member);
 	}
 }
