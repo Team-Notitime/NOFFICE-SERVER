@@ -100,4 +100,8 @@ public class Organization extends BaseTimeEntity {
 	public void deleteProfileImage() {
 		this.profileImage = null;
 	}
+
+	public void updateProfileImage(String imageUrl) {
+		this.profileImage = imageUrl;
+	}
 }

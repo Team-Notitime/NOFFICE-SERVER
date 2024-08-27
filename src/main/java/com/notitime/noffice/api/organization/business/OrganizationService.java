@@ -16,6 +16,7 @@ import com.notitime.noffice.api.image.strategy.ImageRetrievalContext;
 import com.notitime.noffice.api.member.presentation.dto.response.MemberInfoResponse;
 import com.notitime.noffice.api.organization.presentation.dto.request.ChangeRoleRequest;
 import com.notitime.noffice.api.organization.presentation.dto.request.OrganizationCreateRequest;
+import com.notitime.noffice.api.organization.presentation.dto.request.OrganizationProfileUpdateRequest;
 import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationCreateResponse;
 import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationImageResponse;
 import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationInfoResponse;
@@ -211,5 +212,11 @@ public class OrganizationService {
 				.stream()
 				.map(MemberInfoResponse::from).toList();
 		return OrganizationMemberResponses.of(requester, leadersWithoutRequester, participants);
+	}
+
+	public void updateProfileImage(Long organizationId, OrganizationProfileUpdateRequest request) {
+		Organization organization = getOrganizationEntity(organizationId);
+		organization.updateProfileImage(request.imageUrl());
+		organizationRepository.save(organization);
 	}
 }
