@@ -3,6 +3,7 @@ package com.notitime.noffice.api.member.presentation;
 import com.notitime.noffice.api.auth.presentation.dto.request.SocialAuthRequest;
 import com.notitime.noffice.api.auth.presentation.dto.response.SocialAuthResponse;
 import com.notitime.noffice.api.auth.presentation.dto.response.TokenResponse;
+import com.notitime.noffice.api.member.presentation.dto.request.MemberAliasUpdateRequest;
 import com.notitime.noffice.api.member.presentation.dto.response.MemberResponse;
 import com.notitime.noffice.auth.AuthMember;
 import com.notitime.noffice.global.web.NofficeResponse;
@@ -45,4 +46,13 @@ interface MemberApi {
 			@ApiResponse(responseCode = "500", description = "서버 내부 에러 발생", content = @Content(schema = @Schema(implementation = NofficeResponse.class)))
 	})
 	NofficeResponse<Void> deleteProfileImage(@Parameter(hidden = true) @AuthMember final Long memberId);
+
+	@Operation(summary = "[인증] 회원 별명 변경", description = "회원의 별명을 변경합니다.", responses = {
+			@ApiResponse(responseCode = "204", description = "회원 별명 변경에 성공하였습니다."),
+			@ApiResponse(responseCode = "401", description = "인증되지 않은 사용자입니다. 토큰을 확인해주세요.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
+			@ApiResponse(responseCode = "403", description = "요청을 수행할 수 있는 권한이 없습니다.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
+			@ApiResponse(responseCode = "500", description = "서버 내부 에러 발생", content = @Content(schema = @Schema(implementation = NofficeResponse.class)))
+	})
+	NofficeResponse<Void> updateAlias(@Parameter(hidden = true) @AuthMember final Long memberId,
+	                                  @RequestBody final MemberAliasUpdateRequest alias);
 }
