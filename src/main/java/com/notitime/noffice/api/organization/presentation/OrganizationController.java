@@ -11,6 +11,7 @@ import static com.notitime.noffice.global.web.BusinessSuccessCode.GET_SELECTABLE
 import static com.notitime.noffice.global.web.BusinessSuccessCode.GET_SIGNUP_INFO_SUCCESS;
 import static com.notitime.noffice.global.web.BusinessSuccessCode.PATCH_CHANGE_ROLES_SUCCESS;
 import static com.notitime.noffice.global.web.BusinessSuccessCode.PATCH_REGISTER_MEMBER_SUCCESS;
+import static com.notitime.noffice.global.web.BusinessSuccessCode.PATCH_UPDATE_PROFILE_SUCCESS;
 import static com.notitime.noffice.global.web.BusinessSuccessCode.POST_JOIN_ORGANIZATION_SUCCESS;
 import static com.notitime.noffice.global.web.BusinessSuccessCode.PUT_CATEGORIES_SUCCESS;
 
@@ -22,6 +23,7 @@ import com.notitime.noffice.api.member.presentation.dto.response.MemberInfoRespo
 import com.notitime.noffice.api.organization.business.OrganizationService;
 import com.notitime.noffice.api.organization.presentation.dto.request.ChangeRoleRequest;
 import com.notitime.noffice.api.organization.presentation.dto.request.OrganizationCreateRequest;
+import com.notitime.noffice.api.organization.presentation.dto.request.OrganizationProfileUpdateRequest;
 import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationCreateResponse;
 import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationImageResponse;
 import com.notitime.noffice.api.organization.presentation.dto.response.OrganizationInfoResponse;
@@ -55,6 +57,12 @@ public class OrganizationController implements OrganizationApi {
 	private final OrganizationService organizationService;
 	private final AnnouncementService announcementService;
 
+	@GetMapping
+	public NofficeResponse<Slice<OrganizationResponse>> getJoined(@AuthMember final Long memberId, Pageable pageable) {
+		return NofficeResponse.success(GET_JOINED_ORGANIZATIONS_SUCCESS,
+				organizationService.getJoined(memberId, pageable));
+	}
+
 	@GetMapping("/{organizationId}")
 	public NofficeResponse<OrganizationInfoResponse> getInformation(@AuthMember final Long memberId,
 	                                                                @PathVariable Long organizationId) {
@@ -69,10 +77,12 @@ public class OrganizationController implements OrganizationApi {
 				organizationService.getSignUpInfo(memberId, organizationId));
 	}
 
-	@GetMapping
-	public NofficeResponse<Slice<OrganizationResponse>> getJoined(@AuthMember final Long memberId, Pageable pageable) {
-		return NofficeResponse.success(GET_JOINED_ORGANIZATIONS_SUCCESS,
-				organizationService.getJoined(memberId, pageable));
+	@GetMapping("/{organizationId}/members")
+	public NofficeResponse<OrganizationMemberResponses> getRegisteredMembers(
+			@Parameter(hidden = true) @AuthMember final Long memberId,
+			@PathVariable Long organizationId) {
+		return NofficeResponse.success(GET_REGISTERED_MEMBERS_SUCCESS,
+				organizationService.getRegisteredMembers(memberId, organizationId));
 	}
 
 	@PostMapping
@@ -132,18 +142,17 @@ public class OrganizationController implements OrganizationApi {
 				organizationService.getSelectableCover(memberId, organizationId));
 	}
 
+	@PatchMapping("/{organizationId}/profile-image")
+	public NofficeResponse<Void> updateProfileImage(@AuthMember final Long memberId, @PathVariable Long organizationId,
+	                                                @RequestBody final OrganizationProfileUpdateRequest request) {
+		organizationService.updateProfileImage(organizationId, request);
+		return NofficeResponse.success(PATCH_UPDATE_PROFILE_SUCCESS);
+	}
+
 	@DeleteMapping("/{organizationId}/profile-image")
 	public NofficeResponse<Void> deleteProfileImage(@AuthMember final Long memberId,
 	                                                @PathVariable Long organizationId) {
 		organizationService.deleteProfileImage(organizationId);
 		return NofficeResponse.success(DELETE_PROFILE_IMAGE_SUCCESS);
-	}
-
-	@GetMapping("/{organizationId}/members")
-	public NofficeResponse<OrganizationMemberResponses> getRegisteredMembers(
-			@Parameter(hidden = true) @AuthMember final Long memberId,
-			@PathVariable Long organizationId) {
-		return NofficeResponse.success(GET_REGISTERED_MEMBERS_SUCCESS,
-				organizationService.getRegisteredMembers(memberId, organizationId));
 	}
 }
