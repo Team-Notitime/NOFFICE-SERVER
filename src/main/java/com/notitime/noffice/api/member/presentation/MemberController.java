@@ -5,6 +5,7 @@ import static com.notitime.noffice.global.web.BusinessSuccessCode.GET_MEMBER_SUC
 import static com.notitime.noffice.global.web.BusinessSuccessCode.PATCH_UPDATE_ALIAS_SUCCESS;
 import static com.notitime.noffice.global.web.BusinessSuccessCode.PATCH_UPDATE_PROFILE_SUCCESS;
 import static com.notitime.noffice.global.web.BusinessSuccessCode.POST_LOGIN_SUCCESS;
+import static com.notitime.noffice.global.web.BusinessSuccessCode.POST_LOGOUT_SUCCESS;
 import static com.notitime.noffice.global.web.BusinessSuccessCode.POST_REISSUE_SUCCESS;
 
 import com.notitime.noffice.api.auth.business.AuthService;
@@ -15,6 +16,7 @@ import com.notitime.noffice.api.member.business.MemberService;
 import com.notitime.noffice.api.member.presentation.dto.request.MemberAliasUpdateRequest;
 import com.notitime.noffice.api.member.presentation.dto.request.MemberProfileUpdateRequest;
 import com.notitime.noffice.api.member.presentation.dto.response.MemberResponse;
+import com.notitime.noffice.api.notification.business.NotificationService;
 import com.notitime.noffice.auth.AuthMember;
 import com.notitime.noffice.global.web.NofficeResponse;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +36,7 @@ public class MemberController implements MemberApi {
 
 	private final AuthService authService;
 	private final MemberService memberService;
+	private final NotificationService notificationService;
 
 	@PostMapping("/login")
 	public NofficeResponse<SocialAuthResponse> login(@RequestBody final SocialAuthRequest socialLoginRequest) {
@@ -43,6 +46,15 @@ public class MemberController implements MemberApi {
 	@PostMapping("/reissue")
 	public NofficeResponse<TokenResponse> reissue(@RequestHeader("Authorization") final String refreshToken) {
 		return NofficeResponse.success(POST_REISSUE_SUCCESS, authService.reissue(refreshToken));
+	}
+
+	@PostMapping("/logout")
+	public NofficeResponse<Void> logout(@AuthMember final Long memberId,
+	                                    @RequestHeader("refresh-token") final String refreshToken,
+	                                    @RequestHeader("notification-token") final String notificationToken) {
+		notificationService.deleteFcmToken(memberId, notificationToken);
+		authService.logout(refreshToken);
+		return NofficeResponse.success(POST_LOGOUT_SUCCESS);
 	}
 
 	@GetMapping

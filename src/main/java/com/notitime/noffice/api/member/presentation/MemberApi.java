@@ -32,6 +32,15 @@ interface MemberApi {
 	})
 	NofficeResponse<TokenResponse> reissue(@RequestHeader("Authorization") final String refreshToken);
 
+	@Operation(summary = "[인증] 회원 로그아웃", description = "회원의 계정에 저장된 Fcm 토큰을 모두 삭제합니다. 신규 로그인 시 토큰을 재요청해야합니다.", responses = {
+			@ApiResponse(responseCode = "204", description = "로그아웃에 성공하였습니다."),
+			@ApiResponse(responseCode = "401", description = "인증되지 않은 사용자입니다. 토큰을 확인해주세요.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
+			@ApiResponse(responseCode = "500", description = "서버 내부 에러 발생", content = @Content(schema = @Schema(implementation = NofficeResponse.class)))
+	})
+	NofficeResponse<Void> logout(@Parameter(hidden = true) @AuthMember final Long memberId,
+	                             @RequestHeader("refresh-token") final String refreshToken,
+	                             @RequestHeader("notification-token") final String notificationToken);
+
 	@Operation(summary = "[인증] 단일 회원 정보 조회", description = "회원의 정보를 조회합니다.", responses = {
 			@ApiResponse(responseCode = "200", description = "회원 정보 조회에 성공하였습니다."),
 			@ApiResponse(responseCode = "401", description = "인증되지 않은 사용자입니다. 토큰을 확인해주세요.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
@@ -65,5 +74,4 @@ interface MemberApi {
 	})
 	NofficeResponse<Void> updateMemberProfile(@Parameter(hidden = true) @AuthMember final Long memberId,
 	                                          @RequestBody final MemberProfileUpdateRequest request);
-
 }

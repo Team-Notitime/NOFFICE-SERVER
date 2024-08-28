@@ -39,6 +39,12 @@ public class AuthService {
 		return TokenResponse.toResponse(jwtTokenProvider.issueTokens(memberId));
 	}
 
+	public void logout(final String refreshToken) {
+		String parsedRefreshToken = refreshToken.substring("Bearer ".length());
+		jwtValidator.validateRefreshToken(parsedRefreshToken);
+		refreshTokenRepository.deleteByRefreshToken(parsedRefreshToken);
+	}
+
 	public Long getAuthorizedMemberId(String parsedRefreshToken) {
 		jwtValidator.validateRefreshToken(parsedRefreshToken);
 		RefreshToken storedRefreshToken = refreshTokenRepository.findByRefreshToken(parsedRefreshToken)
