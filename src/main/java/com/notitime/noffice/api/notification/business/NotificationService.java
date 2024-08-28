@@ -1,6 +1,5 @@
 package com.notitime.noffice.api.notification.business;
 
-import static com.notitime.noffice.global.web.BusinessErrorCode.NOT_FOUND_FCM_TOKEN;
 import static com.notitime.noffice.global.web.BusinessErrorCode.NOT_FOUND_MEMBER;
 
 import com.notitime.noffice.api.announcement.presentation.dto.request.AnnouncementCreateRequest;
@@ -43,13 +42,6 @@ public class NotificationService {
 	}
 
 	public void deleteFcmToken(Long memberId, String token) {
-		Member member = memberRepository.findById(memberId).orElseThrow(
-				() -> new NotFoundException(NOT_FOUND_MEMBER)
-		);
-		FcmToken fcmToken = fcmTokenRepository.findByToken(token).orElseThrow(
-				() -> new NotFoundException(NOT_FOUND_FCM_TOKEN)
-		);
-		member.removeFcmToken(fcmToken);
-		fcmTokenRepository.delete(fcmToken);
+		fcmTokenRepository.deleteByMemberIdAndToken(memberId, token);
 	}
 }
