@@ -9,6 +9,7 @@ import com.notitime.noffice.api.auth.presentation.dto.response.SocialAuthRespons
 import com.notitime.noffice.api.auth.presentation.dto.response.TokenResponse;
 import com.notitime.noffice.auth.jwt.JwtProvider;
 import com.notitime.noffice.auth.jwt.JwtValidator;
+import com.notitime.noffice.auth.jwt.Token;
 import com.notitime.noffice.domain.RefreshToken;
 import com.notitime.noffice.domain.RefreshTokenRepository;
 import com.notitime.noffice.domain.fcmtoken.persistence.FcmTokenRepository;
@@ -25,7 +26,7 @@ public class AuthService {
 
 	private final SocialAuthContext socialAuthContext;
 	private JwtProvider jwtTokenProvider;
-	private JwtValidator jwtValidator;
+	private final JwtValidator jwtValidator;
 	private final MemberRepository memberRepository;
 	private final RefreshTokenRepository refreshTokenRepository;
 	private final FcmTokenRepository fcmTokenRepository;
@@ -38,9 +39,9 @@ public class AuthService {
 	}
 
 	public TokenResponse reissue(final String refreshToken) {
-		String parsedRefreshToken = refreshToken.substring("Bearer ".length());
-		Long memberId = getAuthorizedMemberId(parsedRefreshToken);
-		return TokenResponse.toResponse(jwtTokenProvider.issueTokens(memberId));
+		jwtValidator.validateRefreshToken(refreshToken);
+		Token response = loadAndIssueTokens(refreshToken);
+		return TokenResponse.toResponse(response);
 	}
 
 	public void logout(Long memberId, final String refreshToken) {
@@ -52,5 +53,15 @@ public class AuthService {
 		fcmTokenRepository.deleteByMemberId(memberId);
 		refreshTokenRepository.deleteByMemberId(memberId);
 		memberRepository.deleteById(memberId);
+	}
+
+	private Token loadAndIssueTokens(String refreshToken) {
+		String parsedRefreshToken = refreshToken.substring("Bearer ".length());
+		RefreshToken storedRefreshToken = refreshTokenRepository.findByRefreshToken(parsedRefreshToken)
+				.orElseThrow(() -> new BadRequestException(INVALID_REFRESH_TOKEN_VALUE));
+		Token newIssuedtoken = jwtTokenProvider.issueTokens(storedRefreshToken.getMember().getId());
+		storedRefreshToken.updateRefreshToken(newIssuedtoken.refreshToken());
+		refreshTokenRepository.save(storedRefreshToken);
+		return newIssuedtoken;
 	}
 }
