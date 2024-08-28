@@ -1,6 +1,11 @@
 package com.notitime.noffice.api.auth.business.strategy;
 
+import com.notitime.noffice.api.auth.presentation.dto.request.SocialAuthRequest;
+import com.notitime.noffice.api.auth.presentation.dto.response.SocialAuthResponse;
+import com.notitime.noffice.api.auth.presentation.dto.response.TokenResponse;
 import com.notitime.noffice.auth.jwt.JwtProvider;
+import com.notitime.noffice.domain.RefreshToken;
+import com.notitime.noffice.domain.RefreshTokenRepository;
 import com.notitime.noffice.domain.SocialAuthProvider;
 import com.notitime.noffice.domain.member.model.Member;
 import com.notitime.noffice.domain.member.persistence.MemberRepository;
@@ -10,9 +15,6 @@ import com.notitime.noffice.external.openfeign.apple.AppleOAuthProvider;
 import com.notitime.noffice.external.openfeign.apple.ApplePublicKeyGenerator;
 import com.notitime.noffice.external.openfeign.apple.dto.ApplePublicKeys;
 import com.notitime.noffice.external.openfeign.dto.AuthorizedMemberInfo;
-import com.notitime.noffice.api.auth.presentation.dto.request.SocialAuthRequest;
-import com.notitime.noffice.api.auth.presentation.dto.response.SocialAuthResponse;
-import com.notitime.noffice.api.auth.presentation.dto.response.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -28,6 +30,7 @@ public class AppleAuthStrategy implements SocialAuthStrategy {
 	private final AppleIdentityTokenParser appleIdentityTokenParser;
 	private final ApplePublicKeyGenerator applePublicKeyGenerator;
 	private final MemberRepository memberRepository;
+	private final RefreshTokenRepository refreshTokenRepository;
 
 	@Value("${oauth.apple.client-id}")
 	private String clientId;
@@ -57,6 +60,7 @@ public class AppleAuthStrategy implements SocialAuthStrategy {
 						"https://www.apple.com/ac/structured-data/images/knowledge_graph_logo.png?202106171739"));
 		memberRepository.save(member);
 		TokenResponse tokenResponse = TokenResponse.toResponse(jwtProvider.issueTokens(member.getId()));
+		refreshTokenRepository.save(RefreshToken.of(member, tokenResponse.refreshToken()));
 		return SocialAuthResponse.of(member.getId(), member.getName(), request.provider(), tokenResponse);
 	}
 }

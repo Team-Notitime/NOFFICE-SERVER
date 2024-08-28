@@ -12,6 +12,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "refresh_token")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class RefreshToken {
 
@@ -32,8 +34,18 @@ public class RefreshToken {
 
 	@Enumerated(EnumType.STRING)
 	SocialAuthProvider provider;
-	
+
 	private String refreshToken;
 
 	private LocalDateTime expiredDateTime;
+
+	public static RefreshToken of(Member member, String refreshToken) {
+		return new RefreshToken(
+				null, member, member.getSocialAuthProvider(), refreshToken, LocalDateTime.now().plusDays(30)
+		);
+	}
+
+	public void updateRefreshToken(String refreshToken) {
+		this.refreshToken = refreshToken;
+	}
 }

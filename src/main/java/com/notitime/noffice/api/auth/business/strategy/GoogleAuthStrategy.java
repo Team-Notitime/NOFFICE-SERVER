@@ -4,6 +4,8 @@ import com.notitime.noffice.api.auth.presentation.dto.request.SocialAuthRequest;
 import com.notitime.noffice.api.auth.presentation.dto.response.SocialAuthResponse;
 import com.notitime.noffice.api.auth.presentation.dto.response.TokenResponse;
 import com.notitime.noffice.auth.jwt.JwtProvider;
+import com.notitime.noffice.domain.RefreshToken;
+import com.notitime.noffice.domain.RefreshTokenRepository;
 import com.notitime.noffice.domain.SocialAuthProvider;
 import com.notitime.noffice.domain.member.model.Member;
 import com.notitime.noffice.domain.member.persistence.MemberRepository;
@@ -21,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class GoogleAuthStrategy implements SocialAuthStrategy {
 
+	private final RefreshTokenRepository refreshTokenRepository;
 	@Value("${oauth.google.client-id}")
 	private String googleClientId;
 	@Value("${oauth.google.client-secret}")
@@ -61,6 +64,7 @@ public class GoogleAuthStrategy implements SocialAuthStrategy {
 						memberResponse.picture()));
 		memberRepository.save(member);
 		TokenResponse tokenResponse = TokenResponse.toResponse(jwtProvider.issueTokens(member.getId()));
+		refreshTokenRepository.save(RefreshToken.of(member, tokenResponse.refreshToken()));
 		return SocialAuthResponse.of(member.getId(), member.getName(), request.provider(), tokenResponse);
 	}
 }
