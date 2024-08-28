@@ -43,21 +43,14 @@ public class AuthService {
 		return TokenResponse.toResponse(jwtTokenProvider.issueTokens(memberId));
 	}
 
-	public void logout(final String refreshToken) {
-		String parsedRefreshToken = refreshToken.substring("Bearer ".length());
-		jwtValidator.validateRefreshToken(parsedRefreshToken);
-		refreshTokenRepository.deleteByRefreshToken(parsedRefreshToken);
-	}
-
-	public Long getAuthorizedMemberId(String parsedRefreshToken) {
-		jwtValidator.validateRefreshToken(parsedRefreshToken);
-		RefreshToken storedRefreshToken = refreshTokenRepository.findByRefreshToken(parsedRefreshToken)
-				.orElseThrow(() -> new BadRequestException(INVALID_REFRESH_TOKEN_VALUE));
-		return storedRefreshToken.getMember().getId();
+	public void logout(Long memberId, final String refreshToken) {
+		jwtValidator.validateRefreshToken(refreshToken);
+		refreshTokenRepository.deleteByMemberId(memberId);
 	}
 
 	public void withdrawal(Long memberId) {
-		memberRepository.deleteById(memberId);
 		fcmTokenRepository.deleteByMemberId(memberId);
+		refreshTokenRepository.deleteByMemberId(memberId);
+		memberRepository.deleteById(memberId);
 	}
 }
