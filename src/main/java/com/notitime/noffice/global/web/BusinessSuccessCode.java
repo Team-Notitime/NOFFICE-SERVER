@@ -13,6 +13,7 @@ public enum BusinessSuccessCode implements SuccessCode {
 	POST_LOGIN_SUCCESS(HttpStatus.OK, "NOF-2000", "로그인에 성공하였습니다."),
 	POST_REISSUE_SUCCESS(HttpStatus.OK, "NOF-2000", "액세스 토큰 재발급에 성공하였습니다."),
 	POST_LOGOUT_SUCCESS(HttpStatus.OK, "NOF-2000", "로그아웃에 성공하였습니다."),
+	POST_WITHDRAWAL_SUCCESS(HttpStatus.OK, "NOF-2000", "회원 탈퇴에 성공하였습니다."),
 	GET_MEMBER_SUCCESS(HttpStatus.OK, "NOF-2001", "회원 정보 조회에 성공하였습니다."),
 	GET_JOINED_ORGANIZATIONS_SUCCESS(HttpStatus.OK, "NOF-2002", "회원의 가입된 조직 조회에 성공하였습니다."),
 	GET_ORGANIZATION_SUCCESS(HttpStatus.OK, "NOF-2003", "조직 정보 조회에 성공하였습니다."),

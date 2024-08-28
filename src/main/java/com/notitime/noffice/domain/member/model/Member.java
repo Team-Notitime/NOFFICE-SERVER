@@ -103,4 +103,8 @@ public class Member extends BaseTimeEntity {
 	public void updateProfileImage(String imageUrl) {
 		this.profileImage = imageUrl;
 	}
+
+	public void removeFcmToken(FcmToken fcmToken) {
+		this.fcmTokens.remove(fcmToken);
+	}
 }

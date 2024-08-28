@@ -8,12 +8,14 @@ import static com.notitime.noffice.global.web.BusinessSuccessCode.OK;
 import static com.notitime.noffice.global.web.BusinessSuccessCode.POST_SAVE_FCM_TOKEN_SUCCESS;
 
 import com.notitime.noffice.api.notification.business.NotificationService;
-import com.notitime.noffice.auth.AuthMember;
-import com.notitime.noffice.global.web.NofficeResponse;
+import com.notitime.noffice.api.notification.presentation.dto.request.DeleteTokenRequest;
+import com.notitime.noffice.api.notification.presentation.dto.request.NotificationBulkRequest;
 import com.notitime.noffice.api.notification.presentation.dto.request.NotificationRequest;
 import com.notitime.noffice.api.notification.presentation.dto.request.NotificationTimeChangeRequest;
-import com.notitime.noffice.api.notification.presentation.dto.request.NotificationBulkRequest;
+import com.notitime.noffice.api.notification.presentation.dto.request.SaveTokenRequest;
 import com.notitime.noffice.api.notification.presentation.dto.response.NotificationTimeChangeResponse;
+import com.notitime.noffice.auth.AuthMember;
+import com.notitime.noffice.global.web.NofficeResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -61,8 +63,15 @@ public class NotificationController implements NotificationApi {
 
 	@PostMapping("/fcm-token")
 	public NofficeResponse<Void> saveFcmToken(@AuthMember final Long memberId,
-	                                          @RequestBody final String fcmToken) {
-		notificationService.saveFcmToken(memberId, fcmToken);
+	                                          @RequestBody final SaveTokenRequest request) {
+		notificationService.saveFcmToken(memberId, request.token());
+		return NofficeResponse.success(POST_SAVE_FCM_TOKEN_SUCCESS);
+	}
+
+	@DeleteMapping("/fcm-token")
+	public NofficeResponse<Void> deleteFcmToken(@AuthMember final Long memberId,
+	                                            @RequestBody final DeleteTokenRequest request) {
+		notificationService.deleteFcmToken(memberId, request.token());
 		return NofficeResponse.success(POST_SAVE_FCM_TOKEN_SUCCESS);
 	}
 }

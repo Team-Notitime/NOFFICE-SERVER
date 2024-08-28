@@ -2,6 +2,7 @@ package com.notitime.noffice.api.notification.business;
 
 import static com.notitime.noffice.global.web.BusinessErrorCode.NOT_FOUND_MEMBER;
 
+import com.notitime.noffice.api.announcement.presentation.dto.request.AnnouncementCreateRequest;
 import com.notitime.noffice.domain.FcmToken;
 import com.notitime.noffice.domain.announcement.model.Announcement;
 import com.notitime.noffice.domain.announcement.persistence.AnnouncementRepository;
@@ -11,7 +12,6 @@ import com.notitime.noffice.domain.member.persistence.MemberRepository;
 import com.notitime.noffice.domain.notification.model.Notification;
 import com.notitime.noffice.domain.notification.persistence.NotificationRepository;
 import com.notitime.noffice.global.exception.NotFoundException;
-import com.notitime.noffice.api.announcement.presentation.dto.request.AnnouncementCreateRequest;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,5 +39,9 @@ public class NotificationService {
 		);
 		FcmToken token = fcmTokenRepository.save(FcmToken.of(member, fcmToken));
 		member.addFcmToken(token);
+	}
+
+	public void deleteFcmToken(Long memberId, String token) {
+		fcmTokenRepository.deleteByMemberIdAndToken(memberId, token);
 	}
 }
