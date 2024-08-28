@@ -59,7 +59,7 @@ public class Member extends BaseTimeEntity {
 	@ColumnDefault("null")
 	private LocalDateTime deletedAt;
 
-	@OneToMany(mappedBy = "member")
+	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
 	private final List<OrganizationMember> organizations = new ArrayList<>();
 
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
