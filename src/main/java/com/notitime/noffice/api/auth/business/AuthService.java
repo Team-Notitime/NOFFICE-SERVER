@@ -44,8 +44,7 @@ public class AuthService {
 		return TokenResponse.toResponse(response);
 	}
 
-	public void logout(Long memberId, final String refreshToken) {
-		jwtValidator.validateRefreshToken(refreshToken);
+	public void logout(Long memberId) {
 		refreshTokenRepository.deleteByMemberId(memberId);
 	}
 

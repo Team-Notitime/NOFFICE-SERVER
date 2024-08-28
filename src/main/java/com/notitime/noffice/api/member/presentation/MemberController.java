@@ -51,9 +51,8 @@ public class MemberController implements MemberApi {
 
 	@PostMapping("/logout")
 	public NofficeResponse<Void> logout(@AuthMember final Long memberId,
-	                                    @RequestHeader("refresh-token") final String refreshToken,
 	                                    @RequestHeader("notification-token") final String notificationToken) {
-		authService.logout(memberId, refreshToken);
+		authService.logout(memberId);
 		notificationService.deleteFcmToken(memberId, notificationToken);
 		return NofficeResponse.success(POST_LOGOUT_SUCCESS);
 	}
