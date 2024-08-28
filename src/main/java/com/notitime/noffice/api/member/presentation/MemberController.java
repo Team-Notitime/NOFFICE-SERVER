@@ -53,8 +53,8 @@ public class MemberController implements MemberApi {
 	public NofficeResponse<Void> logout(@AuthMember final Long memberId,
 	                                    @RequestHeader("refresh-token") final String refreshToken,
 	                                    @RequestHeader("notification-token") final String notificationToken) {
+		authService.logout(memberId, refreshToken);
 		notificationService.deleteFcmToken(memberId, notificationToken);
-		authService.logout(refreshToken);
 		return NofficeResponse.success(POST_LOGOUT_SUCCESS);
 	}
 
