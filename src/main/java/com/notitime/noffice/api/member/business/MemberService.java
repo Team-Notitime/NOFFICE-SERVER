@@ -19,29 +19,34 @@ public class MemberService {
 	private final MemberRepository memberRepository;
 
 	public MemberResponse getMember(Long memberId) {
-		return MemberResponse.of(getMemberEntity(memberId));
-	}
-
-	private Member getMemberEntity(Long memberId) {
-		return memberRepository.findById(memberId)
-				.orElseThrow(() -> new NotFoundException(BusinessErrorCode.NOT_FOUND_MEMBER));
+		return MemberResponse.of(findById(memberId));
 	}
 
 	public void deleteProfileImage(Long memberId) {
-		Member member = getMemberEntity(memberId);
+		Member member = findById(memberId);
 		member.deleteProfileImage();
 		memberRepository.save(member);
 	}
 
 	public void updateAlias(Long memberId, MemberAliasUpdateRequest request) {
-		Member member = getMemberEntity(memberId);
+		Member member = findById(memberId);
 		member.updateAlias(request.alias());
 		memberRepository.save(member);
 	}
 
 	public void updateProfileImage(Long memberId, MemberProfileUpdateRequest request) {
-		Member member = getMemberEntity(memberId);
+		Member member = findById(memberId);
 		member.updateProfileImage(request.imageUrl());
 		memberRepository.save(member);
+	}
+
+	public void deleteById(Long memberId) {
+		Member member = findById(memberId);
+		memberRepository.delete(member);
+	}
+
+	private Member findById(Long memberId) {
+		return memberRepository.findById(memberId)
+				.orElseThrow(() -> new NotFoundException(BusinessErrorCode.NOT_FOUND_MEMBER));
 	}
 }
