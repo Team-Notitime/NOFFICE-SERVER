@@ -7,6 +7,7 @@ import static com.notitime.noffice.global.web.BusinessSuccessCode.PATCH_UPDATE_P
 import static com.notitime.noffice.global.web.BusinessSuccessCode.POST_LOGIN_SUCCESS;
 import static com.notitime.noffice.global.web.BusinessSuccessCode.POST_LOGOUT_SUCCESS;
 import static com.notitime.noffice.global.web.BusinessSuccessCode.POST_REISSUE_SUCCESS;
+import static com.notitime.noffice.global.web.BusinessSuccessCode.POST_WITHDRAWAL_SUCCESS;
 
 import com.notitime.noffice.api.auth.business.AuthService;
 import com.notitime.noffice.api.auth.presentation.dto.request.SocialAuthRequest;
@@ -55,6 +56,12 @@ public class MemberController implements MemberApi {
 		notificationService.deleteFcmToken(memberId, notificationToken);
 		authService.logout(refreshToken);
 		return NofficeResponse.success(POST_LOGOUT_SUCCESS);
+	}
+
+	@DeleteMapping("/withdrawal")
+	public NofficeResponse<Void> withdrawal(@AuthMember final Long memberId) {
+		authService.withdrawal(memberId);
+		return NofficeResponse.success(POST_WITHDRAWAL_SUCCESS);
 	}
 
 	@GetMapping
