@@ -1,11 +1,13 @@
 package com.notitime.noffice.api.notification.presentation;
 
-import com.notitime.noffice.auth.AuthMember;
-import com.notitime.noffice.global.web.NofficeResponse;
+import com.notitime.noffice.api.notification.presentation.dto.request.DeleteTokenRequest;
+import com.notitime.noffice.api.notification.presentation.dto.request.NotificationBulkRequest;
 import com.notitime.noffice.api.notification.presentation.dto.request.NotificationRequest;
 import com.notitime.noffice.api.notification.presentation.dto.request.NotificationTimeChangeRequest;
-import com.notitime.noffice.api.notification.presentation.dto.request.NotificationBulkRequest;
+import com.notitime.noffice.api.notification.presentation.dto.request.SaveTokenRequest;
 import com.notitime.noffice.api.notification.presentation.dto.response.NotificationTimeChangeResponse;
+import com.notitime.noffice.auth.AuthMember;
+import com.notitime.noffice.global.web.NofficeResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -50,10 +52,17 @@ interface NotificationApi {
 	})
 	NofficeResponse<Void> delete(@PathVariable final Long notificationId);
 
-	@Operation(summary = "기기별 FCM Token 저장", description = "기기별 FCM Token을 저장합니다.", responses = {
+	@Operation(summary = "[인증] 기기별 FCM Token 저장", description = "기기별 FCM Token을 저장합니다.", responses = {
 			@ApiResponse(responseCode = "201", description = "FCM Token 저장 성공"),
 			@ApiResponse(responseCode = "400", description = "FCM Token 저장 실패")
 	})
 	NofficeResponse<Void> saveFcmToken(@Parameter(hidden = true) @AuthMember final Long memberId,
-	                                   @RequestBody final String fcmToken);
+	                                   @RequestBody final SaveTokenRequest fcmToken);
+
+	@Operation(summary = "[인증] 기기별 FCM Token 삭제", description = "기기별 FCM Token을 삭제합니다.", responses = {
+			@ApiResponse(responseCode = "204", description = "FCM Token 삭제 성공"),
+			@ApiResponse(responseCode = "400", description = "FCM Token 삭제 실패")
+	})
+	NofficeResponse<Void> deleteFcmToken(@Parameter(hidden = true) @AuthMember final Long memberId,
+	                                     @RequestBody final DeleteTokenRequest fcmToken);
 }
