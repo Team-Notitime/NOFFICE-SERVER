@@ -95,6 +95,9 @@ public class Announcement extends BaseTimeEntity {
 	                                  Member member, Organization organization,
 	                                  String profileImageUrl, Boolean isFaceToFace,
 	                                  String placeLinkName, String placeLinkUrl) {
+		if (profileImageUrl == null || profileImageUrl.isEmpty()) {
+			profileImageUrl = "https://noffice-bucket.s3.ap-northeast-2.amazonaws.com/noffice-illust1.png";
+		}
 		return Announcement.builder()
 				.title(title)
 				.content(content)
