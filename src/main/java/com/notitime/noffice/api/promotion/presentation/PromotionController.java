@@ -6,6 +6,7 @@ import static com.notitime.noffice.global.web.BusinessSuccessCode.VERIFY_PROMOTI
 import com.notitime.noffice.api.promotion.business.PromotionCodeVerifier;
 import com.notitime.noffice.api.promotion.business.PromotionService;
 import com.notitime.noffice.api.promotion.presentation.dto.request.PromotionGrantRequest;
+import com.notitime.noffice.api.promotion.presentation.dto.request.VerifyPromotionRequest;
 import com.notitime.noffice.api.promotion.presentation.dto.response.PromotionVerifyResponse;
 import com.notitime.noffice.global.web.NofficeResponse;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +25,9 @@ public class PromotionController implements PromotionApi {
 	private final PromotionService promotionService;
 
 	@GetMapping("/verify")
-	public NofficeResponse<PromotionVerifyResponse> verifyPromotionCode(@RequestBody final String promotionCode) {
-		return NofficeResponse.success(VERIFY_PROMOTION_CODE_SUCCESS, promotionCodeVerifier.verify(promotionCode));
+	public NofficeResponse<PromotionVerifyResponse> verifyPromotionCode(
+			@RequestBody final VerifyPromotionRequest request) {
+		return NofficeResponse.success(VERIFY_PROMOTION_CODE_SUCCESS, promotionCodeVerifier.verify(request.code()));
 	}
 
 	@PostMapping("/grant-organization")

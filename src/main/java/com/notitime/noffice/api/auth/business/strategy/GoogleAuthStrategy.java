@@ -55,6 +55,7 @@ public class GoogleAuthStrategy implements SocialAuthStrategy {
 				"profile email"
 		);
 		GoogleInfoResponse memberResponse = googleApiClient.googleInfo("Bearer" + googleTokenResponse.access_token());
+		Boolean isAlreadyMember = memberRepository.existsBySerialId(memberResponse.sub());
 		Member member = memberRepository.findBySerialId(memberResponse.sub())
 				.orElseGet(() -> Member.createAuthorizedMember(
 						memberResponse.sub(),
@@ -64,7 +65,10 @@ public class GoogleAuthStrategy implements SocialAuthStrategy {
 						memberResponse.picture()));
 		memberRepository.save(member);
 		TokenResponse tokenResponse = TokenResponse.toResponse(jwtProvider.issueTokens(member.getId()));
-		refreshTokenRepository.save(RefreshToken.of(member, tokenResponse.refreshToken()));
-		return SocialAuthResponse.of(member.getId(), member.getName(), request.provider(), tokenResponse);
+		if (!isAlreadyMember) {
+			refreshTokenRepository.save(RefreshToken.of(member, tokenResponse.refreshToken()));
+		}
+		return SocialAuthResponse.of(member.getId(), member.getName(), request.provider(), isAlreadyMember,
+				tokenResponse);
 	}
 }

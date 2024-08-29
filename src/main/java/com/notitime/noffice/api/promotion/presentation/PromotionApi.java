@@ -1,6 +1,7 @@
 package com.notitime.noffice.api.promotion.presentation;
 
 import com.notitime.noffice.api.promotion.presentation.dto.request.PromotionGrantRequest;
+import com.notitime.noffice.api.promotion.presentation.dto.request.VerifyPromotionRequest;
 import com.notitime.noffice.api.promotion.presentation.dto.response.PromotionVerifyResponse;
 import com.notitime.noffice.global.web.NofficeResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,7 +17,8 @@ interface PromotionApi {
 			@ApiResponse(responseCode = "200", description = "프로모션 코드 검증 성공"),
 			@ApiResponse(responseCode = "404", description = "프로모션 코드가 존재하지 않습니다.")
 	})
-	NofficeResponse<PromotionVerifyResponse> verifyPromotionCode(@RequestBody final String promotionCode);
+	NofficeResponse<PromotionVerifyResponse> verifyPromotionCode(
+			@RequestBody final VerifyPromotionRequest promotionCode);
 
 	@Operation(summary = "프로모션 가입", description = "조직에 프로모션 권한을 부여합니다.", responses = {
 			@ApiResponse(responseCode = "200", description = "프로모션 가입 성공"),

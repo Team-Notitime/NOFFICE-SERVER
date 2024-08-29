@@ -50,6 +50,7 @@ public class AppleAuthStrategy implements SocialAuthStrategy {
 		ApplePublicKeys applePublicKeys = appleFeignClient.getApplePublicKey();
 		AuthorizedMemberInfo memberResponse = appleOAuthProvider.getAppleUserInfo(request.code(),
 				request.provider().name(), applePublicKeys);
+		Boolean isAlreadyMember = memberRepository.existsBySerialId(memberResponse.serialId());
 		Member member = memberRepository.findBySerialId(memberResponse.serialId())
 				.orElseGet(() -> Member.createAuthorizedMember(
 						memberResponse.serialId(),
@@ -60,7 +61,10 @@ public class AppleAuthStrategy implements SocialAuthStrategy {
 						"https://www.apple.com/ac/structured-data/images/knowledge_graph_logo.png?202106171739"));
 		memberRepository.save(member);
 		TokenResponse tokenResponse = TokenResponse.toResponse(jwtProvider.issueTokens(member.getId()));
-		refreshTokenRepository.save(RefreshToken.of(member, tokenResponse.refreshToken()));
-		return SocialAuthResponse.of(member.getId(), member.getName(), request.provider(), tokenResponse);
+		if (!isAlreadyMember) {
+			refreshTokenRepository.save(RefreshToken.of(member, tokenResponse.refreshToken()));
+		}
+		return SocialAuthResponse.of(member.getId(), member.getName(), request.provider(), isAlreadyMember,
+				tokenResponse);
 	}
 }
