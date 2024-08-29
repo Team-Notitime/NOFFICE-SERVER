@@ -120,6 +120,7 @@ public class AnnouncementService {
 				request.placeLinkName(),
 				request.placeLinkUrl()
 		);
+		announcement.withEndAt(request.endAt());
 		announcement.withTasks(request.tasks());
 		announcementRepository.save(announcement);
 		taskStatusManager.assignTasks(organization, announcement);

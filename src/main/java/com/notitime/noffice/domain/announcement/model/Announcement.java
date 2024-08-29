@@ -150,4 +150,8 @@ public class Announcement extends BaseTimeEntity {
 	public void modifyCover(String profileImageUrl) {
 		this.profileImageUrl = profileImageUrl;
 	}
+
+	public void withEndAt(LocalDateTime localDateTime) {
+		this.endAt = localDateTime;
+	}
 }
