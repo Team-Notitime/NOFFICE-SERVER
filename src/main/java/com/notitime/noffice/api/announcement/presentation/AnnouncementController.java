@@ -81,7 +81,7 @@ public class AnnouncementController implements AnnouncementApi {
 	public NofficeResponse<TaskResponses> getTasksById(@AuthMember final Long memberId,
 	                                                   @PathVariable final Long announcementId) {
 		return NofficeResponse.success(GET_TASKS_BY_ANNOUNCEMENT_SUCCESS,
-				taskService.getTasksById(announcementId));
+				taskService.getTasksById(memberId, announcementId));
 	}
 
 	@DeleteMapping("/{announcementId}/tasks/{taskId}")

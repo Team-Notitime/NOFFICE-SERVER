@@ -52,9 +52,15 @@ public class TaskService {
 		return new PageImpl<>(responses, pageable, organizations.getSize());
 	}
 
-	public TaskResponses getTasksById(Long announcementId) {
+	public TaskResponses getTasksById(Long memberId, Long announcementId) {
 		validateAnnouncement(announcementId);
-		return TaskResponses.from(taskRepository.findByAnnouncementId(announcementId));
+		List<Long> taskIds = taskRepository.findByAnnouncementId(announcementId)
+				.stream()
+				.map(Task::getId).toList();
+		List<TaskResponse> taskStatuses = taskStatusRepository.findByTaskIdInAndMemberIdIn(taskIds, List.of(memberId))
+				.stream()
+				.map(TaskResponse::from).toList();
+		return new TaskResponses(taskStatuses);
 	}
 
 	public void delete(Long announcementId, Long taskId) {
