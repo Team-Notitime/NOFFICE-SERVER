@@ -107,7 +107,7 @@ public class TaskService {
 	public void updateTaskStatus(Long memberId, TaskStatusUpdateRequests request) {
 		List<Long> taskIds = request.tasks().stream().map(TaskStatusUpdateRequest::id).toList();
 		List<TaskStatus> taskStatuses = taskStatusRepository.findByTaskIdInAndMemberIdIn(taskIds, List.of(memberId));
-		validateTaskStatuses(taskIds, taskStatuses);
+//		validateTaskStatuses(taskIds, taskStatuses);
 		request.tasks().forEach(req -> {
 			taskStatuses.stream()
 					.filter(taskStatus -> taskStatus.getTask().getId().equals(req.id()))
