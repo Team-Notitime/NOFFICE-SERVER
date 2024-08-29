@@ -61,7 +61,9 @@ public class AppleAuthStrategy implements SocialAuthStrategy {
 						"https://www.apple.com/ac/structured-data/images/knowledge_graph_logo.png?202106171739"));
 		memberRepository.save(member);
 		TokenResponse tokenResponse = TokenResponse.toResponse(jwtProvider.issueTokens(member.getId()));
-		refreshTokenRepository.save(RefreshToken.of(member, tokenResponse.refreshToken()));
+		if (!isAlreadyMember) {
+			refreshTokenRepository.save(RefreshToken.of(member, tokenResponse.refreshToken()));
+		}
 		return SocialAuthResponse.of(member.getId(), member.getName(), request.provider(), isAlreadyMember,
 				tokenResponse);
 	}

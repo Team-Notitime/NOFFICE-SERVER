@@ -65,7 +65,9 @@ public class GoogleAuthStrategy implements SocialAuthStrategy {
 						memberResponse.picture()));
 		memberRepository.save(member);
 		TokenResponse tokenResponse = TokenResponse.toResponse(jwtProvider.issueTokens(member.getId()));
-		refreshTokenRepository.save(RefreshToken.of(member, tokenResponse.refreshToken()));
+		if (!isAlreadyMember) {
+			refreshTokenRepository.save(RefreshToken.of(member, tokenResponse.refreshToken()));
+		}
 		return SocialAuthResponse.of(member.getId(), member.getName(), request.provider(), isAlreadyMember,
 				tokenResponse);
 	}
