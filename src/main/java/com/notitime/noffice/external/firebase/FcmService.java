@@ -68,6 +68,7 @@ public class FcmService {
 		String slicedTitle = parseSlicedAnnouncementTitle(announcement);
 		sendToOrganizationTopic(
 				organization.getId(),
+				announcement.getId(),
 				slicedOrganizationName + ANNOUNCE_CREATE_TITLE_SUFFIX.getValue(),
 				ANNOUNCE_CREATE_BODY_PREFIX.getValue() + slicedTitle + ANNOUNCE_CREATE_BODY_SUFFIX.getValue());
 	}
@@ -78,7 +79,7 @@ public class FcmService {
 				.orElseThrow(() -> new IllegalArgumentException("해당 공지가 존재하지 않습니다."));
 		String slicedTitle = announcement.getTitle().length() > 10 ? announcement.getTitle().substring(0, 10)
 				: announcement.getTitle();
-		sendToOrganizationTopic(organizationId, "리마인드 알림", "공지사항 " + slicedTitle + "를 확인해주세요.");
+		sendToOrganizationTopic(organizationId, announcementId, "리마인드 알림", "공지사항 " + slicedTitle + "를 확인해주세요.");
 	}
 
 	public FCMCreateResponse sendToUnReader(Long leaderId, Long announcementId) {
@@ -101,12 +102,14 @@ public class FcmService {
 		return FCMCreateResponse.of(title, content, unreadMemberTokens);
 	}
 
-	private void sendToOrganizationTopic(Long organizationId, String title, String content) {
+	private void sendToOrganizationTopic(Long organizationId, Long announcementId, String title, String content) {
 		Organization organization = organizationRepository.findById(organizationId)
 				.orElseThrow(() -> new NotFoundException(BusinessErrorCode.NOT_FOUND_ORGANIZATION));
 		Message message = Message.builder()
 				.putData("title", title)
 				.putData("content", content)
+				.putData("organizationId", organizationId.toString())
+				.putData("announcementId", announcementId.toString())
 				.setTopic("organization_" + organizationId)
 				.build();
 		sendAsync(message);
