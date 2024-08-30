@@ -86,6 +86,7 @@ interface AnnouncementApi {
 	})
 	NofficeResponse<Void> deleteTaskById(@PathVariable final Long announcementId, @PathVariable final Long taskId);
 
+	@Hidden
 	@Operation(summary = "[인증] 노티 미열람자 대상 FCM 알림", description = "노티 미열람자 대상으로 알림을 전송합니다.", responses = {
 			@ApiResponse(responseCode = "200", description = "알림 전송 성공"),
 			@ApiResponse(responseCode = "400", description = "알림 전송에 실패하였습니다.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
