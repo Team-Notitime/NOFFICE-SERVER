@@ -10,7 +10,6 @@ import com.notitime.noffice.api.promotion.presentation.dto.request.VerifyPromoti
 import com.notitime.noffice.api.promotion.presentation.dto.response.PromotionVerifyResponse;
 import com.notitime.noffice.global.web.NofficeResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +23,7 @@ public class PromotionController implements PromotionApi {
 	private final PromotionCodeVerifier promotionCodeVerifier;
 	private final PromotionService promotionService;
 
-	@GetMapping("/verify")
+	@PostMapping("/verify")
 	public NofficeResponse<PromotionVerifyResponse> verifyPromotionCode(
 			@RequestBody final VerifyPromotionRequest request) {
 		return NofficeResponse.success(VERIFY_PROMOTION_CODE_SUCCESS, promotionCodeVerifier.verify(request.code()));
