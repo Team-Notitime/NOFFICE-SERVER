@@ -1,4 +1,4 @@
-package com.notitime.noffice.external.openfeign.dto;
+package com.notitime.noffice.external.openfeign.apple.dto;
 
 public record AuthorizedMemberInfo(
 		String serialId,

@@ -14,13 +14,13 @@ import com.notitime.noffice.external.openfeign.apple.AppleIdentityTokenParser;
 import com.notitime.noffice.external.openfeign.apple.AppleOAuthProvider;
 import com.notitime.noffice.external.openfeign.apple.ApplePublicKeyGenerator;
 import com.notitime.noffice.external.openfeign.apple.dto.ApplePublicKeys;
-import com.notitime.noffice.external.openfeign.dto.AuthorizedMemberInfo;
+import com.notitime.noffice.external.openfeign.apple.dto.AuthorizedMemberInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class AppleAuthStrategy implements SocialAuthStrategy {
 

@@ -9,31 +9,22 @@ import com.notitime.noffice.domain.RefreshTokenRepository;
 import com.notitime.noffice.domain.SocialAuthProvider;
 import com.notitime.noffice.domain.member.model.Member;
 import com.notitime.noffice.domain.member.persistence.MemberRepository;
-import com.notitime.noffice.external.openfeign.google.GoogleApiClient;
-import com.notitime.noffice.external.openfeign.google.GoogleAuthApiClient;
-import com.notitime.noffice.external.openfeign.google.dto.GoogleInfoResponse;
-import com.notitime.noffice.external.openfeign.google.dto.GoogleTokenResponse;
+import com.notitime.noffice.external.openfeign.kakao.KakaoUserInfoClient;
+import com.notitime.noffice.external.openfeign.kakao.dto.KakaoUserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
-public class GoogleAuthStrategy implements SocialAuthStrategy {
+public class KakaoAuthStrategy implements SocialAuthStrategy {
 
-	@Value("${oauth.google.client-id}")
-	private String googleClientId;
-	@Value("${oauth.google.client-secret}")
-	private String googleClientSecret;
-	@Value("${oauth.google.redirect-uri}")
-	private String googleRedirectUri;
-	@Value("${oauth.google.grant-type}")
-	private String googleGrantType;
+	@Value("${oauth.kakao.client-id}")
+	private String kakaoClientId;
+	@Value("${oauth.kakao.client-secret}")
+	private String kakaoClientSecret;
 
-	private final GoogleAuthApiClient googleAuthApiClient;
-	private final GoogleApiClient googleApiClient;
+	private final KakaoUserInfoClient kakaoUserInfoClient;
 
 	private final JwtProvider jwtProvider;
 	private final MemberRepository memberRepository;
@@ -41,28 +32,21 @@ public class GoogleAuthStrategy implements SocialAuthStrategy {
 
 	@Override
 	public boolean support(SocialAuthProvider provider) {
-		return provider.equals(SocialAuthProvider.GOOGLE);
+		return provider.equals(SocialAuthProvider.KAKAO);
 	}
 
 	@Override
 	public SocialAuthResponse login(SocialAuthRequest request) {
-		GoogleTokenResponse googleTokenResponse = googleAuthApiClient.googleAuth(
-				request.code(),
-				googleClientId,
-				googleClientSecret,
-				googleRedirectUri,
-				googleGrantType,
-				"profile email"
-		);
-		GoogleInfoResponse memberResponse = googleApiClient.googleInfo("Bearer" + googleTokenResponse.access_token());
-		Boolean isAlreadyMember = memberRepository.existsBySerialId(memberResponse.sub());
-		Member member = memberRepository.findBySerialId(memberResponse.sub())
+		// TODO: revise Access token to OIDC token
+		KakaoUserResponse userResponse = kakaoUserInfoClient.getUserInformation("Bearer " + request.code());
+		Boolean isAlreadyMember = memberRepository.existsBySerialId(userResponse.id());
+		Member member = memberRepository.findBySerialId(userResponse.id())
 				.orElseGet(() -> Member.createAuthorizedMember(
-						memberResponse.sub(),
-						memberResponse.name(),
-						memberResponse.email(),
+						userResponse.id(),
+						userResponse.kakaoAccount().profile().nickname(),
+						null,
 						request.provider(),
-						memberResponse.picture()));
+						userResponse.kakaoAccount().profile().profileImageUrl()));
 		memberRepository.save(member);
 		TokenResponse tokenResponse = TokenResponse.toResponse(jwtProvider.issueTokens(member.getId()));
 		if (!isAlreadyMember) {
