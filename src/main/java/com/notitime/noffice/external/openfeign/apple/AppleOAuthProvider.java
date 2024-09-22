@@ -1,7 +1,7 @@
 package com.notitime.noffice.external.openfeign.apple;
 
 import com.notitime.noffice.external.openfeign.apple.dto.ApplePublicKeys;
-import com.notitime.noffice.external.openfeign.dto.AuthorizedMemberInfo;
+import com.notitime.noffice.external.openfeign.apple.dto.AuthorizedMemberInfo;
 import io.jsonwebtoken.Claims;
 import java.security.PublicKey;
 import java.util.Map;
