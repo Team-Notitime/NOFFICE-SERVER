@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class GoogleAuthStrategy implements SocialAuthStrategy {
 
-	private final RefreshTokenRepository refreshTokenRepository;
 	@Value("${oauth.google.client-id}")
 	private String googleClientId;
 	@Value("${oauth.google.client-secret}")
@@ -38,6 +37,7 @@ public class GoogleAuthStrategy implements SocialAuthStrategy {
 
 	private final JwtProvider jwtProvider;
 	private final MemberRepository memberRepository;
+	private final RefreshTokenRepository refreshTokenRepository;
 
 	@Override
 	public boolean support(SocialAuthProvider provider) {
