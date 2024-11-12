@@ -68,10 +68,10 @@ public class MemberController implements MemberApi {
 		return NofficeResponse.success(GET_MEMBER_SUCCESS, memberService.getMember(memberId));
 	}
 
+	@Deprecated(forRemoval = true)
 	@PatchMapping("/alias")
 	public NofficeResponse<Void> updateAlias(@AuthMember final Long memberId,
 	                                         @RequestBody final MemberAliasUpdateRequest alias) {
-		memberService.updateAlias(memberId, alias);
 		return NofficeResponse.success(PATCH_UPDATE_ALIAS_SUCCESS);
 	}
 
