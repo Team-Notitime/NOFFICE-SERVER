@@ -12,16 +12,9 @@ public interface AnnouncementReadStatusRepository extends JpaRepository<Announce
 
 	boolean existsByMemberIdAndAnnouncementId(Long memberId, Long announcementId);
 
-	@Query("SELECT ars.member.id FROM AnnouncementReadStatus ars WHERE ars.announcement.id = :announcementId AND ars.isRead = false")
-	List<Long> findUnreadMemberIds(Long announcementId);
-
 	@Query("SELECT ars.member FROM AnnouncementReadStatus ars WHERE ars.announcement.id = :announcementId AND ars.isRead = true")
 	List<Member> findReadMembers(@Param("announcementId") Long announcementId);
 
 	@Query("SELECT ars.member FROM AnnouncementReadStatus ars WHERE ars.announcement.id = :announcementId AND ars.isRead = false")
 	List<Member> findUnReadMembers(@Param("announcementId") Long announcementId);
-
-	List<AnnouncementReadStatus> findByAnnouncementId(Long announcementId);
-
-	AnnouncementReadStatus findByAnnouncementIdAndMemberId(Long announcementId, Long memberId);
 }

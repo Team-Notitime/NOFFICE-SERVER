@@ -9,10 +9,10 @@ import static com.notitime.noffice.external.firebase.FCMNotificationConstants.SP
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.MulticastMessage;
-import com.notitime.noffice.api.announcement.business.ReadStatusRecoder;
 import com.notitime.noffice.api.organization.business.RoleVerifier;
 import com.notitime.noffice.domain.FcmToken;
 import com.notitime.noffice.domain.announcement.model.Announcement;
+import com.notitime.noffice.domain.announcement.persistence.AnnouncementReadStatusRepository;
 import com.notitime.noffice.domain.announcement.persistence.AnnouncementRepository;
 import com.notitime.noffice.domain.fcmtoken.persistence.FcmTokenRepository;
 import com.notitime.noffice.domain.member.model.Member;
@@ -38,8 +38,9 @@ public class FcmService {
 	private final OrganizationRepository organizationRepository;
 	private final AnnouncementRepository announcementRepository;
 	private final MemberRepository memberRepository;
+	private final AnnouncementReadStatusRepository announcementReadStatusRepository;
+
 	private final RoleVerifier roleVerifier;
-	private final ReadStatusRecoder readStatusRecoder;
 
 	public FCMCreateResponse sendToMember(Long leaderId, FCMSingleCreateRequest request) {
 		roleVerifier.verifyLeader(leaderId, request.organizationId());
@@ -87,7 +88,10 @@ public class FcmService {
 				.orElseThrow(() -> new NotFoundException(BusinessErrorCode.NOT_FOUND_ANNOUNCEMENT))
 				.getOrganization();
 		roleVerifier.verifyLeader(leaderId, organization.getId());
-		List<String> unreadMemberTokens = readStatusRecoder.getUnreadMemberIds(announcementId).stream()
+		List<Long> unreadMemberIds = announcementReadStatusRepository.findUnReadMembers(announcementId).stream()
+				.map(Member::getId)
+				.toList();
+		List<String> unreadMemberTokens = unreadMemberIds.stream()
 				.map(this::getMemberTokens)
 				.flatMap(List::stream)
 				.toList();
