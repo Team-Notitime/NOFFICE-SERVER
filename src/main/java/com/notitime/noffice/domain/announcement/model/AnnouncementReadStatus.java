@@ -14,7 +14,6 @@ import jakarta.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,14 +21,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"member_id", "announcement_id"})})
-@Builder
 @Getter
 public class AnnouncementReadStatus extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
 	private Boolean isRead;
 	private LocalDateTime readAt;
 
@@ -40,4 +37,8 @@ public class AnnouncementReadStatus extends BaseTimeEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "announcement_id", nullable = false)
 	private Announcement announcement;
+
+	public static AnnouncementReadStatus record(Member member, Announcement announcement) {
+		return new AnnouncementReadStatus(null, true, LocalDateTime.now(), member, announcement);
+	}
 }
