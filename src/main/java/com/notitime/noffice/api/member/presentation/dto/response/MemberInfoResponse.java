@@ -7,7 +7,7 @@ public record MemberInfoResponse(Long id, String name, String alias, String prof
 		return new MemberInfoResponse(
 				member.getId(),
 				member.getName(),
-				member.getAlias(),
+				member.getName(),
 				member.getProfileImage()
 		);
 	}

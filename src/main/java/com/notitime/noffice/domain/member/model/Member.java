@@ -43,8 +43,6 @@ public class Member extends BaseTimeEntity {
 	@Column(nullable = false)
 	private String name;
 
-	private String alias;
-
 	private String serialId;
 
 	@Column(columnDefinition = "TEXT")
@@ -74,7 +72,6 @@ public class Member extends BaseTimeEntity {
 		return Member.builder()
 				.serialId(serialId)
 				.name(name)
-				.alias(name)
 				.email(email)
 				.socialAuthProvider(socialAuthProvider)
 				.profileImage(profileImage)
@@ -94,10 +91,6 @@ public class Member extends BaseTimeEntity {
 
 	public void deleteProfileImage() {
 		this.profileImage = null;
-	}
-
-	public void updateAlias(String alias) {
-		this.alias = alias;
 	}
 
 	public void updateProfileImage(String imageUrl) {

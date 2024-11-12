@@ -9,6 +9,7 @@ import com.notitime.noffice.domain.BaseTimeEntity;
 import com.notitime.noffice.domain.JoinStatus;
 import com.notitime.noffice.domain.OrganizationRole;
 import com.notitime.noffice.domain.member.model.Member;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -33,6 +34,9 @@ public class OrganizationMember extends BaseTimeEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Embedded
+	private Nickname nickname;
+
 	@Enumerated(EnumType.STRING)
 	private OrganizationRole role;
 
@@ -47,29 +51,11 @@ public class OrganizationMember extends BaseTimeEntity {
 	@JoinColumn(name = "member_id")
 	private Member member;
 
-	public static OrganizationMember join(Organization organization, Member member) {
-		OrganizationMember organizationMember = new OrganizationMember(null, PARTICIPANT, PENDING,
-				organization, member);
-		organizationMember.setOrganization(organization);
-		organizationMember.setMember(member);
-		return organizationMember;
+	public static OrganizationMember addPendingList(Organization organization, Member member) {
+		return new OrganizationMember(null, null, PARTICIPANT, PENDING, organization, member);
 	}
 
-	public static OrganizationMember create(Organization organization, Member member) {
-		return new OrganizationMember(null, LEADER, ACTIVE, organization, member);
-	}
-
-	public void setOrganization(Organization organization) {
-		this.organization = organization;
-		if (!organization.getMembers().contains(this)) {
-			organization.getMembers().add(this);
-		}
-	}
-
-	public void setMember(Member member) {
-		this.member = member;
-		if (!member.getOrganizations().contains(this)) {
-			member.getOrganizations().add(this);
-		}
+	public static OrganizationMember joinAsLeader(String nickname, Organization organization, Member member) {
+		return new OrganizationMember(null, new Nickname(nickname), LEADER, ACTIVE, organization, member);
 	}
 }

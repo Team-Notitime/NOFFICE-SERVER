@@ -56,7 +56,7 @@ public enum BusinessSuccessCode implements SuccessCode {
 	DELETE_PROFILE_IMAGE_SUCCESS(HttpStatus.NO_CONTENT, "NOF-2402", "프로필 이미지 삭제 성공"),
 	PATCH_MODIFY_COVER_SUCCESS(HttpStatus.NO_CONTENT, "NOF-2403", "공지 커버 이미지 수정 성공"),
 	PATCH_UPDATE_TASK_STATUS_SUCCESS(HttpStatus.NO_CONTENT, "NOF-2404", "사용자 투두 리스트 업데이트 성공"),
-	PATCH_UPDATE_ALIAS_SUCCESS(HttpStatus.NO_CONTENT, "NOF-2405", "회원 별명 변경 성공"),
+	PATCH_UPDATE_ALIAS_SUCCESS(HttpStatus.NO_CONTENT, "NOF-2405", "[비활성화 대상] 회원 별명 변경 성공"),
 	PATCH_UPDATE_PROFILE_SUCCESS(HttpStatus.NO_CONTENT, "NOF-2406", "프로필 이미지 주소 변경 성공"),
 
 	// RESET CONTENT (2500 ~ 2599)

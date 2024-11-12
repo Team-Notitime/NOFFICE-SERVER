@@ -11,7 +11,7 @@ public record MemberResponse(Long id, String name, String alias, String profileI
 		return new MemberResponse(
 				member.getId(),
 				member.getName(),
-				member.getAlias(),
+				member.getName(),
 				member.getProfileImage(),
 				OrganizationResponses.from(member.getOrganizations()).organizations()
 		);

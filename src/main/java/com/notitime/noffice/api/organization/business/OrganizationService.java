@@ -79,13 +79,17 @@ public class OrganizationService {
 	}
 
 	public OrganizationCreateResponse create(Long createMemberId, OrganizationCreateRequest request) {
-		return OrganizationCreateResponse.of(organizationRepository.save(createByRequest(createMemberId, request)));
+		List<Category> categories = categoryRepository.findByIdIn(request.categoryList());
+		Member leader = getMemberEntity(createMemberId);
+		Organization organization = Organization.create(request.name(), request.endAt(), request.profileImage(),
+				categories, leader);
+		return OrganizationCreateResponse.of(organizationRepository.save(organization));
 	}
 
 	public OrganizationJoinResponse join(Long memberId, Long organizationId) {
 		Organization organization = getOrganizationEntity(organizationId);
 		Member member = getMemberEntity(memberId);
-		organizationMemberRepository.save(OrganizationMember.join(organization, member));
+		organizationMemberRepository.save(OrganizationMember.addPendingList(organization, member));
 		return OrganizationJoinResponse.from(organization, member);
 	}
 
@@ -193,12 +197,6 @@ public class OrganizationService {
 
 	private Boolean isAnyMemberPending(Long organizationId) {
 		return organizationMemberRepository.existsByOrganizationIdAndStatus(organizationId, JoinStatus.PENDING);
-	}
-
-	private Organization createByRequest(Long createMemberId, OrganizationCreateRequest request) {
-		List<Category> categories = categoryRepository.findByIdIn(request.categoryList());
-		Member leader = getMemberEntity(createMemberId);
-		return Organization.create(request.name(), request.endAt(), request.profileImage(), categories, leader);
 	}
 
 	public OrganizationMemberResponses getRegisteredMembers(Long requesterMemberId, Long organizationId) {
