@@ -87,13 +87,8 @@ public class FcmService {
 		Organization organization = announcementRepository.findById(announcementId)
 				.orElseThrow(() -> new NotFoundException(BusinessErrorCode.NOT_FOUND_ANNOUNCEMENT))
 				.getOrganization();
-		roleVerifier.verifyLeader(leaderId, organization.getId());
-		List<Long> unreadMemberIds = announcementReadStatusRepository.findUnReadMembers(announcementId).stream()
-				.map(Member::getId)
-				.toList();
-		List<String> unreadMemberTokens = unreadMemberIds.stream()
-				.map(this::getMemberTokens)
-				.flatMap(List::stream)
+		List<String> unreadMemberTokens = announcementReadStatusRepository.findUnReadMembers(announcementId).stream()
+				.flatMap(member -> getMemberTokens(member.getId()).stream())
 				.toList();
 		String title = parseSlicedOrganizationName(organization) + " 미열람자 알림";
 		String content = "관리자가 공지 확인을 요청했어요.";
