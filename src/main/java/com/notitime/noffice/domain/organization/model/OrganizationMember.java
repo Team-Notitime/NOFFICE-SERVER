@@ -55,7 +55,7 @@ public class OrganizationMember extends BaseTimeEntity {
 		return new OrganizationMember(null, null, PARTICIPANT, PENDING, organization, member);
 	}
 
-	public static OrganizationMember joinAsLeader(Organization organization, Member member) {
-		return new OrganizationMember(null, null, LEADER, ACTIVE, organization, member);
+	public static OrganizationMember joinAsLeader(Nickname nickname, Organization organization, Member member) {
+		return new OrganizationMember(null, nickname, LEADER, ACTIVE, organization, member);
 	}
 }
