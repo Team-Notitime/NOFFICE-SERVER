@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +24,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Organization extends BaseTimeEntity {
 
 	@Id
@@ -48,12 +46,19 @@ public class Organization extends BaseTimeEntity {
 	@OneToMany(mappedBy = "organization", cascade = CascadeType.ALL, orphanRemoval = true)
 	private final List<OrganizationMember> members = new ArrayList<>();
 
-	public static Organization create(String name, LocalDateTime endAt, String profileImage,
-	                                  List<Category> categories, Member leader) {
-		Organization organization = new Organization(name, profileImage, categories);
-		organization.addEndAt(endAt);
-		organization.addLeader(leader);
-		return organization;
+	public static Organization create(String name, LocalDateTime endAt, String profileImage, List<Category> categories,
+	                                  Member leader) {
+		return new Organization(null, name, endAt, profileImage, categories, leader);
+	}
+
+	private Organization(Long id, String name, LocalDateTime endAt, String profileImage,
+	                     List<Category> categories, Member creator) {
+		this.id = id;
+		this.name = name;
+		this.endAt = endAt;
+		this.profileImage = profileImage;
+		addCategories(categories);
+		addLeader(creator);
 	}
 
 	public void updateCategories(List<Category> categories) {
@@ -65,23 +70,12 @@ public class Organization extends BaseTimeEntity {
 		this.categories.removeIf(oc -> categories.stream().noneMatch(category -> oc.getCategory().equals(category)));
 	}
 
-	private Organization(String name, String profileImage, List<Category> categories) {
-		this.name = name;
-		this.profileImage = profileImage;
-		addCategories(categories);
-	}
-
-	private void addEndAt(LocalDateTime endAt) {
-		if (endAt != null) {this.endAt = endAt;}
-	}
-
 	private void addCategories(List<Category> categories) {
 		categories.forEach(category -> this.categories.add(new OrganizationCategory(this, category)));
 	}
 
-	private void addLeader(Member leader) {
-		Nickname nickname = new Nickname(leader.getName());
-		this.members.add(OrganizationMember.joinAsLeader(nickname, this, leader));
+	public void addLeader(Member leader) {
+		this.members.add(OrganizationMember.joinAsLeader(leader.getName(), this, leader));
 	}
 
 	public void addAnnouncement(Announcement announcement) {
