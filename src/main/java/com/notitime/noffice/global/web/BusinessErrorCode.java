@@ -17,6 +17,7 @@ public enum BusinessErrorCode implements ErrorCode {
 	APPLE_FEIGN_CONNECT_ERROR(HttpStatus.BAD_REQUEST, "NOF-4011", "Apple auth Feign 연결 중 오류가 발생했습니다."),
 	GOOGLE_FEIGN_CONNECT_ERROR(HttpStatus.BAD_REQUEST, "NOF-4012", "Google auth Feign 연결 중 오류가 발생했습니다."),
 	NOT_SUPPORTED_LOGIN_PLATFORM(HttpStatus.BAD_REQUEST, "NOF-400", "지원되지 않는 로그인 플랫폼입니다."),
+	INVALID_NICKNAME_LENGTH(HttpStatus.BAD_REQUEST, "NOF-400", "닉네임의 허용 길이를 초과했습니다."),
 
 	// 401 Unauthorized
 	UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "NOF-401", "리소스 접근 권한이 없습니다."),

@@ -85,7 +85,7 @@ public class OrganizationService {
 	public OrganizationJoinResponse join(Long memberId, Long organizationId) {
 		Organization organization = getOrganizationEntity(organizationId);
 		Member member = getMemberEntity(memberId);
-		organizationMemberRepository.save(OrganizationMember.join(organization, member));
+		organizationMemberRepository.save(OrganizationMember.addPendingList(organization, member));
 		return OrganizationJoinResponse.from(organization, member);
 	}
 

@@ -80,7 +80,7 @@ public class Organization extends BaseTimeEntity {
 	}
 
 	private void addLeader(Member leader) {
-		this.members.add(OrganizationMember.create(this, leader));
+		this.members.add(OrganizationMember.joinAsLeader(this, leader));
 	}
 
 	public void addAnnouncement(Announcement announcement) {
