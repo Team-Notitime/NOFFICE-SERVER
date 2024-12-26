@@ -90,5 +90,4 @@ interface MemberApi {
 	})
 	NofficeResponse<Void> updateName(@Parameter(hidden = true) @AuthMember final Long memberId,
 	                                 @RequestBody final MemberNameUpdateRequest request);
-	}
 }
