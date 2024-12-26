@@ -95,12 +95,10 @@ public class AnnouncementService {
 	}
 
 	public ReadStatusResponse getUnreadMembers(Long memberId, Long announcementId) {
-		Announcement announcement = announcementRepository.findById(announcementId)
-				.orElseThrow(() -> new NotFoundException(NOT_FOUND_ANNOUNCEMENT));
-		List<Member> unreadMembers = announcementReadStatusRepository.findUnReadMembers(announcement.getId());
-		return ReadStatusResponse.of(announcementId, unreadMembers.stream()
-				.map(MemberInfoResponse::from)
-				.toList());
+		List<MemberInfoResponse> unreadMembers = announcementReadStatusRepository.findUnReadMembers(announcementId)
+				.stream().map(MemberInfoResponse::from)
+				.toList();
+		return ReadStatusResponse.of(announcementId, unreadMembers);
 	}
 
 	private Announcement createEntity(AnnouncementCreateRequest request) {
