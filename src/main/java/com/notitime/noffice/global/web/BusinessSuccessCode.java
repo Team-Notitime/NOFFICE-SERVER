@@ -58,6 +58,7 @@ public enum BusinessSuccessCode implements SuccessCode {
 	PATCH_UPDATE_TASK_STATUS_SUCCESS(HttpStatus.NO_CONTENT, "NOF-2404", "사용자 투두 리스트 업데이트 성공"),
 	PATCH_UPDATE_ALIAS_SUCCESS(HttpStatus.NO_CONTENT, "NOF-2405", "[비활성화 대상] 회원 별명 변경 성공"),
 	PATCH_UPDATE_PROFILE_SUCCESS(HttpStatus.NO_CONTENT, "NOF-2406", "프로필 이미지 주소 변경 성공"),
+	PATCH_UPDATE_NAME_SUCCESS(HttpStatus.NO_CONTENT, "NOF-2407", "회원 이름 변경 성공"),
 
 	// RESET CONTENT (2500 ~ 2599)
 	RESET_CONTENT(HttpStatus.RESET_CONTENT, "NOF-205", "리소스가 갱신되었습니다. - 205");

@@ -3,6 +3,7 @@ package com.notitime.noffice.api.member.presentation;
 import static com.notitime.noffice.global.web.BusinessSuccessCode.DELETE_PROFILE_IMAGE_SUCCESS;
 import static com.notitime.noffice.global.web.BusinessSuccessCode.GET_MEMBER_SUCCESS;
 import static com.notitime.noffice.global.web.BusinessSuccessCode.PATCH_UPDATE_ALIAS_SUCCESS;
+import static com.notitime.noffice.global.web.BusinessSuccessCode.PATCH_UPDATE_NAME_SUCCESS;
 import static com.notitime.noffice.global.web.BusinessSuccessCode.PATCH_UPDATE_PROFILE_SUCCESS;
 import static com.notitime.noffice.global.web.BusinessSuccessCode.POST_LOGIN_SUCCESS;
 import static com.notitime.noffice.global.web.BusinessSuccessCode.POST_LOGOUT_SUCCESS;
@@ -15,6 +16,7 @@ import com.notitime.noffice.api.auth.presentation.dto.response.SocialAuthRespons
 import com.notitime.noffice.api.auth.presentation.dto.response.TokenResponse;
 import com.notitime.noffice.api.member.business.MemberService;
 import com.notitime.noffice.api.member.presentation.dto.request.MemberAliasUpdateRequest;
+import com.notitime.noffice.api.member.presentation.dto.request.MemberNameUpdateRequest;
 import com.notitime.noffice.api.member.presentation.dto.request.MemberProfileUpdateRequest;
 import com.notitime.noffice.api.member.presentation.dto.response.MemberResponse;
 import com.notitime.noffice.api.notification.business.NotificationService;
@@ -73,6 +75,13 @@ public class MemberController implements MemberApi {
 	public NofficeResponse<Void> updateAlias(@AuthMember final Long memberId,
 	                                         @RequestBody final MemberAliasUpdateRequest alias) {
 		return NofficeResponse.success(PATCH_UPDATE_ALIAS_SUCCESS);
+	}
+
+	@PatchMapping("/name")
+	public NofficeResponse<Void> updateName(@AuthMember final Long memberId,
+	                                        @RequestBody final MemberNameUpdateRequest request) {
+		memberService.updateName(memberId, request);
+		return NofficeResponse.success(PATCH_UPDATE_NAME_SUCCESS);
 	}
 
 	@PatchMapping("/profile-image")

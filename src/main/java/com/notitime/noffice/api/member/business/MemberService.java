@@ -1,5 +1,6 @@
 package com.notitime.noffice.api.member.business;
 
+import com.notitime.noffice.api.member.presentation.dto.request.MemberNameUpdateRequest;
 import com.notitime.noffice.api.member.presentation.dto.request.MemberProfileUpdateRequest;
 import com.notitime.noffice.api.member.presentation.dto.response.MemberResponse;
 import com.notitime.noffice.domain.member.model.Member;
@@ -27,6 +28,12 @@ public class MemberService {
 		memberRepository.save(member);
 	}
 
+	public void updateName(Long memberId, MemberNameUpdateRequest request) {
+		Member member = findById(memberId);
+		member.updateName(request.name());
+		memberRepository.save(member);
+	}
+	
 	public void updateProfileImage(Long memberId, MemberProfileUpdateRequest request) {
 		Member member = findById(memberId);
 		member.updateProfileImage(request.imageUrl());
