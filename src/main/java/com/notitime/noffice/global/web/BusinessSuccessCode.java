@@ -13,7 +13,6 @@ public enum BusinessSuccessCode implements SuccessCode {
 	POST_LOGIN_SUCCESS(HttpStatus.OK, "NOF-2000", "로그인에 성공하였습니다."),
 	POST_REISSUE_SUCCESS(HttpStatus.OK, "NOF-2000", "액세스 토큰 재발급에 성공하였습니다."),
 	POST_LOGOUT_SUCCESS(HttpStatus.OK, "NOF-2000", "로그아웃에 성공하였습니다."),
-	POST_WITHDRAWAL_SUCCESS(HttpStatus.OK, "NOF-2000", "회원 탈퇴에 성공하였습니다."),
 	GET_MEMBER_SUCCESS(HttpStatus.OK, "NOF-2001", "회원 정보 조회에 성공하였습니다."),
 	GET_JOINED_ORGANIZATIONS_SUCCESS(HttpStatus.OK, "NOF-2002", "회원의 가입된 조직 조회에 성공하였습니다."),
 	GET_ORGANIZATION_SUCCESS(HttpStatus.OK, "NOF-2003", "조직 정보 조회에 성공하였습니다."),
@@ -59,6 +58,7 @@ public enum BusinessSuccessCode implements SuccessCode {
 	PATCH_UPDATE_ALIAS_SUCCESS(HttpStatus.NO_CONTENT, "NOF-2405", "[비활성화 대상] 회원 별명 변경 성공"),
 	PATCH_UPDATE_PROFILE_SUCCESS(HttpStatus.NO_CONTENT, "NOF-2406", "프로필 이미지 주소 변경 성공"),
 	PATCH_UPDATE_NAME_SUCCESS(HttpStatus.NO_CONTENT, "NOF-2407", "회원 이름 변경 성공"),
+	POST_WITHDRAWAL_SUCCESS(HttpStatus.NO_CONTENT, "NOF-2408", "회원 탈퇴에 성공하였습니다."),
 
 	// RESET CONTENT (2500 ~ 2599)
 	RESET_CONTENT(HttpStatus.RESET_CONTENT, "NOF-205", "리소스가 갱신되었습니다. - 205");
