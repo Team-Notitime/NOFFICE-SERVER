@@ -10,6 +10,7 @@ public class SecurityWhiteListPaths {
 	public static final String[] SECURITY_WHITE_LIST = {
 			"/error",
 			"/api/v1/member/login",
+			"/api/v1/member/reissue",
 			"/api/v1/image/**",
 			"/api/v1/promotion/**",
 			"/image/**",
@@ -28,6 +29,7 @@ public class SecurityWhiteListPaths {
 			"/api/v1/image/**",
 			"/api/v1/promotion/**",
 			"/api/v1/member/login",
+			"/api/v1/member/reissue",
 			"/swagger-ui/**",
 			"/swagger-resources/**",
 			"/api-docs/**",

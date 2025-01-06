@@ -1,6 +1,7 @@
 package com.notitime.noffice.api.member.presentation;
 
 import com.notitime.noffice.api.auth.presentation.dto.request.SocialAuthRequest;
+import com.notitime.noffice.api.auth.presentation.dto.request.TokenReissueRequest;
 import com.notitime.noffice.api.auth.presentation.dto.response.SocialAuthResponse;
 import com.notitime.noffice.api.auth.presentation.dto.response.TokenResponse;
 import com.notitime.noffice.api.member.presentation.dto.request.MemberAliasUpdateRequest;
@@ -31,7 +32,7 @@ interface MemberApi {
 			@ApiResponse(responseCode = "401", description = "리프레시 토큰이 유효하지 않습니다. 다시 로그인해주세요.", content = @Content(schema = @Schema(implementation = NofficeResponse.class))),
 			@ApiResponse(responseCode = "500", description = "서버 내부 에러 발생", content = @Content(schema = @Schema(implementation = NofficeResponse.class)))
 	})
-	NofficeResponse<TokenResponse> reissue(@RequestHeader("Authorization") final String refreshToken);
+	NofficeResponse<TokenResponse> reissue(final TokenReissueRequest tokenReissueRequest);
 
 	@Operation(summary = "[인증] 회원 로그아웃", description = "회원의 계정에 저장된 Fcm 토큰을 모두 삭제합니다. 신규 로그인 시 토큰을 재요청해야합니다.", responses = {
 			@ApiResponse(responseCode = "204", description = "로그아웃에 성공하였습니다."),
