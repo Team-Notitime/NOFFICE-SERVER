@@ -12,6 +12,7 @@ import static com.notitime.noffice.global.web.BusinessSuccessCode.POST_WITHDRAWA
 
 import com.notitime.noffice.api.auth.business.AuthService;
 import com.notitime.noffice.api.auth.presentation.dto.request.SocialAuthRequest;
+import com.notitime.noffice.api.auth.presentation.dto.request.TokenReissueRequest;
 import com.notitime.noffice.api.auth.presentation.dto.response.SocialAuthResponse;
 import com.notitime.noffice.api.auth.presentation.dto.response.TokenResponse;
 import com.notitime.noffice.api.member.business.MemberService;
@@ -47,8 +48,8 @@ public class MemberController implements MemberApi {
 	}
 
 	@PostMapping("/reissue")
-	public NofficeResponse<TokenResponse> reissue(@RequestHeader("Authorization") final String refreshToken) {
-		return NofficeResponse.success(POST_REISSUE_SUCCESS, authService.reissue(refreshToken));
+	public NofficeResponse<TokenResponse> reissue(@RequestBody final TokenReissueRequest tokenReissueRequest) {
+		return NofficeResponse.success(POST_REISSUE_SUCCESS, authService.reissue(tokenReissueRequest.refreshToken()));
 	}
 
 	@PostMapping("/logout")

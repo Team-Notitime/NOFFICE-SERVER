@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthService {
 
 	private final SocialAuthContext socialAuthContext;
-	private JwtProvider jwtTokenProvider;
+	private final JwtProvider jwtTokenProvider;
 	private final JwtValidator jwtValidator;
 	private final MemberRepository memberRepository;
 	private final RefreshTokenRepository refreshTokenRepository;
